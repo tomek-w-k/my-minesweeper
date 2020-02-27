@@ -87,21 +87,21 @@ public class Main extends QMainWindow
 
     private void createToolBar()
     {
-        newGameAction.setIcon( new QIcon( "classpath:icons/new_game.png" ) );
+        newGameAction.setIcon( new QIcon( "classpath:resources/icons/new_game.png" ) );
         toolBar.addAction(newGameAction);
         toolBar.addSeparator();
-        basicAction.setIcon( new QIcon( "classpath:icons/level_beginner.png" ) );
+        basicAction.setIcon( new QIcon( "classpath:resources/icons/level_beginner.png" ) );
         toolBar.addAction(basicAction);
-        mediumAction.setIcon( new QIcon( "classpath:icons/level_medium.png" ) );
+        mediumAction.setIcon( new QIcon( "classpath:resources/icons/level_medium.png" ) );
         toolBar.addAction(mediumAction);
-        advancedAction.setIcon( new QIcon( "classpath:icons/level_advanced.png" ) );
+        advancedAction.setIcon( new QIcon( "classpath:resources/icons/level_advanced.png" ) );
         toolBar.addAction(advancedAction);
-        expertAction.setIcon( new QIcon( "classpath:icons/level_expert.png" ) );
+        expertAction.setIcon( new QIcon( "classpath:resources/icons/level_expert.png" ) );
         toolBar.addAction(expertAction);
         toolBar.addAction(customAction);
-        customAction.setIcon( new QIcon( "classpath:icons/level_custom.png" ) );
+        customAction.setIcon( new QIcon( "classpath:resources/icons/level_custom.png" ) );
         toolBar.addSeparator();
-        preferencesAction.setIcon( new QIcon( "classpath:icons/preferences.png" ) );
+        preferencesAction.setIcon( new QIcon( "classpath:resources/icons/preferences.png" ) );
         toolBar.addAction(preferencesAction);
 
         this.addToolBar(toolBar);
@@ -153,13 +153,13 @@ public class Main extends QMainWindow
     public void changeTranslator(String lLanguage)
     {
         QTranslator polishTranslator = new QTranslator();
-        polishTranslator.load("classpath:/translations/my_minesweeper_translation_pl.qm");
+        polishTranslator.load("classpath:/resources/translations/my_minesweeper_translation_pl.qm");
 
         QTranslator englishTranslator = new QTranslator();
-        englishTranslator.load("classpath:/translations/my_minesweeper_translation_en.qm");
+        englishTranslator.load("classpath:/resources/translations/my_minesweeper_translation_en.qm");
 
         QTranslator germanTranslator = new QTranslator();
-        germanTranslator.load("classpath:/translations/my_minesweeper_translation_de.qm");
+        germanTranslator.load("classpath:/resources/translations/my_minesweeper_translation_de.qm");
 
         switch ( lLanguage )
         {
@@ -187,7 +187,7 @@ public class Main extends QMainWindow
     public Main()
     {
         setWindowTitle(tr("MyMinesweeper"));
-        setWindowIcon( new QIcon("classpath:/icons/mine.png") );
+        setWindowIcon( new QIcon("classpath:/resources/icons/mine.png") );
         connectActionsToSlots();
         createMenuBar();
         createToolBar();
@@ -215,12 +215,12 @@ public class Main extends QMainWindow
         QMessageBox about = new QMessageBox();
         about.setDefaultButton(QMessageBox.StandardButton.Ok);
         about.setWindowTitle(tr("About - MyMinesweeper"));
-        about.setIconPixmap(new QPixmap("classpath:/icons/mine.png").scaled(88, 88));
+        about.setIconPixmap(new QPixmap("classpath:/resources/icons/mine.png").scaled(88, 88));
 
         String messageText = "";
         try
         {
-            URL res = getClass().getClassLoader().getResource("misc/about.html");
+            URL res = getClass().getClassLoader().getResource("resources/misc/about.html");
             File file = Paths.get(res.toURI()).toFile();
             String absolutePath = file.getAbsolutePath();
             messageText = new String(Files.readAllBytes(Paths.get( absolutePath ) ));
