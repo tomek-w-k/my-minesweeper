@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.constants.SettingsKeys;
 import com.trolltech.qt.core.QEvent;
 import com.trolltech.qt.core.QSettings;
 import com.trolltech.qt.core.Qt;
@@ -302,62 +303,62 @@ public class PreferencesDialog extends QDialog
     // Collects data from dialog widgets and saves using QSettings class
     private void saveSettings()
     {
-        QSettings settings = new QSettings("tw", "MyMinesweeper");
+        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
 
-        settings.beginGroup("game_parameters");
+        settings.beginGroup(SettingsKeys.GAME_PARAMETERS_GROUP);
 
         // Game mode
         if ( basicModeRadioButton.isChecked() )
         {
-            settings.setValue("game_mode", MiscGameParams.GameModes.BASIC_MODE);
+            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.BASIC_MODE);
         }
         if ( mediumModeRadioButton.isChecked() )
         {
-            settings.setValue("game_mode", MiscGameParams.GameModes.MEDIUM_MODE);
+            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.MEDIUM_MODE);
         }
         if ( advancedModeRadioButton.isChecked() )
         {
-            settings.setValue("game_mode", MiscGameParams.GameModes.ADVANCED_MODE);
+            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.ADVANCED_MODE);
         }
         if ( expertModeRadioButton.isChecked() )
         {
-            settings.setValue("game_mode", MiscGameParams.GameModes.EXPERT_MODE);
+            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.EXPERT_MODE);
         }
         if ( customModeRadioButton.isChecked() )
         {
-            settings.setValue("game_mode", MiscGameParams.GameModes.CUSTOM_MODE);
-            settings.setValue("custom_row_count", customRowsSpinBox.value());
-            settings.setValue("custom_column_count", customColumnsSpinBox.value());
-            settings.setValue("custom_mine_count", customMinesSpinBox.value());
+            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.CUSTOM_MODE);
+            settings.setValue(SettingsKeys.CUSTOM_ROW_COUNT, customRowsSpinBox.value());
+            settings.setValue(SettingsKeys.CUSTOM_COLUMN_COUNT, customColumnsSpinBox.value());
+            settings.setValue(SettingsKeys.CUSTOM_MINES_COUNT, customMinesSpinBox.value());
         }
 
         // Language
         if ( englishLanguageRadioButton.isChecked() )
         {
-            settings.setValue("language", MiscGameParams.Languages.ENGLISH);
+            settings.setValue(SettingsKeys.LANGUAGE, MiscGameParams.Languages.ENGLISH);
         }
         if ( polishLanguageRadioButton.isChecked() )
         {
-            settings.setValue("language", MiscGameParams.Languages.POLISH);
+            settings.setValue(SettingsKeys.LANGUAGE, MiscGameParams.Languages.POLISH);
         }
         if ( germanLanguageRadioButton.isChecked() )
         {
-            settings.setValue("language", MiscGameParams.Languages.GERMAN);
+            settings.setValue(SettingsKeys.LANGUAGE, MiscGameParams.Languages.GERMAN);
         }
 
         // Field size
-        settings.setValue("field_size", fieldSizeSpinBox.value());
+        settings.setValue(SettingsKeys.FIELD_SIZE, fieldSizeSpinBox.value());
 
         // Time counting and save best result
         if ( enableTimeCountingCheckBox.isChecked() )
         {
-            settings.setValue("enable_time_counting", true);
-            settings.setValue("save_best_result", saveBestResultCheckBox.isChecked());
+            settings.setValue(SettingsKeys.ENABLE_TIME_COUNTING, true);
+            settings.setValue(SettingsKeys.SAVE_BEST_RESULT, saveBestResultCheckBox.isChecked());
         }
         else
         {
-            settings.setValue("enable_time_counting", false);
-            settings.setValue("save_best_result", false);
+            settings.setValue(SettingsKeys.ENABLE_TIME_COUNTING, false);
+            settings.setValue(SettingsKeys.SAVE_BEST_RESULT, false);
         }
 
         settings.endGroup();
@@ -366,50 +367,50 @@ public class PreferencesDialog extends QDialog
     // Reads data from QSettings class and set them on dialog widgets
     private void loadSettings()
     {
-        QSettings settings = new QSettings("tw", "MyMinesweeper");
+        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
 
-        settings.beginGroup("game_parameters");
+        settings.beginGroup(SettingsKeys.GAME_PARAMETERS_GROUP);
 
-        // Game mode
-        String gameMode = settings.value("game_mode", MiscGameParams.GameModes.BASIC_MODE).toString();
+        // Game mode (default: BASIC_MODE)
+        MiscGameParams.GameModes gameMode = (MiscGameParams.GameModes) settings.value(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.BASIC_MODE);
 
         switch ( gameMode )
         {
-            case "BASIC_MODE":
+            case BASIC_MODE:
                 basicModeRadioButton.setChecked(true);
                 break;
-            case "MEDIUM_MODE":
+            case MEDIUM_MODE:
                 mediumModeRadioButton.setChecked(true);
                 break;
-            case "ADVANCED_MODE":
+            case ADVANCED_MODE:
                 advancedModeRadioButton.setChecked(true);
                 break;
-            case "EXPERT_MODE":
+            case EXPERT_MODE:
                 expertModeRadioButton.setChecked(true);
                 break;
-            case "CUSTOM_MODE":
+            case CUSTOM_MODE:
                 customModeRadioButton.setChecked(true);
                 break;
             default:
                 basicModeRadioButton.setChecked(true);
                 break;
         }
-        customRowsSpinBox.setValue( Integer.parseInt( settings.value("custom_row_count", "10").toString() ) );
-        customColumnsSpinBox.setValue( Integer.parseInt( settings.value("custom_column_count", "10").toString() ) );
-        customMinesSpinBox.setValue( Integer.parseInt( settings.value("custom_mine_count", "25").toString() ) );
+        customRowsSpinBox.setValue( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_ROW_COUNT, "10").toString() ) );
+        customColumnsSpinBox.setValue( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_COLUMN_COUNT, "10").toString() ) );
+        customMinesSpinBox.setValue( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_MINES_COUNT, "25").toString() ) );
 
-        // Language
-        String language = settings.value("language", MiscGameParams.Languages.ENGLISH).toString();
+        // Language (default: ENGLISH)
+        MiscGameParams.Languages language = (MiscGameParams.Languages) settings.value(SettingsKeys.LANGUAGE, MiscGameParams.Languages.ENGLISH);
 
         switch ( language )
         {
-            case "ENGLISH":
+            case ENGLISH:
                 englishLanguageRadioButton.setChecked(true);
                 break;
-            case "POLISH":
+            case POLISH:
                 polishLanguageRadioButton.setChecked(true);
                 break;
-            case "GERMAN":
+            case GERMAN:
                 germanLanguageRadioButton.setChecked(true);
                 break;
             default:
@@ -417,13 +418,13 @@ public class PreferencesDialog extends QDialog
                 break;
         }
 
-        // Field size
-        String fieldSize = settings.value("field_size", MiscGameParams.DEFAULT_FIELD_SIZE).toString();
+        // Field size (default: DEFAULT_FIELD_SIZE)
+        String fieldSize = settings.value(SettingsKeys.FIELD_SIZE, MiscGameParams.DEFAULT_FIELD_SIZE).toString();
         fieldSizeSpinBox.setValue( Integer.parseInt(fieldSize) );
 
-        // Time counting and save best result
-        String enableTimeCounting = settings.value("enable_time_counting", true).toString();
-        String saveBestResult = settings.value("save_best_result", true).toString();
+        // Time counting and save best result (default: true)
+        String enableTimeCounting = settings.value(SettingsKeys.ENABLE_TIME_COUNTING, true).toString();
+        String saveBestResult = settings.value(SettingsKeys.SAVE_BEST_RESULT, true).toString();
 
         enableTimeCountingCheckBox.setChecked( Boolean.parseBoolean(enableTimeCounting) );
         saveBestResultCheckBox.setChecked( Boolean.parseBoolean(saveBestResult) );

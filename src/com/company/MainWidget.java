@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.constants.SettingsKeys;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
@@ -77,52 +78,52 @@ public class MainWidget extends QWidget
 
     public void loadSettings()
     {
-        QSettings settings = new QSettings("tw", "MyMinesweeper");
-        settings.beginGroup("game_parameters");
+        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
+        settings.beginGroup(SettingsKeys.GAME_PARAMETERS_GROUP);
 
         // Set field size
-        String fieldSize = settings.value("field_size", MiscGameParams.DEFAULT_FIELD_SIZE).toString();
+        String fieldSize = settings.value(SettingsKeys.FIELD_SIZE, MiscGameParams.DEFAULT_FIELD_SIZE).toString();
         setFieldSize( Integer.parseInt(fieldSize) );
 
         // Time counting and save best result
-        String enableTimeCounting = settings.value("enable_time_counting", true).toString();
-        String saveBestResult = settings.value("save_best_result", true).toString();
+        String enableTimeCounting = settings.value(SettingsKeys.ENABLE_TIME_COUNTING, true).toString();
+        String saveBestResult = settings.value(SettingsKeys.SAVE_BEST_RESULT, true).toString();
         this.enableTimeCounting = Boolean.parseBoolean( enableTimeCounting );
         this.saveBestResult = Boolean.parseBoolean( saveBestResult );
 
-        // Game mode
-        String gameMode = settings.value("game_mode", MiscGameParams.GameModes.BASIC_MODE).toString();
+        // Game mode (default: BASIC_MODE)
+        MiscGameParams.GameModes gameMode = (MiscGameParams.GameModes) settings.value(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.BASIC_MODE);
 
         // The reason this function is called here is explained in it's description below
         createActionGroups();
 
         switch ( gameMode )
         {
-            case "BASIC_MODE":
+            case BASIC_MODE:
                 initialGameMode = MiscGameParams.GameModes.BASIC_MODE;
                 break;
-            case "MEDIUM_MODE":
+            case MEDIUM_MODE:
                 initialGameMode = MiscGameParams.GameModes.MEDIUM_MODE;
                 break;
-            case "ADVANCED_MODE":
+            case ADVANCED_MODE:
                 initialGameMode = MiscGameParams.GameModes.ADVANCED_MODE;
                 break;
-            case "EXPERT_MODE":
+            case EXPERT_MODE:
                 initialGameMode = MiscGameParams.GameModes.EXPERT_MODE;
                 break;
-            case "CUSTOM_MODE":
+            case CUSTOM_MODE:
                 initialGameMode = MiscGameParams.GameModes.CUSTOM_MODE;
                 break;
             default:
                 initialGameMode = MiscGameParams.GameModes.BASIC_MODE;
                 break;
         }
-        setRowCount( Integer.parseInt( settings.value("custom_row_count", "10").toString() ) );
-        setColumnCount( Integer.parseInt( settings.value("custom_column_count", "10").toString() ) );
-        setMinesCount( Integer.parseInt( settings.value("custom_mine_count", "25").toString() ) );
+        setRowCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_ROW_COUNT, "10").toString() ) );
+        setColumnCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_COLUMN_COUNT, "10").toString() ) );
+        setMinesCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_MINES_COUNT, "25").toString() ) );
 
         // TEST - language settings
-        String language = settings.value("language", "ENGLISH").toString();
+        String language = settings.value(SettingsKeys.LANGUAGE, MiscGameParams.Languages.ENGLISH).toString();
         mw.changeTranslator(language);
 
         settings.endGroup();
@@ -364,10 +365,10 @@ public class MainWidget extends QWidget
     private void saveBestResult()
     {
         // At first, it's necessary to check if obtained time is the smallest time from all results saved for this game mode
-        QSettings settings = new QSettings("tw", "MyMinesweeper");
+        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
 
         // Get all results for this game mode - keys to them are stored in "keys" List
-        settings.beginGroup("best_results/" + mw.difficultyLevelActionGroup.checkedAction().objectName());
+        settings.beginGroup(SettingsKeys.BEST_RESULTS_GROUP + "/" + mw.difficultyLevelActionGroup.checkedAction().objectName());
         List<String> keys = settings.childKeys();
 
         // Sort an array of keys above from smaller time to bigger - bubble sort
@@ -443,8 +444,8 @@ public class MainWidget extends QWidget
      */
     private void pSaveBestResult()
     {
-        QSettings settings = new QSettings("tw", "MyMinesweeper");
-        settings.beginGroup("best_results/" + mw.difficultyLevelActionGroup.checkedAction().objectName());
+        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
+        settings.beginGroup(SettingsKeys.BEST_RESULTS_GROUP + "/" + mw.difficultyLevelActionGroup.checkedAction().objectName());
 
         // Get player's name - open a dialog to get it
         SaveBestResultDialog saveBestResultDialog = new SaveBestResultDialog();
@@ -1075,8 +1076,6 @@ public class MainWidget extends QWidget
         setRowCount( GameModes.BASIC_MODE_ROW_COUNT );
         setColumnCount( GameModes.BASIC_MODE_COLUMN_COUNT );
         setMinesCount( GameModes.BASIC_MODE_MINES_COUNT );
-        //setFieldSize( MiscGameParams.DEFAULT_FIELD_SIZE );
-
         createNewGame();
     }
 
@@ -1086,7 +1085,6 @@ public class MainWidget extends QWidget
         setRowCount( GameModes.MEDIUM_MODE_ROW_COUNT );
         setColumnCount( GameModes.MEDIUM_MODE_COLUMN_COUNT );
         setMinesCount( GameModes.MEDIUM_MODE_MINES_COUNT );
-        //setFieldSize( MiscGameParams.DEFAULT_FIELD_SIZE );
         createNewGame();
     }
 
@@ -1096,7 +1094,6 @@ public class MainWidget extends QWidget
         setRowCount( GameModes.ADVANCED_MODE_ROW_COUNT );
         setColumnCount( GameModes.ADVANCED_MODE_COLUMN_COUNT );
         setMinesCount( GameModes.ADVANCED_MODE_MINES_COUNT );
-        //setFieldSize( MiscGameParams.DEFAULT_FIELD_SIZE );
         createNewGame();
     }
 
@@ -1106,7 +1103,6 @@ public class MainWidget extends QWidget
         setRowCount( GameModes.EXPERT_MODE_ROW_COUNT );
         setColumnCount( GameModes.EXPERT_MODE_COLUMN_COUNT );
         setMinesCount( GameModes.EXPERT_MODE_MINES_COUNT );
-        //setFieldSize( MiscGameParams.DEFAULT_FIELD_SIZE );
         createNewGame();
     }
 

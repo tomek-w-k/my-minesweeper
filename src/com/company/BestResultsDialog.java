@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.constants.SettingsKeys;
 import com.trolltech.qt.core.QPoint;
 import com.trolltech.qt.core.QSettings;
 import com.trolltech.qt.core.Qt;
@@ -101,9 +102,9 @@ public class BestResultsDialog extends QDialog
         bestResultsItemModel.setHeaderData(1, Qt.Orientation.Horizontal, tr("Elapsed time"), Qt.ItemDataRole.EditRole);
         bestResultsItemModel.setHeaderData(2, Qt.Orientation.Horizontal, tr("Date \\ time"), Qt.ItemDataRole.EditRole);
 
-        QSettings settings = new QSettings("tw", "MyMinesweeper");
+        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
 
-        settings.beginGroup("best_results");
+        settings.beginGroup(SettingsKeys.BEST_RESULTS_GROUP);
         List<String> gameModeGroups = settings.childGroups();
         settings.endGroup();
 
@@ -112,7 +113,7 @@ public class BestResultsDialog extends QDialog
             QStandardItem gameModeItem = new QStandardItem(gameModeGroups.get(i));
             bestResultsItemModel.setItem(i, gameModeItem);
 
-            settings.beginGroup("best_results/" + gameModeGroups.get(i));
+            settings.beginGroup(SettingsKeys.BEST_RESULTS_GROUP + "/" + gameModeGroups.get(i));
             List<String> keys = settings.childKeys();
             ArrayList<QStandardItem> resultDetailsItems = new ArrayList<QStandardItem>();
             for ( String key : keys )
@@ -149,8 +150,8 @@ public class BestResultsDialog extends QDialog
     // slots
     private void clearTablePushButtonClicked()
     {
-        QSettings settings = new QSettings("tw", "MyMinesweeper");
-        settings.remove("best_results");
+        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
+        settings.remove(SettingsKeys.BEST_RESULTS_GROUP);
         loadBestResults();
     }
 
