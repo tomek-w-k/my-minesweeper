@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.constants.PathStrings;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
@@ -7,6 +8,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main extends QMainWindow
@@ -87,21 +89,21 @@ public class Main extends QMainWindow
 
     private void createToolBar()
     {
-        newGameAction.setIcon( new QIcon( "classpath:resources/icons/new_game.png" ) );
+        newGameAction.setIcon( new QIcon( PathStrings.Icons.NEW_GAME ) );
         toolBar.addAction(newGameAction);
         toolBar.addSeparator();
-        basicAction.setIcon( new QIcon( "classpath:resources/icons/level_beginner.png" ) );
+        basicAction.setIcon( new QIcon( PathStrings.Icons.BEGINNER_LEVEL ) );
         toolBar.addAction(basicAction);
-        mediumAction.setIcon( new QIcon( "classpath:resources/icons/level_medium.png" ) );
+        mediumAction.setIcon( new QIcon( PathStrings.Icons.MEDIUM_LEVEL ) );
         toolBar.addAction(mediumAction);
-        advancedAction.setIcon( new QIcon( "classpath:resources/icons/level_advanced.png" ) );
+        advancedAction.setIcon( new QIcon( PathStrings.Icons.ADVANCED_LEVEL ) );
         toolBar.addAction(advancedAction);
-        expertAction.setIcon( new QIcon( "classpath:resources/icons/level_expert.png" ) );
+        expertAction.setIcon( new QIcon( PathStrings.Icons.EXPERT_LEVEL ) );
         toolBar.addAction(expertAction);
+        customAction.setIcon( new QIcon( PathStrings.Icons.CUSTOM_LEVEL ) );
         toolBar.addAction(customAction);
-        customAction.setIcon( new QIcon( "classpath:resources/icons/level_custom.png" ) );
         toolBar.addSeparator();
-        preferencesAction.setIcon( new QIcon( "classpath:resources/icons/preferences.png" ) );
+        preferencesAction.setIcon( new QIcon( PathStrings.Icons.PREFERENCES ) );
         toolBar.addAction(preferencesAction);
 
         this.addToolBar(toolBar);
@@ -153,13 +155,13 @@ public class Main extends QMainWindow
     public void changeTranslator(String lLanguage)
     {
         QTranslator polishTranslator = new QTranslator();
-        polishTranslator.load("classpath:/resources/translations/my_minesweeper_translation_pl.qm");
+        polishTranslator.load(PathStrings.Translations.POLISH_TRANSLATION_FILE);
 
         QTranslator englishTranslator = new QTranslator();
-        englishTranslator.load("classpath:/resources/translations/my_minesweeper_translation_en.qm");
+        englishTranslator.load(PathStrings.Translations.ENGLISH_TRANSLATION_FILE);
 
         QTranslator germanTranslator = new QTranslator();
-        germanTranslator.load("classpath:/resources/translations/my_minesweeper_translation_de.qm");
+        germanTranslator.load(PathStrings.Translations.GERMAN_TRANSLATION_FILE);
 
         switch ( lLanguage )
         {
@@ -187,7 +189,7 @@ public class Main extends QMainWindow
     public Main()
     {
         setWindowTitle(tr("MyMinesweeper"));
-        setWindowIcon( new QIcon("classpath:/resources/icons/mine.png") );
+        setWindowIcon( new QIcon(PathStrings.Icons.MINE) );
         connectActionsToSlots();
         createMenuBar();
         createToolBar();
@@ -215,12 +217,12 @@ public class Main extends QMainWindow
         QMessageBox about = new QMessageBox();
         about.setDefaultButton(QMessageBox.StandardButton.Ok);
         about.setWindowTitle(tr("About - MyMinesweeper"));
-        about.setIconPixmap(new QPixmap("classpath:/resources/icons/mine.png").scaled(88, 88));
+        about.setIconPixmap(new QPixmap(PathStrings.Icons.MINE).scaled(88, 88));
 
         String messageText = "";
         try
         {
-            URL res = getClass().getClassLoader().getResource("resources/misc/about.html");
+            URL res = getClass().getClassLoader().getResource(PathStrings.Misc.ABOUT);
             File file = Paths.get(res.toURI()).toFile();
             String absolutePath = file.getAbsolutePath();
             messageText = new String(Files.readAllBytes(Paths.get( absolutePath ) ));
