@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.constants.PathStrings;
+import com.company.constants.Shortcuts;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
@@ -58,26 +59,26 @@ public class Main extends QMainWindow
 
     private void createMenuBar()
     {
-        newGameAction.setShortcut("F2");
+        newGameAction.setShortcut(Shortcuts.NEW_GAME);
         menuBar.addAction(gameMenu.menuAction());
         gameMenu.addAction(newGameAction);
         gameMenu.addSeparator();
-        basicAction.setShortcut("F5");
+        basicAction.setShortcut(Shortcuts.BEGINNER_LEVEL);
         gameMenu.addAction(basicAction);
-        mediumAction.setShortcut("F6");
+        mediumAction.setShortcut(Shortcuts.MEDIUM_LEVEL);
         gameMenu.addAction(mediumAction);
-        advancedAction.setShortcut("F7");
+        advancedAction.setShortcut(Shortcuts.ADVANCED_LEVEL);
         gameMenu.addAction(advancedAction);
-        expertAction.setShortcut("F8");
+        expertAction.setShortcut(Shortcuts.EXPERT_LEVEL);
         gameMenu.addAction(expertAction);
-        customAction.setShortcut("F9");
+        customAction.setShortcut(Shortcuts.CUSTOM_LEVEL);
         gameMenu.addAction(customAction);
         gameMenu.addSeparator();
-        exitAction.setShortcut("Alt+F4");
+        exitAction.setShortcut(Shortcuts.EXIT);
         gameMenu.addAction(exitAction);
 
         menuBar.addAction(optionsMenu.menuAction());
-        preferencesAction.setShortcut("Ctrl+P");
+        preferencesAction.setShortcut(Shortcuts.PREFERENCES);
         optionsMenu.addAction(preferencesAction);
 
         menuBar.addAction(menuHelp.menuAction());
