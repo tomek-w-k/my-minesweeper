@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.constants.PathStrings;
 import com.company.constants.Shortcuts;
+import com.company.constants.Stylesheets;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
@@ -113,7 +114,7 @@ public class Main extends QMainWindow
     private void createStatusBar()
     {
         statusBar.setSizeGripEnabled(false);
-        statusBar.setStyleSheet("QStatusBar::item{border: 0px; padding: 20px}");
+        statusBar.setStyleSheet(Stylesheets.STATUS_BAR);
         statusBar.setContentsMargins(9, 0, 11, 0);
 
         statusBar.addPermanentWidget( timeCounterLabel );

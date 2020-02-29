@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.constants.Stylesheets;
 import com.trolltech.qt.gui.*;
 
 public class SaveBestResultDialog extends QDialog
@@ -40,7 +41,7 @@ public class SaveBestResultDialog extends QDialog
         sizePolicy.setVerticalStretch(b);
         sizePolicy.setHeightForWidth(saveBestResultLabel.sizePolicy().hasHeightForWidth());
         saveBestResultLabel.setSizePolicy(sizePolicy);
-        saveBestResultLabel.setStyleSheet("background-color: rgb(175, 191, 250); padding: 3px; color: black;");
+        saveBestResultLabel.setStyleSheet(Stylesheets.DIALOG_DECORATION_LABEL);
         contentLayout.addWidget(saveBestResultLabel);
 
         // Information label

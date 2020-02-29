@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.constants.Stylesheets;
 import com.trolltech.qt.gui.*;
 
 public class CustomLevelDialog extends QDialog
@@ -52,7 +53,7 @@ public class CustomLevelDialog extends QDialog
         sizePolicy.setVerticalStretch(b);
         sizePolicy.setHeightForWidth(customModeSettingsLabel.sizePolicy().hasHeightForWidth());
         customModeSettingsLabel.setSizePolicy(sizePolicy);
-        customModeSettingsLabel.setStyleSheet("background-color: rgb(175, 191, 250); padding: 3px; color: black;");
+        customModeSettingsLabel.setStyleSheet(Stylesheets.DIALOG_DECORATION_LABEL);
         contentLayout.addWidget(customModeSettingsLabel);
 
         rowsLineEdit.setText( customModeRowCount.toString() );

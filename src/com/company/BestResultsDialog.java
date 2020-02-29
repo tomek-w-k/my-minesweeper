@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.constants.SettingsKeys;
+import com.company.constants.Stylesheets;
 import com.trolltech.qt.core.QPoint;
 import com.trolltech.qt.core.QSettings;
 import com.trolltech.qt.core.Qt;
@@ -59,7 +60,7 @@ public class BestResultsDialog extends QDialog
         sizePolicy.setVerticalStretch(b);
         sizePolicy.setHeightForWidth(bestResultsLabel.sizePolicy().hasHeightForWidth());
         bestResultsLabel.setSizePolicy(sizePolicy);
-        bestResultsLabel.setStyleSheet("background-color: rgb(175, 191, 250); padding: 3px; color: black;");
+        bestResultsLabel.setStyleSheet(Stylesheets.DIALOG_DECORATION_LABEL);
         contentLayout.addWidget(bestResultsLabel);
 
         // Layout with information label and "Clear table" button

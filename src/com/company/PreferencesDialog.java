@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.constants.SettingsKeys;
+import com.company.constants.Stylesheets;
 import com.trolltech.qt.core.QEvent;
 import com.trolltech.qt.core.QSettings;
 import com.trolltech.qt.core.Qt;
@@ -172,7 +173,7 @@ public class PreferencesDialog extends QDialog
         startupWidget.setSizePolicy(widgetSizePolicy);
         startupWidget.setLayout(new QVBoxLayout(this));
 
-        startupPreferencesPageContentLabel.setStyleSheet("background-color: rgb(175, 191, 250); padding: 3px;");
+        startupPreferencesPageContentLabel.setStyleSheet(Stylesheets.DIALOG_DECORATION_LABEL);
 
         QWidget contentWidget = new QWidget(this);
         contentWidget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding);
@@ -232,7 +233,7 @@ public class PreferencesDialog extends QDialog
         languageWidget.setSizePolicy(widgetSizePolicy);
         languageWidget.setLayout(new QVBoxLayout(this));
 
-        languagePreferencesPageContentLabel.setStyleSheet("background-color: rgb(175, 191, 250); padding: 3px;");
+        languagePreferencesPageContentLabel.setStyleSheet(Stylesheets.DIALOG_DECORATION_LABEL);
 
         QWidget contentWidget = new QWidget(this);
         contentWidget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding);
@@ -260,7 +261,7 @@ public class PreferencesDialog extends QDialog
         otherWidget.setSizePolicy(widgetSizePolicy);
         otherWidget.setLayout(new QVBoxLayout(this));
 
-        otherPreferencesPageContentLabel.setStyleSheet("background-color: rgb(175, 191, 250); padding: 3px;");
+        otherPreferencesPageContentLabel.setStyleSheet(Stylesheets.DIALOG_DECORATION_LABEL);
 
         QWidget contentWidget = new QWidget(this);
         contentWidget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding);

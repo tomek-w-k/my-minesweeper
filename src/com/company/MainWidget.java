@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.constants.SettingsKeys;
+import com.company.constants.Stylesheets;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
@@ -247,7 +248,7 @@ public class MainWidget extends QWidget
             // Uncover a clicked mine
             button.hide();
             // Mark a clicked field with mine as red
-            clickedFieldLabel.setStyleSheet("#myObject { border: 1px solid black; background-color: red; }");
+            clickedFieldLabel.setStyleSheet(Stylesheets.EXPLODED_MINE_FIELD);
 
             // Stop the time counter
             if ( enableTimeCounting )
@@ -276,8 +277,8 @@ public class MainWidget extends QWidget
                     if ( fieldButtons[row][column].text().equals("F") && !fieldLabels[row][column].text().equals("M") )
                     {
                         fieldButtons[row][column].setText("E");
-                        fieldButtons[row][column].setObjectName("mButton");
-                        fieldButtons[row][column].setStyleSheet("#mButton { font-weight: bold; color: black; background-color: yellow; }");
+                        fieldButtons[row][column].setObjectName(Stylesheets.M_BUTTON);
+                        fieldButtons[row][column].setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
                     }
                 }
             }
@@ -297,8 +298,8 @@ public class MainWidget extends QWidget
 
         if ( button.text().equals("") )
         {
-            button.setObjectName("mButton");
-            button.setStyleSheet("#mButton { font-weight: bold; color: black; }");
+            button.setObjectName(Stylesheets.M_BUTTON);
+            button.setStyleSheet(Stylesheets.FLAGGED_FIELD);
             button.setText("F");
             markedMinesCounter++;
 
@@ -339,8 +340,8 @@ public class MainWidget extends QWidget
                     {
                         fieldButtons[row][column].setText("E");
                         //clickedFieldLabel.setStyleSheet("#myObject { border: 1px solid black; background-color: red; }");
-                        fieldButtons[row][column].setObjectName("mButton");
-                        fieldButtons[row][column].setStyleSheet("#mButton { font-weight: bold; color: black; background-color: yellow; }");
+                        fieldButtons[row][column].setObjectName(Stylesheets.M_BUTTON);
+                        fieldButtons[row][column].setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
                     }
 
                     // Hide buttons located over empty fields
@@ -714,8 +715,8 @@ public class MainWidget extends QWidget
                 {
                     fieldLabel = (QLabel) gridLayout.itemAtPosition( row, column ).widget();
                     fieldLabel.setText("M");
-                    fieldLabel.setObjectName("myObject");
-                    fieldLabel.setStyleSheet("#myObject { font-weight: bold; color: black; border: 1px solid lightgray; }");
+                    fieldLabel.setObjectName(Stylesheets.M_OBJECT);
+                    fieldLabel.setStyleSheet(Stylesheets.MINED_FIELD);
                 }
             }
         }
@@ -962,8 +963,8 @@ public class MainWidget extends QWidget
                 fieldLabel.setMaximumSize( new QSize(fieldSize, fieldSize) );
                 fieldLabel.setAlignment(Qt.AlignmentFlag.AlignCenter);
                 fieldLabel.setFrameShape(QFrame.Shape.Box);
-                fieldLabel.setObjectName("myObject");
-                fieldLabel.setStyleSheet("#myObject { border: 1px solid lightgray; }");
+                fieldLabel.setObjectName(Stylesheets.M_OBJECT);
+                fieldLabel.setStyleSheet(Stylesheets.EMPTY_UNCOVERED_FIELD);
                 gridLayout.addWidget( fieldLabel, row, column );
                 fieldLabels[row][column] = fieldLabel;
             }
