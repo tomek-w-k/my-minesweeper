@@ -93,4 +93,7 @@ fabric.properties
 # File manager - specific files
 .directory
 
+#Log files:
+*.log
+
 # End of https://www.gitignore.io/api/intellij
