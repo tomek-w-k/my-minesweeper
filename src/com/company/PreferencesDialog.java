@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.constants.MiscGameParams;
 import com.company.constants.SettingsKeys;
 import com.company.constants.Stylesheets;
 import com.trolltech.qt.core.QEvent;
