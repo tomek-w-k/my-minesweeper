@@ -4,8 +4,6 @@ import com.company.constants.*;
 import com.company.elements.Field;
 import com.company.elements.MButton;
 import com.company.enums.AdjacentFieldRelativePos;
-import com.company.enums.GameModes;
-import com.company.enums.Languages;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
@@ -66,7 +64,7 @@ public class MainWidget extends QWidget
 
     // Initial game mode - read from settings and stores a game mode to start at program startup
     //Integer initialGameMode = 0;
-    GameModes initialGameMode;
+    MiscGameParams.GameModes initialGameMode;
 
     QObject parent;
     Main mw;
@@ -87,7 +85,7 @@ public class MainWidget extends QWidget
         settings.beginGroup(SettingsKeys.GAME_PARAMETERS_GROUP);
 
         // Set field size
-        String fieldSize = settings.value(SettingsKeys.FIELD_SIZE, FieldSizes.DEFAULT_FIELD_SIZE).toString();
+        String fieldSize = settings.value(SettingsKeys.FIELD_SIZE, MiscGameParams.DEFAULT_FIELD_SIZE).toString();
         setFieldSize( Integer.parseInt(fieldSize) );
 
         // Time counting and save best result
@@ -97,7 +95,7 @@ public class MainWidget extends QWidget
         this.saveBestResult = Boolean.parseBoolean( saveBestResult );
 
         // Game mode (default: BASIC_MODE)
-        GameModes gameMode = (GameModes) settings.value(SettingsKeys.GAME_MODE, GameModes.BASIC_MODE);
+        MiscGameParams.GameModes gameMode = (MiscGameParams.GameModes) settings.value(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.BASIC_MODE);
 
         // The reason this function is called here is explained in it's description below
         createActionGroups();
@@ -105,22 +103,22 @@ public class MainWidget extends QWidget
         switch ( gameMode )
         {
             case BASIC_MODE:
-                initialGameMode = GameModes.BASIC_MODE;
+                initialGameMode = MiscGameParams.GameModes.BASIC_MODE;
                 break;
             case MEDIUM_MODE:
-                initialGameMode = GameModes.MEDIUM_MODE;
+                initialGameMode = MiscGameParams.GameModes.MEDIUM_MODE;
                 break;
             case ADVANCED_MODE:
-                initialGameMode = GameModes.ADVANCED_MODE;
+                initialGameMode = MiscGameParams.GameModes.ADVANCED_MODE;
                 break;
             case EXPERT_MODE:
-                initialGameMode = GameModes.EXPERT_MODE;
+                initialGameMode = MiscGameParams.GameModes.EXPERT_MODE;
                 break;
             case CUSTOM_MODE:
-                initialGameMode = GameModes.CUSTOM_MODE;
+                initialGameMode = MiscGameParams.GameModes.CUSTOM_MODE;
                 break;
             default:
-                initialGameMode = GameModes.BASIC_MODE;
+                initialGameMode = MiscGameParams.GameModes.BASIC_MODE;
                 break;
         }
         setRowCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_ROW_COUNT, "10").toString() ) );
@@ -128,7 +126,7 @@ public class MainWidget extends QWidget
         setMinesCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_MINES_COUNT, "25").toString() ) );
 
         // TEST - language settings
-        String language = settings.value(SettingsKeys.LANGUAGE, Languages.ENGLISH).toString();
+        String language = settings.value(SettingsKeys.LANGUAGE, MiscGameParams.Languages.ENGLISH).toString();
         mw.changeTranslator(language);
 
         settings.endGroup();
@@ -904,20 +902,20 @@ public class MainWidget extends QWidget
         // for Linux
         if ( System.getProperty("os.name").equals("Linux") )
         {
-            mainWindowSize = new QSize( fieldSize * columnCount + MiscParams.LINUX_MAIN_WINDOW_WIDTH_EXCESS,
-                    fieldSize * rowCount + MiscParams.LINUX_MAIN_WINDOW_HEIGHT_EXCESS  );
+            mainWindowSize = new QSize( fieldSize * columnCount + MiscGameParams.LINUX_MAIN_WINDOW_WIDTH_EXCESS,
+                    fieldSize * rowCount + MiscGameParams.LINUX_MAIN_WINDOW_HEIGHT_EXCESS  );
         }
 
         // for Windows-like
         if ( System.getProperty("os.name").contains("Win") )
         {
-            mainWindowSize = new QSize( fieldSize * columnCount + MiscParams.WINDOWS_MAIN_WINDOW_WIDTH_EXCESS,
-                    fieldSize * rowCount + MiscParams.WINDOWS_MAIN_WINDOW_HEIGHT_EXCESS  );
+            mainWindowSize = new QSize( fieldSize * columnCount + MiscGameParams.WINDOWS_MAIN_WINDOW_WIDTH_EXCESS,
+                    fieldSize * rowCount + MiscGameParams.WINDOWS_MAIN_WINDOW_HEIGHT_EXCESS  );
         }
         else // other os
         {
-            mainWindowSize = new QSize( fieldSize * columnCount + MiscParams.LINUX_MAIN_WINDOW_WIDTH_EXCESS,
-                    fieldSize * rowCount + MiscParams.LINUX_MAIN_WINDOW_HEIGHT_EXCESS  );
+            mainWindowSize = new QSize( fieldSize * columnCount + MiscGameParams.LINUX_MAIN_WINDOW_WIDTH_EXCESS,
+                    fieldSize * rowCount + MiscGameParams.LINUX_MAIN_WINDOW_HEIGHT_EXCESS  );
         }
 
         mainWindow.setFixedSize( mainWindowSize );
@@ -980,7 +978,7 @@ public class MainWidget extends QWidget
 
     public void basicActionTriggered()
     {
-        initialGameMode = GameModes.BASIC_MODE;
+        initialGameMode = MiscGameParams.GameModes.BASIC_MODE;
         setRowCount( GameModeAreaParams.BASIC_MODE_ROW_COUNT );
         setColumnCount( GameModeAreaParams.BASIC_MODE_COLUMN_COUNT );
         setMinesCount( GameModeAreaParams.BASIC_MODE_MINES_COUNT );
@@ -989,7 +987,7 @@ public class MainWidget extends QWidget
 
     public void mediumActionTriggered()
     {
-        initialGameMode = GameModes.MEDIUM_MODE;
+        initialGameMode = MiscGameParams.GameModes.MEDIUM_MODE;
         setRowCount( GameModeAreaParams.MEDIUM_MODE_ROW_COUNT );
         setColumnCount( GameModeAreaParams.MEDIUM_MODE_COLUMN_COUNT );
         setMinesCount( GameModeAreaParams.MEDIUM_MODE_MINES_COUNT );
@@ -998,7 +996,7 @@ public class MainWidget extends QWidget
 
     public void advancedActionTriggered()
     {
-        initialGameMode = GameModes.ADVANCED_MODE;
+        initialGameMode = MiscGameParams.GameModes.ADVANCED_MODE;
         setRowCount( GameModeAreaParams.ADVANCED_MODE_ROW_COUNT );
         setColumnCount( GameModeAreaParams.ADVANCED_MODE_COLUMN_COUNT );
         setMinesCount( GameModeAreaParams.ADVANCED_MODE_MINES_COUNT );
@@ -1007,7 +1005,7 @@ public class MainWidget extends QWidget
 
     public void expertActionTriggered()
     {
-        initialGameMode = GameModes.EXPERT_MODE;
+        initialGameMode = MiscGameParams.GameModes.EXPERT_MODE;
         setRowCount( GameModeAreaParams.EXPERT_MODE_ROW_COUNT );
         setColumnCount( GameModeAreaParams.EXPERT_MODE_COLUMN_COUNT );
         setMinesCount( GameModeAreaParams.EXPERT_MODE_MINES_COUNT );
@@ -1016,7 +1014,7 @@ public class MainWidget extends QWidget
 
     public void customActionTriggered()
     {
-        initialGameMode = GameModes.CUSTOM_MODE;
+        initialGameMode = MiscGameParams.GameModes.CUSTOM_MODE;
         Main mw = (Main) parent;
         CustomLevelDialog customLevelDialog = new CustomLevelDialog(mw);
 
