@@ -4,5 +4,6 @@ public class ErrorMessages
 {
     private ErrorMessages() {}
 
-    public static final String NUMBERING_SURROUNDING_FIELDS_ERROR = "Cannot assign a marker to adjacent field: ";
+    public static final String NUMBERING_SURROUNDING_FIELDS_ERROR = "Cannot assign a marker to adjacent field around: ";
+    public static final String SPACE = " ";
 }

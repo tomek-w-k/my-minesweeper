@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.constants.ErrorMessages;
 import com.company.constants.FieldMarkers;
 import com.company.constants.SettingsKeys;
 import com.company.constants.Stylesheets;
@@ -702,11 +703,37 @@ public class MainWidget extends QWidget
         }
     }
 
+    private void surround(AdjacentFieldRelativePos adjacentFieldRelativePos, int baseFieldRow, int baseFieldColumn)
+    {
+        Field adjacentField = adjacentField(adjacentFieldRelativePos, baseFieldRow, baseFieldColumn);
+        QLabel adjacentFieldLabel = adjacentField.getLabel();
 
+        if ( !adjacentFieldLabel.text().contentEquals(FieldMarkers.MINE) )
+        {
+            String text = adjacentFieldLabel.text();
+            if ( text.contentEquals(FieldMarkers.EMPTY_FIELD) )
+            {
+                adjacentFieldLabel.setText(FieldMarkers.DIGIT_ONE);
+            }
+            else
+            {
+                try
+                {
+                    Integer markerContent = Integer.parseInt(text);
+                    markerContent++;
+                    adjacentFieldLabel.setText( markerContent.toString() );
+                }
+                catch(NumberFormatException e)
+                {
+                    System.out.println(ErrorMessages.NUMBERING_SURROUNDING_FIELDS_ERROR + baseFieldRow + ErrorMessages.SPACE + baseFieldColumn);
+                }
+            }
+        }
+    }
 
     private void surroundMinesWithMarkers()
     {
-        QLabel fieldLabel, adjacentField;
+        QLabel fieldLabel;
 
         for ( int row = 0; row < rowCount; row++ )
         {
@@ -720,152 +747,50 @@ public class MainWidget extends QWidget
                     // Left-adjacent field:
                     if ( column > 0 )
                     {
-                        adjacentField = (QLabel) gridLayout.itemAtPosition(row, column - 1).widget();
-                        if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
-                        {
-                            String text = adjacentField.text();
-                            try
-                            {
-                                Integer markerContent = Integer.parseInt(text);
-                                markerContent++;
-                                adjacentField.setText( markerContent.toString() );
-                            }
-                            catch(NumberFormatException e)
-                            {
-                                adjacentField.setText("1");
-                            }
-                        }
+                        surround(AdjacentFieldRelativePos.LEFT, row, column);
                     }
 
                     // Right-adjacent field:
                     if ( column < columnCount-1 )
                     {
-                        adjacentField = (QLabel) gridLayout.itemAtPosition(row, column + 1).widget();
-                        if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
-                        {
-                            String text = adjacentField.text();
-                            try
-                            {
-                                Integer markerContent = Integer.parseInt(text);
-                                markerContent++;
-                                adjacentField.setText( markerContent.toString() );
-                            }
-                            catch(NumberFormatException e)
-                            {
-                                adjacentField.setText("1");
-                            }
-                        }
+                        surround(AdjacentFieldRelativePos.RIGHT, row, column);
                     }
 
                     // Up-adjacent three fields:
                     if ( row > 0)
                     {
+                        // Up-left adjacent field:
                         if ( column > 0 )
                         {
-                            adjacentField = (QLabel) gridLayout.itemAtPosition(row - 1, column - 1).widget();
-                            if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
-                            {
-                                String text = adjacentField.text();
-                                try
-                                {
-                                    Integer markerContent = Integer.parseInt(text);
-                                    markerContent++;
-                                    adjacentField.setText( markerContent.toString() );
-                                }
-                                catch(NumberFormatException e)
-                                {
-                                    adjacentField.setText("1");
-                                }
-                            }
+                            surround(AdjacentFieldRelativePos.UP_LEFT, row, column);
                         }
-                        adjacentField = (QLabel) gridLayout.itemAtPosition(row - 1, column).widget();
-                        if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
-                        {
-                            String text = adjacentField.text();
-                            try
-                            {
-                                Integer markerContent = Integer.parseInt(text);
-                                markerContent++;
-                                adjacentField.setText( markerContent.toString() );
-                            }
-                            catch(NumberFormatException e)
-                            {
-                                adjacentField.setText("1");
-                            }
-                        }
+
+                        // Up-adjacent field:
+                        surround(AdjacentFieldRelativePos.UP, row, column);
+
+                        // Up-right adjacent field:
                         if ( column < columnCount-1 )
                         {
-                            adjacentField = (QLabel) gridLayout.itemAtPosition(row - 1, column + 1).widget();
-                            if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
-                            {
-                                String text = adjacentField.text();
-                                try
-                                {
-                                    Integer markerContent = Integer.parseInt(text);
-                                    markerContent++;
-                                    adjacentField.setText( markerContent.toString() );
-                                }
-                                catch(NumberFormatException e)
-                                {
-                                    adjacentField.setText("1");
-                                }
-                            }
+                            surround(AdjacentFieldRelativePos.UP_RIGHT, row, column);
                         }
                     }
 
                     // Down-adjacent three fields:
                     if ( row < rowCount-1 )
                     {
+                        // Down-left adjacent field:
                         if ( column > 0 )
                         {
-                            adjacentField = (QLabel) gridLayout.itemAtPosition(row + 1, column - 1).widget();
-                            if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
-                            {
-                                String text = adjacentField.text();
-                                try
-                                {
-                                    Integer markerContent = Integer.parseInt(text);
-                                    markerContent++;
-                                    adjacentField.setText( markerContent.toString() );
-                                }
-                                catch(NumberFormatException e)
-                                {
-                                    adjacentField.setText("1");
-                                }
-                            }
+                            surround(AdjacentFieldRelativePos.DOWN_LEFT, row, column);
                         }
-                        adjacentField = (QLabel) gridLayout.itemAtPosition(row + 1, column).widget();
-                        if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
-                        {
-                            String text = adjacentField.text();
-                            try
-                            {
-                                Integer markerContent = Integer.parseInt(text);
-                                markerContent++;
-                                adjacentField.setText( markerContent.toString() );
-                            }
-                            catch(NumberFormatException e)
-                            {
-                                adjacentField.setText("1");
-                            }
-                        }
+
+                        // Down-adjacent field:
+                        surround(AdjacentFieldRelativePos.DOWN, row, column);
+
+                        // Down-right adjacent field:
                         if ( column < columnCount-1 )
                         {
-                            adjacentField = (QLabel) gridLayout.itemAtPosition(row + 1, column + 1).widget();
-                            if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
-                            {
-                                String text = adjacentField.text();
-                                try
-                                {
-                                    Integer markerContent = Integer.parseInt(text);
-                                    markerContent++;
-                                    adjacentField.setText( markerContent.toString() );
-                                }
-                                catch(NumberFormatException e)
-                                {
-                                    adjacentField.setText("1");
-                                }
-                            }
+                            surround(AdjacentFieldRelativePos.DOWN_RIGHT, row, column);
                         }
                     }
                 }
