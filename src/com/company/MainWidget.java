@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.constants.FieldMarkers;
 import com.company.constants.SettingsKeys;
 import com.company.constants.Stylesheets;
 import com.trolltech.qt.core.*;
@@ -222,7 +223,7 @@ public class MainWidget extends QWidget
         clickedFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow, clickedFieldButtonColumn).widget();
 
         // If clicked field is marked then do nothing:
-        if ( button.text().equals("F") )
+        if ( button.text().equals(FieldMarkers.FLAG) )
         {
             return;
         }
@@ -243,7 +244,7 @@ public class MainWidget extends QWidget
         }
 
         // If clicked field label contains a mine ( GAME OVER ):
-        if ( clickedFieldLabel.text().contentEquals( "M" ) )
+        if ( clickedFieldLabel.text().contentEquals( FieldMarkers.MINE ) )
         {
             // Uncover a clicked mine
             button.hide();
@@ -262,7 +263,7 @@ public class MainWidget extends QWidget
                 for ( int column = 0; column < columnCount; column++ )
                 {
                     // If under a given field button mine is located...
-                    if ( fieldLabels[row][column].text().contentEquals("M") )
+                    if ( fieldLabels[row][column].text().contentEquals(FieldMarkers.MINE) )
                     {
                         // ...then uncover this field,
                         fieldButtons[row][column].hide();
@@ -274,9 +275,9 @@ public class MainWidget extends QWidget
                     }
 
                     // Fields which has been marked incorrectly as mined fields - sign them with "E" letter
-                    if ( fieldButtons[row][column].text().equals("F") && !fieldLabels[row][column].text().equals("M") )
+                    if ( fieldButtons[row][column].text().equals(FieldMarkers.FLAG) && !fieldLabels[row][column].text().equals(FieldMarkers.MINE) )
                     {
-                        fieldButtons[row][column].setText("E");
+                        fieldButtons[row][column].setText(FieldMarkers.ERROR);
                         fieldButtons[row][column].setObjectName(Stylesheets.M_BUTTON);
                         fieldButtons[row][column].setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
                     }
@@ -300,10 +301,10 @@ public class MainWidget extends QWidget
         {
             button.setObjectName(Stylesheets.M_BUTTON);
             button.setStyleSheet(Stylesheets.FLAGGED_FIELD);
-            button.setText("F");
+            button.setText(FieldMarkers.FLAG);
             markedMinesCounter++;
 
-            if ( clickedFieldLabel.text().equals("M") )
+            if ( clickedFieldLabel.text().equals(FieldMarkers.MINE) )
             {
                 properlyMarkedMinesCounter++;
             }
@@ -313,7 +314,7 @@ public class MainWidget extends QWidget
             button.setText("");
             markedMinesCounter--;
 
-            if ( clickedFieldLabel.text().equals("M") )
+            if ( clickedFieldLabel.text().equals(FieldMarkers.MINE) )
             {
                 properlyMarkedMinesCounter--;
             }
@@ -336,9 +337,9 @@ public class MainWidget extends QWidget
                     fieldButtons[row][column].setDisabled(true);
 
                     // Fields which has been marked incorrectly as mined fields - sign them with "E" letter
-                    if ( fieldButtons[row][column].text().equals("F") && !fieldLabels[row][column].text().equals("M") )
+                    if ( fieldButtons[row][column].text().equals(FieldMarkers.FLAG) && !fieldLabels[row][column].text().equals(FieldMarkers.MINE) )
                     {
-                        fieldButtons[row][column].setText("E");
+                        fieldButtons[row][column].setText(FieldMarkers.ERROR);
                         //clickedFieldLabel.setStyleSheet("#myObject { border: 1px solid black; background-color: red; }");
                         fieldButtons[row][column].setObjectName(Stylesheets.M_BUTTON);
                         fieldButtons[row][column].setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
@@ -491,7 +492,7 @@ public class MainWidget extends QWidget
             if ( adjacentFieldLabel.text().contentEquals("") || isInteger( adjacentFieldLabel.text() ) )
             {
                 adjacentFieldButton = fieldButtons[clickedFieldButtonRow][clickedFieldButtonColumn - 1];
-                if ( !adjacentFieldButton.text().equals("F") )
+                if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
                 {
                     adjacentFieldButton.hide();
                 }
@@ -509,7 +510,7 @@ public class MainWidget extends QWidget
             if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
             {
                 adjacentFieldButton = fieldButtons[clickedFieldButtonRow][clickedFieldButtonColumn + 1];
-                if ( !adjacentFieldButton.text().equals("F") )
+                if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
                 {
                     adjacentFieldButton.hide();
                 }
@@ -530,7 +531,7 @@ public class MainWidget extends QWidget
                 if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
                 {
                     adjacentFieldButton = fieldButtons[clickedFieldButtonRow - 1][clickedFieldButtonColumn - 1];
-                    if ( !adjacentFieldButton.text().equals("F") )
+                    if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
                     {
                         adjacentFieldButton.hide();
                     }
@@ -545,7 +546,7 @@ public class MainWidget extends QWidget
             if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
             {
                 adjacentFieldButton = fieldButtons[clickedFieldButtonRow - 1][clickedFieldButtonColumn];
-                if ( !adjacentFieldButton.text().equals("F") )
+                if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
                 {
                     adjacentFieldButton.hide();
                 }
@@ -561,7 +562,7 @@ public class MainWidget extends QWidget
                 if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
                 {
                     adjacentFieldButton = fieldButtons[clickedFieldButtonRow - 1][clickedFieldButtonColumn + 1];
-                    if ( !adjacentFieldButton.text().equals("F") )
+                    if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
                     {
                         adjacentFieldButton.hide();
                     }
@@ -583,7 +584,7 @@ public class MainWidget extends QWidget
                 if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
                 {
                     adjacentFieldButton = fieldButtons[clickedFieldButtonRow + 1][clickedFieldButtonColumn - 1];
-                    if ( !adjacentFieldButton.text().equals("F") )
+                    if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
                     {
                         adjacentFieldButton.hide();
                     }
@@ -598,7 +599,7 @@ public class MainWidget extends QWidget
             if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
             {
                 adjacentFieldButton = fieldButtons[clickedFieldButtonRow + 1][clickedFieldButtonColumn];
-                if ( !adjacentFieldButton.text().equals("F") )
+                if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
                 {
                     adjacentFieldButton.hide();
                 }
@@ -614,7 +615,7 @@ public class MainWidget extends QWidget
                 if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
                 {
                     adjacentFieldButton = fieldButtons[clickedFieldButtonRow + 1][clickedFieldButtonColumn + 1];
-                    if ( !adjacentFieldButton.text().equals("F") )
+                    if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
                     {
                         adjacentFieldButton.hide();
                     }
@@ -714,7 +715,7 @@ public class MainWidget extends QWidget
                 if ( gameArea[row][column] )
                 {
                     fieldLabel = (QLabel) gridLayout.itemAtPosition( row, column ).widget();
-                    fieldLabel.setText("M");
+                    fieldLabel.setText(FieldMarkers.MINE);
                     fieldLabel.setObjectName(Stylesheets.M_OBJECT);
                     fieldLabel.setStyleSheet(Stylesheets.MINED_FIELD);
                 }
@@ -732,14 +733,14 @@ public class MainWidget extends QWidget
             {
                 fieldLabel = (QLabel) gridLayout.itemAtPosition(row, column).widget();
                 // If given field contains a mine...
-                if ( fieldLabel.text().contentEquals("M") )
+                if ( fieldLabel.text().contentEquals(FieldMarkers.MINE) )
                 {
                     // ...then surround it with markers as follows:
                     // Left-adjacent field:
                     if ( column > 0 )
                     {
                         adjacentField = (QLabel) gridLayout.itemAtPosition(row, column - 1).widget();
-                        if ( !adjacentField.text().contentEquals("M") )
+                        if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
                         {
                             String text = adjacentField.text();
                             try
@@ -759,7 +760,7 @@ public class MainWidget extends QWidget
                     if ( column < columnCount-1 )
                     {
                         adjacentField = (QLabel) gridLayout.itemAtPosition(row, column + 1).widget();
-                        if ( !adjacentField.text().contentEquals("M") )
+                        if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
                         {
                             String text = adjacentField.text();
                             try
@@ -781,7 +782,7 @@ public class MainWidget extends QWidget
                         if ( column > 0 )
                         {
                             adjacentField = (QLabel) gridLayout.itemAtPosition(row - 1, column - 1).widget();
-                            if ( !adjacentField.text().contentEquals("M") )
+                            if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
                             {
                                 String text = adjacentField.text();
                                 try
@@ -797,7 +798,7 @@ public class MainWidget extends QWidget
                             }
                         }
                         adjacentField = (QLabel) gridLayout.itemAtPosition(row - 1, column).widget();
-                        if ( !adjacentField.text().contentEquals("M") )
+                        if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
                         {
                             String text = adjacentField.text();
                             try
@@ -814,7 +815,7 @@ public class MainWidget extends QWidget
                         if ( column < columnCount-1 )
                         {
                             adjacentField = (QLabel) gridLayout.itemAtPosition(row - 1, column + 1).widget();
-                            if ( !adjacentField.text().contentEquals("M") )
+                            if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
                             {
                                 String text = adjacentField.text();
                                 try
@@ -837,7 +838,7 @@ public class MainWidget extends QWidget
                         if ( column > 0 )
                         {
                             adjacentField = (QLabel) gridLayout.itemAtPosition(row + 1, column - 1).widget();
-                            if ( !adjacentField.text().contentEquals("M") )
+                            if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
                             {
                                 String text = adjacentField.text();
                                 try
@@ -853,7 +854,7 @@ public class MainWidget extends QWidget
                             }
                         }
                         adjacentField = (QLabel) gridLayout.itemAtPosition(row + 1, column).widget();
-                        if ( !adjacentField.text().contentEquals("M") )
+                        if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
                         {
                             String text = adjacentField.text();
                             try
@@ -870,7 +871,7 @@ public class MainWidget extends QWidget
                         if ( column < columnCount-1 )
                         {
                             adjacentField = (QLabel) gridLayout.itemAtPosition(row + 1, column + 1).widget();
-                            if ( !adjacentField.text().contentEquals("M") )
+                            if ( !adjacentField.text().contentEquals(FieldMarkers.MINE) )
                             {
                                 String text = adjacentField.text();
                                 try
