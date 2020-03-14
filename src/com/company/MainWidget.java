@@ -476,6 +476,9 @@ public class MainWidget extends QWidget
         bestResultsActionTriggered();
     }
 
+    /*
+        This function checks if the given field is empty or has a digit marker. If so - uncovers the field.
+     */
     private void uncover(AdjacentField adjacentField)
     {
         QLabel adjacentFieldLabel = null;
@@ -536,46 +539,17 @@ public class MainWidget extends QWidget
      */
     private void uncoverAdjacentFields()
     {
-        QLabel adjacentFieldLabel;
-        QPushButton adjacentFieldButton;
-
         // Statements below check all fields adjacent to a clicked one in search of an empty field or a number-marked field to hide a button covering it
         // Left-adjacent field:
         if ( clickedFieldButtonColumn > 0 ) // left-side boundary condition
         {
             uncover(AdjacentField.LEFT);
-//            adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow, clickedFieldButtonColumn - 1).widget();
-//            if ( adjacentFieldLabel.text().contentEquals("") || isInteger( adjacentFieldLabel.text() ) )
-//            {
-//                adjacentFieldButton = fieldButtons[clickedFieldButtonRow][clickedFieldButtonColumn - 1];
-//                if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
-//                {
-//                    adjacentFieldButton.hide();
-//                }
-//            }
-//            if ( adjacentFieldLabel.text().contentEquals("") && !tempFieldLabelList.contains( adjacentFieldLabel ))
-//            {
-//                tempFieldLabelList.add( adjacentFieldLabel );
-//            }
         }
 
         // Right-adjacent field:
         if ( clickedFieldButtonColumn < columnCount-1 ) // right-side boundary condition
         {
             uncover(AdjacentField.RIGHT);
-//            adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow, clickedFieldButtonColumn + 1).widget();
-//            if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
-//            {
-//                adjacentFieldButton = fieldButtons[clickedFieldButtonRow][clickedFieldButtonColumn + 1];
-//                if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
-//                {
-//                    adjacentFieldButton.hide();
-//                }
-//            }
-//            if ( adjacentFieldLabel.text().contentEquals("")  && !tempFieldLabelList.contains( adjacentFieldLabel ))
-//            {
-//                tempFieldLabelList.add( adjacentFieldLabel );
-//            }
         }
 
         // Up-adjacent three fields:
@@ -585,52 +559,15 @@ public class MainWidget extends QWidget
             if ( clickedFieldButtonColumn > 0 ) // up-left-side boundary conditon
             {
                 uncover(AdjacentField.UP_LEFT);
-//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow - 1, clickedFieldButtonColumn - 1).widget();
-//                if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
-//                {
-//                    adjacentFieldButton = fieldButtons[clickedFieldButtonRow - 1][clickedFieldButtonColumn - 1];
-//                    if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
-//                    {
-//                        adjacentFieldButton.hide();
-//                    }
-//                }
-//                if ( adjacentFieldLabel.text().contentEquals("")  && !tempFieldLabelList.contains( adjacentFieldLabel ))
-//                {
-//                    tempFieldLabelList.add( adjacentFieldLabel );
-//                }
             }
+
             // check up-adjacent field label:
             uncover(AdjacentField.UP);
-//            adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow - 1, clickedFieldButtonColumn).widget();
-//            if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
-//            {
-//                adjacentFieldButton = fieldButtons[clickedFieldButtonRow - 1][clickedFieldButtonColumn];
-//                if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
-//                {
-//                    adjacentFieldButton.hide();
-//                }
-//            }
-//            if ( adjacentFieldLabel.text().contentEquals("")  && !tempFieldLabelList.contains( adjacentFieldLabel ))
-//            {
-//                tempFieldLabelList.add( adjacentFieldLabel );
-//            }
+
             // check up-right-adjacent field label:
             if ( clickedFieldButtonColumn < columnCount-1 ) // up-right-side boundary condition
             {
                 uncover(AdjacentField.UP_RIGHT);
-//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow - 1, clickedFieldButtonColumn + 1).widget();
-//                if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
-//                {
-//                    adjacentFieldButton = fieldButtons[clickedFieldButtonRow - 1][clickedFieldButtonColumn + 1];
-//                    if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
-//                    {
-//                        adjacentFieldButton.hide();
-//                    }
-//                }
-//                if ( adjacentFieldLabel.text().contentEquals("")  && !tempFieldLabelList.contains( adjacentFieldLabel ))
-//                {
-//                    tempFieldLabelList.add( adjacentFieldLabel );
-//                }
             }
         }
 
@@ -638,55 +575,18 @@ public class MainWidget extends QWidget
         if ( clickedFieldButtonRow < rowCount-1 ) // down-side boundary condition
         {
             // check down-left-adjacent field label:
-            uncover(AdjacentField.DOWN_LEFT);
-//            if ( clickedFieldButtonColumn > 0 ) // down-left-side boundary condition
-//            {
-//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow + 1, clickedFieldButtonColumn - 1).widget();
-//                if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
-//                {
-//                    adjacentFieldButton = fieldButtons[clickedFieldButtonRow + 1][clickedFieldButtonColumn - 1];
-//                    if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
-//                    {
-//                        adjacentFieldButton.hide();
-//                    }
-//                }
-//                if ( adjacentFieldLabel.text().contentEquals("")  && !tempFieldLabelList.contains( adjacentFieldLabel ))
-//                {
-//                    tempFieldLabelList.add( adjacentFieldLabel );
-//                }
-//            }
+            if ( clickedFieldButtonColumn > 0 ) // down-left-side boundary condition
+            {
+                uncover(AdjacentField.DOWN_LEFT);
+            }
+
             // check down-adjacent field label:
             uncover(AdjacentField.DOWN);
-//            adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow + 1, clickedFieldButtonColumn).widget();
-//            if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
-//            {
-//                adjacentFieldButton = fieldButtons[clickedFieldButtonRow + 1][clickedFieldButtonColumn];
-//                if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
-//                {
-//                    adjacentFieldButton.hide();
-//                }
-//            }
-//            if ( adjacentFieldLabel.text().contentEquals("")  && !tempFieldLabelList.contains( adjacentFieldLabel ))
-//            {
-//                tempFieldLabelList.add( adjacentFieldLabel );
-//            }
+
             // check down-right-adjacent field label:
             if ( clickedFieldButtonColumn < columnCount-1 ) // down-right-side boundary condition
             {
                 uncover(AdjacentField.DOWN_RIGHT);
-//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow + 1, clickedFieldButtonColumn + 1).widget();
-//                if ( adjacentFieldLabel.text().contentEquals("")  || isInteger( adjacentFieldLabel.text() ) )
-//                {
-//                    adjacentFieldButton = fieldButtons[clickedFieldButtonRow + 1][clickedFieldButtonColumn + 1];
-//                    if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
-//                    {
-//                        adjacentFieldButton.hide();
-//                    }
-//                }
-//                if ( adjacentFieldLabel.text().contentEquals("")  && !tempFieldLabelList.contains( adjacentFieldLabel ))
-//                {
-//                    tempFieldLabelList.add( adjacentFieldLabel );
-//                }
             }
         }
 
