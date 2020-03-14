@@ -1,8 +1,8 @@
 package com.company;
 
-import com.company.constants.MiscGameParams;
-import com.company.constants.SettingsKeys;
-import com.company.constants.Stylesheets;
+import com.company.enums.GameModes;
+import com.company.enums.Languages;
+import com.company.constants.*;
 import com.trolltech.qt.core.QEvent;
 import com.trolltech.qt.core.QSettings;
 import com.trolltech.qt.core.Qt;
@@ -271,10 +271,10 @@ public class PreferencesDialog extends QDialog
 
         // Controls
         fieldSizeGroupBox.setLayout(new QHBoxLayout(this));
-        fieldSizeSlider.setMinimum(MiscGameParams.MINIMUM_FIELD_SIZE);
-        fieldSizeSlider.setMaximum(MiscGameParams.MAXIMUM_FIELD_SIZE);
-        fieldSizeSpinBox.setMinimum(MiscGameParams.MINIMUM_FIELD_SIZE);
-        fieldSizeSpinBox.setMaximum(MiscGameParams.MAXIMUM_FIELD_SIZE);
+        fieldSizeSlider.setMinimum(FieldSizes.MINIMUM_FIELD_SIZE);
+        fieldSizeSlider.setMaximum(FieldSizes.MAXIMUM_FIELD_SIZE);
+        fieldSizeSpinBox.setMinimum(FieldSizes.MINIMUM_FIELD_SIZE);
+        fieldSizeSpinBox.setMaximum(FieldSizes.MAXIMUM_FIELD_SIZE);
         fieldSizeGroupBox.layout().addWidget(fieldSizeSlider);
         fieldSizeGroupBox.layout().addWidget(fieldSizeSpinBox);
         fieldSizeSlider.valueChanged.connect(this, "fieldSizeSliderValueChanged()");
@@ -312,23 +312,23 @@ public class PreferencesDialog extends QDialog
         // Game mode
         if ( basicModeRadioButton.isChecked() )
         {
-            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.BASIC_MODE);
+            settings.setValue(SettingsKeys.GAME_MODE, GameModes.BASIC_MODE);
         }
         if ( mediumModeRadioButton.isChecked() )
         {
-            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.MEDIUM_MODE);
+            settings.setValue(SettingsKeys.GAME_MODE, GameModes.MEDIUM_MODE);
         }
         if ( advancedModeRadioButton.isChecked() )
         {
-            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.ADVANCED_MODE);
+            settings.setValue(SettingsKeys.GAME_MODE, GameModes.ADVANCED_MODE);
         }
         if ( expertModeRadioButton.isChecked() )
         {
-            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.EXPERT_MODE);
+            settings.setValue(SettingsKeys.GAME_MODE, GameModes.EXPERT_MODE);
         }
         if ( customModeRadioButton.isChecked() )
         {
-            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.CUSTOM_MODE);
+            settings.setValue(SettingsKeys.GAME_MODE, GameModes.CUSTOM_MODE);
             settings.setValue(SettingsKeys.CUSTOM_ROW_COUNT, customRowsSpinBox.value());
             settings.setValue(SettingsKeys.CUSTOM_COLUMN_COUNT, customColumnsSpinBox.value());
             settings.setValue(SettingsKeys.CUSTOM_MINES_COUNT, customMinesSpinBox.value());
@@ -337,15 +337,15 @@ public class PreferencesDialog extends QDialog
         // Language
         if ( englishLanguageRadioButton.isChecked() )
         {
-            settings.setValue(SettingsKeys.LANGUAGE, MiscGameParams.Languages.ENGLISH);
+            settings.setValue(SettingsKeys.LANGUAGE, Languages.ENGLISH);
         }
         if ( polishLanguageRadioButton.isChecked() )
         {
-            settings.setValue(SettingsKeys.LANGUAGE, MiscGameParams.Languages.POLISH);
+            settings.setValue(SettingsKeys.LANGUAGE, Languages.POLISH);
         }
         if ( germanLanguageRadioButton.isChecked() )
         {
-            settings.setValue(SettingsKeys.LANGUAGE, MiscGameParams.Languages.GERMAN);
+            settings.setValue(SettingsKeys.LANGUAGE, Languages.GERMAN);
         }
 
         // Field size
@@ -374,7 +374,7 @@ public class PreferencesDialog extends QDialog
         settings.beginGroup(SettingsKeys.GAME_PARAMETERS_GROUP);
 
         // Game mode (default: BASIC_MODE)
-        MiscGameParams.GameModes gameMode = (MiscGameParams.GameModes) settings.value(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.BASIC_MODE);
+        GameModes gameMode = (GameModes) settings.value(SettingsKeys.GAME_MODE, GameModes.BASIC_MODE);
 
         switch ( gameMode )
         {
@@ -402,7 +402,7 @@ public class PreferencesDialog extends QDialog
         customMinesSpinBox.setValue( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_MINES_COUNT, "25").toString() ) );
 
         // Language (default: ENGLISH)
-        MiscGameParams.Languages language = (MiscGameParams.Languages) settings.value(SettingsKeys.LANGUAGE, MiscGameParams.Languages.ENGLISH);
+        Languages language = (Languages) settings.value(SettingsKeys.LANGUAGE, Languages.ENGLISH);
 
         switch ( language )
         {
@@ -421,7 +421,7 @@ public class PreferencesDialog extends QDialog
         }
 
         // Field size (default: DEFAULT_FIELD_SIZE)
-        String fieldSize = settings.value(SettingsKeys.FIELD_SIZE, MiscGameParams.DEFAULT_FIELD_SIZE).toString();
+        String fieldSize = settings.value(SettingsKeys.FIELD_SIZE, FieldSizes.DEFAULT_FIELD_SIZE).toString();
         fieldSizeSpinBox.setValue( Integer.parseInt(fieldSize) );
 
         // Time counting and save best result (default: true)
