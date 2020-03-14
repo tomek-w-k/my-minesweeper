@@ -1,6 +1,6 @@
 package com.company.enums;
 
-public enum AdjacentField
+public enum AdjacentFieldRelativePos
 {
     LEFT,
     RIGHT,

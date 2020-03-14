@@ -3,7 +3,8 @@ package com.company;
 import com.company.constants.FieldMarkers;
 import com.company.constants.SettingsKeys;
 import com.company.constants.Stylesheets;
-import com.company.enums.AdjacentField;
+import com.company.elements.Field;
+import com.company.enums.AdjacentFieldRelativePos;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
@@ -477,48 +478,63 @@ public class MainWidget extends QWidget
     }
 
     /*
-        This function checks if the given field is empty or has a digit marker. If so - uncovers the field.
+        Returns a specified adjacent field to the given base field described by its coordinates (base row, base column)
      */
-    private void uncover(AdjacentField adjacentField)
+    private Field adjacentField(AdjacentFieldRelativePos adjacentFieldRelativePos, int baseFieldRow, int baseFieldColumn)
     {
+        Field field = new Field();
         QLabel adjacentFieldLabel = null;
         QPushButton adjacentFieldButton = null;
 
-        switch ( adjacentField )
+        switch (adjacentFieldRelativePos)
         {
             case UP:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow - 1, clickedFieldButtonColumn).widget();
-                adjacentFieldButton = fieldButtons[clickedFieldButtonRow - 1][clickedFieldButtonColumn];
+                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow - 1, baseFieldColumn).widget();
+                adjacentFieldButton = fieldButtons[baseFieldRow - 1][baseFieldColumn];
                 break;
             case DOWN:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow + 1, clickedFieldButtonColumn).widget();
-                adjacentFieldButton = fieldButtons[clickedFieldButtonRow + 1][clickedFieldButtonColumn];
+                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow + 1, baseFieldColumn).widget();
+                adjacentFieldButton = fieldButtons[baseFieldRow + 1][baseFieldColumn];
                 break;
             case LEFT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow, clickedFieldButtonColumn - 1).widget();
-                adjacentFieldButton = fieldButtons[clickedFieldButtonRow][clickedFieldButtonColumn - 1];
+                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow, baseFieldColumn - 1).widget();
+                adjacentFieldButton = fieldButtons[baseFieldRow][baseFieldColumn - 1];
                 break;
             case RIGHT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow, clickedFieldButtonColumn + 1).widget();
-                adjacentFieldButton = fieldButtons[clickedFieldButtonRow][clickedFieldButtonColumn + 1];
+                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow, baseFieldColumn + 1).widget();
+                adjacentFieldButton = fieldButtons[baseFieldRow][baseFieldColumn + 1];
                 break;
             case UP_LEFT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow - 1, clickedFieldButtonColumn - 1).widget();
-                adjacentFieldButton = fieldButtons[clickedFieldButtonRow - 1][clickedFieldButtonColumn - 1];
+                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow - 1, baseFieldColumn - 1).widget();
+                adjacentFieldButton = fieldButtons[baseFieldRow - 1][baseFieldColumn - 1];
                 break;
             case UP_RIGHT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow - 1, clickedFieldButtonColumn + 1).widget();
-                adjacentFieldButton = fieldButtons[clickedFieldButtonRow - 1][clickedFieldButtonColumn + 1];
+                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow - 1, baseFieldColumn + 1).widget();
+                adjacentFieldButton = fieldButtons[baseFieldRow - 1][baseFieldColumn + 1];
                 break;
             case DOWN_LEFT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow + 1, clickedFieldButtonColumn - 1).widget();
-                adjacentFieldButton = fieldButtons[clickedFieldButtonRow + 1][clickedFieldButtonColumn - 1];
+                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow + 1, baseFieldColumn - 1).widget();
+                adjacentFieldButton = fieldButtons[baseFieldRow + 1][baseFieldColumn - 1];
                 break;
             case DOWN_RIGHT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow + 1, clickedFieldButtonColumn + 1).widget();
-                adjacentFieldButton = fieldButtons[clickedFieldButtonRow + 1][clickedFieldButtonColumn + 1];
+                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow + 1, baseFieldColumn + 1).widget();
+                adjacentFieldButton = fieldButtons[baseFieldRow + 1][baseFieldColumn + 1];
                 break;
         }
+        field.setLabel( adjacentFieldLabel );
+        field.setPushButton( adjacentFieldButton );
+
+        return field;
+    }
+
+    /*
+        This function checks if the given adjacent field is empty or has a digit marker. If so - uncovers the field.
+     */
+    private void uncover(AdjacentFieldRelativePos adjacentFieldRelativePos)
+    {
+        Field adjacentField = adjacentField(adjacentFieldRelativePos, clickedFieldButtonRow, clickedFieldButtonColumn);
+        QLabel adjacentFieldLabel = adjacentField.getLabel();
+        QPushButton adjacentFieldButton = adjacentField.getPushButton();
 
         if ( adjacentFieldLabel.text().contentEquals("") || isInteger( adjacentFieldLabel.text() ) )
         {
@@ -543,13 +559,13 @@ public class MainWidget extends QWidget
         // Left-adjacent field:
         if ( clickedFieldButtonColumn > 0 ) // left-side boundary condition
         {
-            uncover(AdjacentField.LEFT);
+            uncover(AdjacentFieldRelativePos.LEFT);
         }
 
         // Right-adjacent field:
         if ( clickedFieldButtonColumn < columnCount-1 ) // right-side boundary condition
         {
-            uncover(AdjacentField.RIGHT);
+            uncover(AdjacentFieldRelativePos.RIGHT);
         }
 
         // Up-adjacent three fields:
@@ -558,16 +574,16 @@ public class MainWidget extends QWidget
             // check up-left-adjacent field label:
             if ( clickedFieldButtonColumn > 0 ) // up-left-side boundary conditon
             {
-                uncover(AdjacentField.UP_LEFT);
+                uncover(AdjacentFieldRelativePos.UP_LEFT);
             }
 
             // check up-adjacent field label:
-            uncover(AdjacentField.UP);
+            uncover(AdjacentFieldRelativePos.UP);
 
             // check up-right-adjacent field label:
             if ( clickedFieldButtonColumn < columnCount-1 ) // up-right-side boundary condition
             {
-                uncover(AdjacentField.UP_RIGHT);
+                uncover(AdjacentFieldRelativePos.UP_RIGHT);
             }
         }
 
@@ -577,16 +593,16 @@ public class MainWidget extends QWidget
             // check down-left-adjacent field label:
             if ( clickedFieldButtonColumn > 0 ) // down-left-side boundary condition
             {
-                uncover(AdjacentField.DOWN_LEFT);
+                uncover(AdjacentFieldRelativePos.DOWN_LEFT);
             }
 
             // check down-adjacent field label:
-            uncover(AdjacentField.DOWN);
+            uncover(AdjacentFieldRelativePos.DOWN);
 
             // check down-right-adjacent field label:
             if ( clickedFieldButtonColumn < columnCount-1 ) // down-right-side boundary condition
             {
-                uncover(AdjacentField.DOWN_RIGHT);
+                uncover(AdjacentFieldRelativePos.DOWN_RIGHT);
             }
         }
 
@@ -685,6 +701,8 @@ public class MainWidget extends QWidget
             }
         }
     }
+
+
 
     private void surroundMinesWithMarkers()
     {
