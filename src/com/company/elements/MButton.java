@@ -1,4 +1,4 @@
-package com.company;
+package com.company.elements;
 
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QMouseEvent;

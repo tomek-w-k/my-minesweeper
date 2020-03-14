@@ -5,6 +5,7 @@ import com.company.constants.FieldMarkers;
 import com.company.constants.SettingsKeys;
 import com.company.constants.Stylesheets;
 import com.company.elements.Field;
+import com.company.elements.MButton;
 import com.company.enums.AdjacentFieldRelativePos;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
