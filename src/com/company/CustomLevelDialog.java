@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.constants.GameModeAreaParams;
 import com.company.constants.Stylesheets;
 import com.trolltech.qt.gui.*;
 
@@ -18,9 +19,9 @@ public class CustomLevelDialog extends QDialog
     public static final int MINES_LINE_EDIT_LAYOUT_ROW = 2;
     public static final int MINES_LINE_EDIT_LAYOUT_COLUMN = 1;
 
-    private static Integer customModeRowCount = GameModes.BASIC_MODE_ROW_COUNT;
-    private static Integer customModeColumnCount = GameModes.BASIC_MODE_COLUMN_COUNT;
-    private static Integer customModeMinesCount = GameModes.BASIC_MODE_MINES_COUNT;
+    private static Integer customModeRowCount = GameModeAreaParams.BASIC_MODE_ROW_COUNT;
+    private static Integer customModeColumnCount = GameModeAreaParams.BASIC_MODE_COLUMN_COUNT;
+    private static Integer customModeMinesCount = GameModeAreaParams.BASIC_MODE_MINES_COUNT;
 
     QVBoxLayout contentLayout = new QVBoxLayout(this);
     QGridLayout parametersGridLayout = new QGridLayout(this);
@@ -154,9 +155,9 @@ public class CustomLevelDialog extends QDialog
 
     private void cancelButtonClicked()
     {
-        customModeRowCount = GameModes.BASIC_MODE_ROW_COUNT;
-        customModeColumnCount = GameModes.BASIC_MODE_COLUMN_COUNT;
-        customModeMinesCount = GameModes.BASIC_MODE_MINES_COUNT;
+        customModeRowCount = GameModeAreaParams.BASIC_MODE_ROW_COUNT;
+        customModeColumnCount = GameModeAreaParams.BASIC_MODE_COLUMN_COUNT;
+        customModeMinesCount = GameModeAreaParams.BASIC_MODE_MINES_COUNT;
         close();
     }
 }

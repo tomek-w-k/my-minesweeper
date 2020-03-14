@@ -1,9 +1,6 @@
 package com.company;
 
-import com.company.constants.ErrorMessages;
-import com.company.constants.FieldMarkers;
-import com.company.constants.SettingsKeys;
-import com.company.constants.Stylesheets;
+import com.company.constants.*;
 import com.company.elements.Field;
 import com.company.elements.MButton;
 import com.company.enums.AdjacentFieldRelativePos;
@@ -982,36 +979,36 @@ public class MainWidget extends QWidget
     public void basicActionTriggered()
     {
         initialGameMode = MiscGameParams.GameModes.BASIC_MODE;
-        setRowCount( GameModes.BASIC_MODE_ROW_COUNT );
-        setColumnCount( GameModes.BASIC_MODE_COLUMN_COUNT );
-        setMinesCount( GameModes.BASIC_MODE_MINES_COUNT );
+        setRowCount( GameModeAreaParams.BASIC_MODE_ROW_COUNT );
+        setColumnCount( GameModeAreaParams.BASIC_MODE_COLUMN_COUNT );
+        setMinesCount( GameModeAreaParams.BASIC_MODE_MINES_COUNT );
         createNewGame();
     }
 
     public void mediumActionTriggered()
     {
         initialGameMode = MiscGameParams.GameModes.MEDIUM_MODE;
-        setRowCount( GameModes.MEDIUM_MODE_ROW_COUNT );
-        setColumnCount( GameModes.MEDIUM_MODE_COLUMN_COUNT );
-        setMinesCount( GameModes.MEDIUM_MODE_MINES_COUNT );
+        setRowCount( GameModeAreaParams.MEDIUM_MODE_ROW_COUNT );
+        setColumnCount( GameModeAreaParams.MEDIUM_MODE_COLUMN_COUNT );
+        setMinesCount( GameModeAreaParams.MEDIUM_MODE_MINES_COUNT );
         createNewGame();
     }
 
     public void advancedActionTriggered()
     {
         initialGameMode = MiscGameParams.GameModes.ADVANCED_MODE;
-        setRowCount( GameModes.ADVANCED_MODE_ROW_COUNT );
-        setColumnCount( GameModes.ADVANCED_MODE_COLUMN_COUNT );
-        setMinesCount( GameModes.ADVANCED_MODE_MINES_COUNT );
+        setRowCount( GameModeAreaParams.ADVANCED_MODE_ROW_COUNT );
+        setColumnCount( GameModeAreaParams.ADVANCED_MODE_COLUMN_COUNT );
+        setMinesCount( GameModeAreaParams.ADVANCED_MODE_MINES_COUNT );
         createNewGame();
     }
 
     public void expertActionTriggered()
     {
         initialGameMode = MiscGameParams.GameModes.EXPERT_MODE;
-        setRowCount( GameModes.EXPERT_MODE_ROW_COUNT );
-        setColumnCount( GameModes.EXPERT_MODE_COLUMN_COUNT );
-        setMinesCount( GameModes.EXPERT_MODE_MINES_COUNT );
+        setRowCount( GameModeAreaParams.EXPERT_MODE_ROW_COUNT );
+        setColumnCount( GameModeAreaParams.EXPERT_MODE_COLUMN_COUNT );
+        setMinesCount( GameModeAreaParams.EXPERT_MODE_MINES_COUNT );
         createNewGame();
     }
 

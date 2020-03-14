@@ -1,6 +1,6 @@
-package com.company;
+package com.company.constants;
 
-public class GameModes
+public class GameModeAreaParams
 {
     // BASIC MODE
     public static final int BASIC_MODE_ROW_COUNT = 15;
