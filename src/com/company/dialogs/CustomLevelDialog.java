@@ -1,4 +1,4 @@
-package com.company;
+package com.company.dialogs;
 
 import com.company.constants.GameModeAreaParams;
 import com.company.constants.Stylesheets;

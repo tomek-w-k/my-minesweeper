@@ -1,4 +1,4 @@
-package com.company;
+package com.company.dialogs;
 
 import com.company.constants.Stylesheets;
 import com.trolltech.qt.gui.*;
@@ -20,7 +20,7 @@ public class SaveBestResultDialog extends QDialog
 
     private static String playerName;
 
-    SaveBestResultDialog()
+    public SaveBestResultDialog()
     {
         playerName = null;
         setWindowTitle(tr("Best result - MyMinesweeper"));

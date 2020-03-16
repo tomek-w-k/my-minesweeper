@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en">
 <context>
-    <name>com.company.BestResultsDialog</name>
+    <name>com.company.dialogs.BestResultsDialog</name>
     <message>
         <location filename="../../../../src/com/company/BestResultsDialog.java" line="20"/>
         <source>Best results for individual game modes</source>
@@ -45,7 +45,7 @@
     </message>
 </context>
 <context>
-    <name>com.company.CustomLevelDialog</name>
+    <name>com.company.dialogs.CustomLevelDialog</name>
     <message>
         <source>Custom game mode</source>
         <translation>Custom game mode</translation>
@@ -225,7 +225,7 @@ Please correct entered values.</translation>
     </message>
 </context>
 <context>
-    <name>com.company.PreferencesDialog</name>
+    <name>com.company.dialogs.PreferencesDialog</name>
     <message>
         <source>Preferences</source>
         <translation>Preferences</translation>
@@ -394,7 +394,7 @@ Please correct entered values.</translation>
     </message>
 </context>
 <context>
-    <name>com.company.SaveBestResultDialog</name>
+    <name>com.company.dialogs.SaveBestResultDialog</name>
     <message>
         <location filename="../../../../src/com/company/SaveBestResultDialog.java" line="12"/>
         <source>Save best result</source>

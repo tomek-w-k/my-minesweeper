@@ -1,7 +1,7 @@
 package com.company.managers;
 
 import com.company.MainWidget;
-import com.company.PreferencesDialog;
+import com.company.dialogs.PreferencesDialog;
 import com.company.constants.FieldSizes;
 import com.company.constants.SettingsKeys;
 import com.company.enums.GameModes;

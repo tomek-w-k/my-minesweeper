@@ -1,5 +1,6 @@
-package com.company;
+package com.company.dialogs;
 
+import com.company.MainWidget;
 import com.company.constants.FieldSizes;
 import com.company.constants.Stylesheets;
 import com.company.managers.SettingsManager;

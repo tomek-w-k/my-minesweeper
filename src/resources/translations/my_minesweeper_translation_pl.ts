@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="pl">
 <context>
-    <name>com.company.BestResultsDialog</name>
+    <name>com.company.dialogs.BestResultsDialog</name>
     <message>
         <source>Best results</source>
         <translation>Najlepsze wyniki</translation>
@@ -49,7 +49,7 @@
     </message>
 </context>
 <context>
-    <name>com.company.CustomLevelDialog</name>
+    <name>com.company.dialogs.CustomLevelDialog</name>
     <message>
         <source>Custom game mode</source>
         <translation>Tryb niestandardowy</translation>
@@ -231,7 +231,7 @@ Please correct entered values.</source>
     </message>
 </context>
 <context>
-    <name>com.company.PreferencesDialog</name>
+    <name>com.company.dialogs.PreferencesDialog</name>
     <message>
         <source>Preferences</source>
         <translation>Preferencje</translation>
@@ -408,7 +408,7 @@ Please correct entered values.</source>
     </message>
 </context>
 <context>
-    <name>com.company.SaveBestResultDialog</name>
+    <name>com.company.dialogs.SaveBestResultDialog</name>
     <message>
         <location filename="../../../../src/com/company/SaveBestResultDialog.java" line="12"/>
         <source>Save best result</source>

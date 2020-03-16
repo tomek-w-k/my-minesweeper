@@ -1,6 +1,10 @@
 package com.company;
 
 import com.company.constants.*;
+import com.company.dialogs.BestResultsDialog;
+import com.company.dialogs.CustomLevelDialog;
+import com.company.dialogs.PreferencesDialog;
+import com.company.dialogs.SaveBestResultDialog;
 import com.company.elements.Field;
 import com.company.elements.MButton;
 import com.company.enums.AdjacentFieldRelativePos;
@@ -72,7 +76,7 @@ public class MainWidget extends QWidget
     public Main mw;
 
     // Settings manager
-    SettingsManager settingsManager = new SettingsManager(this);
+    public SettingsManager settingsManager = new SettingsManager(this);
 
     public MainWidget(QObject lParent)
     {

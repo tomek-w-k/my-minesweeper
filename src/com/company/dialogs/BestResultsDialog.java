@@ -1,4 +1,4 @@
-package com.company;
+package com.company.dialogs;
 
 import com.company.constants.SettingsKeys;
 import com.company.constants.Stylesheets;
@@ -39,7 +39,7 @@ public class BestResultsDialog extends QDialog
     ArrayList<QStandardItem> person = new ArrayList<QStandardItem>();
 
 
-    BestResultsDialog()
+    public BestResultsDialog()
     {
         setWindowTitle(tr("Best results - MyMinesweeper"));
 
