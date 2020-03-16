@@ -10,6 +10,7 @@ import com.company.elements.MButton;
 import com.company.enums.AdjacentFieldRelativePos;
 import com.company.enums.GameModes;
 import com.company.managers.SettingsManager;
+import com.company.tools.GameAreaBuilder;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
@@ -25,7 +26,7 @@ public class MainWidget extends QWidget
     // - - - CLIENT AREA ELEMENTS - - -
     public Signal1<QObject> clicked = new Signal1<QObject>();
     private QSignalMapper signalMapper;
-    QGridLayout gridLayout;
+    public QGridLayout gridLayout;
     MButton fieldButton;
     QLabel fieldLabel;
     private MButton[][] fieldButtons;
@@ -45,7 +46,7 @@ public class MainWidget extends QWidget
     MButton button;
 
     // Number of rows, columns and mines for entire area:
-    int rowCount, columnCount, minesCount;
+    public Integer rowCount, columnCount, minesCount;
 
     // Size of fields:
     Integer fieldSize = 0;
@@ -75,8 +76,9 @@ public class MainWidget extends QWidget
     QObject parent;
     public Main mw;
 
-    // Settings manager
     public SettingsManager settingsManager = new SettingsManager(this);
+    public GameAreaBuilder gameAreaBuilder;
+
 
     public MainWidget(QObject lParent)
     {
@@ -571,90 +573,90 @@ public class MainWidget extends QWidget
         }
     }
 
-    private void placeMinesRandomly()
-    {
-        Random random = new Random(400);
-        boolean gameArea[][] = new boolean[rowCount][columnCount];
-        LinkedList<Boolean> tempList = new LinkedList<Boolean>();
-        boolean minePlaced = false;
-        int randomRow, randomColumn;
-        QLabel fieldLabel;
-
-        // preliminary draw of mined places
-        for ( int mineCounter = 0; mineCounter < minesCount; mineCounter++ )
-        {
-            while ( !minePlaced )
-            {
-                randomRow = random.nextInt(rowCount);
-                randomColumn = random.nextInt(columnCount);
-                if ( !gameArea[randomRow][randomColumn] )
-                {
-                    gameArea[randomRow][randomColumn] = true;
-                    minePlaced = true;
-                }
-            }
-            minePlaced = false;
-        }
-
-        // shuffling - row by row:
-        for ( int row = 0; row < rowCount; row++ )
-        {
-            // take a specified row from gameArea and write it into a tempList...
-            for ( int column = 0; column < columnCount; column++ )
-            {
-                tempList.add( gameArea[row][column] );
-            }
-
-            // ... and shuffle the list
-            Collections.shuffle( tempList );
-
-            // at the end - write a tempList back into gameArea row
-            for ( int column = 0; column < columnCount; column++ )
-            {
-                gameArea[row][column] = tempList.get(column);
-            }
-
-            // clear tempList
-            tempList.clear();
-        }
-
-        // shuffling - column by column
-        for ( int column = 0; column < columnCount; column++ )
-        {
-            // take a specified column from gameArea and write it into a tempList...
-            for ( int row = 0; row < rowCount; row++ )
-            {
-                tempList.add( gameArea[row][column] );
-            }
-
-            // ... and shuffle the list
-            Collections.shuffle( tempList );
-
-            // at the end - write a tempList back into gameArea column
-            for ( int row = 0; row < rowCount; row++ )
-            {
-                gameArea[row][column] = tempList.get(row);
-            }
-
-            // clear tempList
-            tempList.clear();
-        }
-
-        // place mines on a game area
-        for ( int row = 0; row < rowCount; row++ )
-        {
-            for ( int column = 0; column < columnCount; column++ )
-            {
-                if ( gameArea[row][column] )
-                {
-                    fieldLabel = (QLabel) gridLayout.itemAtPosition( row, column ).widget();
-                    fieldLabel.setText(FieldMarkers.MINE);
-                    fieldLabel.setObjectName(Stylesheets.M_OBJECT);
-                    fieldLabel.setStyleSheet(Stylesheets.MINED_FIELD);
-                }
-            }
-        }
-    }
+//    private void placeMinesRandomly()
+//    {
+//        Random random = new Random(400);
+//        boolean gameArea[][] = new boolean[rowCount][columnCount];
+//        LinkedList<Boolean> tempList = new LinkedList<Boolean>();
+//        boolean minePlaced = false;
+//        int randomRow, randomColumn;
+//        QLabel fieldLabel;
+//
+//        // preliminary draw of mined places
+//        for ( int mineCounter = 0; mineCounter < minesCount; mineCounter++ )
+//        {
+//            while ( !minePlaced )
+//            {
+//                randomRow = random.nextInt(rowCount);
+//                randomColumn = random.nextInt(columnCount);
+//                if ( !gameArea[randomRow][randomColumn] )
+//                {
+//                    gameArea[randomRow][randomColumn] = true;
+//                    minePlaced = true;
+//                }
+//            }
+//            minePlaced = false;
+//        }
+//
+//        // shuffling - row by row:
+//        for ( int row = 0; row < rowCount; row++ )
+//        {
+//            // take a specified row from gameArea and write it into a tempList...
+//            for ( int column = 0; column < columnCount; column++ )
+//            {
+//                tempList.add( gameArea[row][column] );
+//            }
+//
+//            // ... and shuffle the list
+//            Collections.shuffle( tempList );
+//
+//            // at the end - write a tempList back into gameArea row
+//            for ( int column = 0; column < columnCount; column++ )
+//            {
+//                gameArea[row][column] = tempList.get(column);
+//            }
+//
+//            // clear tempList
+//            tempList.clear();
+//        }
+//
+//        // shuffling - column by column
+//        for ( int column = 0; column < columnCount; column++ )
+//        {
+//            // take a specified column from gameArea and write it into a tempList...
+//            for ( int row = 0; row < rowCount; row++ )
+//            {
+//                tempList.add( gameArea[row][column] );
+//            }
+//
+//            // ... and shuffle the list
+//            Collections.shuffle( tempList );
+//
+//            // at the end - write a tempList back into gameArea column
+//            for ( int row = 0; row < rowCount; row++ )
+//            {
+//                gameArea[row][column] = tempList.get(row);
+//            }
+//
+//            // clear tempList
+//            tempList.clear();
+//        }
+//
+//        // place mines on a game area
+//        for ( int row = 0; row < rowCount; row++ )
+//        {
+//            for ( int column = 0; column < columnCount; column++ )
+//            {
+//                if ( gameArea[row][column] )
+//                {
+//                    fieldLabel = (QLabel) gridLayout.itemAtPosition( row, column ).widget();
+//                    fieldLabel.setText(FieldMarkers.MINE);
+//                    fieldLabel.setObjectName(Stylesheets.M_OBJECT);
+//                    fieldLabel.setStyleSheet(Stylesheets.MINED_FIELD);
+//                }
+//            }
+//        }
+//    }
 
     private void surround(AdjacentFieldRelativePos adjacentFieldRelativePos, int baseFieldRow, int baseFieldColumn)
     {
@@ -830,7 +832,8 @@ public class MainWidget extends QWidget
             }
         }
 
-        placeMinesRandomly();
+        gameAreaBuilder = new GameAreaBuilder(this);
+        gameAreaBuilder.placeMinesRandomly();
         surroundMinesWithMarkers();
 
         // Fill board with buttons
@@ -890,7 +893,7 @@ public class MainWidget extends QWidget
         this.columnCount = lColumnCount;
     }
 
-    public void setMinesCount(int lMinesCount)
+    public void setMinesCount(Integer lMinesCount)
     {
         this.minesCount = lMinesCount;
     }
