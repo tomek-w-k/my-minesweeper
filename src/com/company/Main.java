@@ -6,12 +6,15 @@ import com.company.constants.Stylesheets;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
+import java.beans.Introspector;
 import java.io.*;
+import java.lang.instrument.Instrumentation;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ResourceBundle;
 
 public class Main extends QMainWindow
 {
@@ -201,6 +204,10 @@ public class Main extends QMainWindow
 
     public static void main(String[] args)
     {
+        //ClassLoader cl = ClassLoader.getPlatformClassLoader();
+
+
+
         QApplication.initialize(args);
 
         Main mainWindow = new Main();

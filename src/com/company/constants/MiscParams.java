@@ -1,30 +1,7 @@
-package com.company;
+package com.company.constants;
 
-public class MiscGameParams
+public class MiscParams
 {
-    // SIZE OF FIELDS
-    public static final int DEFAULT_FIELD_SIZE = 30;
-    public static final int MINIMUM_FIELD_SIZE = 15;
-    public static final int MAXIMUM_FIELD_SIZE = 40;
-
-    // GAME MODES
-    public enum GameModes
-    {
-        BASIC_MODE,
-        MEDIUM_MODE,
-        ADVANCED_MODE,
-        EXPERT_MODE,
-        CUSTOM_MODE
-    }
-
-    // LANGUAGES
-    public enum Languages
-    {
-        ENGLISH,
-        POLISH,
-        GERMAN
-    }
-
     /*
         Following parameters describe how much a main window dimensions exceeds a game area dimensions.
         Game area consists of fields with given dimensions, main window also contains frames, menu bar and tool bar.

@@ -5,4 +5,7 @@
       <module name="my-minesweeper" target="12" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="PREFER_TARGET_JDK_COMPILER" value="false" />
+  </component>
 </project>

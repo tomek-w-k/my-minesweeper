@@ -1,9 +1,9 @@
 package com.company;
 
-import com.company.constants.SettingsKeys;
+import com.company.constants.FieldSizes;
 import com.company.constants.Stylesheets;
+import com.company.managers.SettingsManager;
 import com.trolltech.qt.core.QEvent;
-import com.trolltech.qt.core.QSettings;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.*;
 
@@ -44,33 +44,33 @@ public class PreferencesDialog extends QDialog
 
     // Controls - game mode
     QGroupBox gameModeGroupBox = new QGroupBox(tr("Game mode"), this);
-    QRadioButton basicModeRadioButton = new QRadioButton(tr("&Basic"), this);
-    QRadioButton mediumModeRadioButton = new QRadioButton(tr("&Medium"), this);
-    QRadioButton advancedModeRadioButton = new QRadioButton(tr("&Advanced"), this);
-    QRadioButton expertModeRadioButton = new QRadioButton(tr("&Expert"), this);
-    QRadioButton customModeRadioButton = new QRadioButton(tr("&Custom"), this);
+    public QRadioButton basicModeRadioButton = new QRadioButton(tr("&Basic"), this);
+    public QRadioButton mediumModeRadioButton = new QRadioButton(tr("&Medium"), this);
+    public QRadioButton advancedModeRadioButton = new QRadioButton(tr("&Advanced"), this);
+    public QRadioButton expertModeRadioButton = new QRadioButton(tr("&Expert"), this);
+    public QRadioButton customModeRadioButton = new QRadioButton(tr("&Custom"), this);
     QLabel customRowsLabel = new QLabel(tr("Rows"), this);
     QLabel customColumnsLabel = new QLabel(tr("Columns"), this);
     QLabel customMinesLabel = new QLabel(tr("Mines"), this);
-    QSpinBox customRowsSpinBox = new QSpinBox(this);
-    QSpinBox customColumnsSpinBox = new QSpinBox(this);
-    QSpinBox customMinesSpinBox = new QSpinBox(this);
+    public QSpinBox customRowsSpinBox = new QSpinBox(this);
+    public QSpinBox customColumnsSpinBox = new QSpinBox(this);
+    public QSpinBox customMinesSpinBox = new QSpinBox(this);
 
     // Controls - language
     QGroupBox languageGroupBox = new QGroupBox(tr("Language"), this);
-    QRadioButton englishLanguageRadioButton = new QRadioButton(tr("English"), this);
-    QRadioButton polishLanguageRadioButton = new QRadioButton(tr("Polish"), this);
-    QRadioButton germanLanguageRadioButton = new QRadioButton(tr("German"), this);
+    public QRadioButton englishLanguageRadioButton = new QRadioButton(tr("English"), this);
+    public QRadioButton polishLanguageRadioButton = new QRadioButton(tr("Polish"), this);
+    public QRadioButton germanLanguageRadioButton = new QRadioButton(tr("German"), this);
 
     // Controls - field size
     QGroupBox fieldSizeGroupBox = new QGroupBox(tr("Field size"), this);
     QSlider fieldSizeSlider = new QSlider(Qt.Orientation.Horizontal, this);
-    QSpinBox fieldSizeSpinBox =  new QSpinBox(this);
+    public QSpinBox fieldSizeSpinBox =  new QSpinBox(this);
 
     // Controls - time counting
     QGroupBox timeCountingGroupBox = new QGroupBox(tr("Time counting"), this);
-    QCheckBox enableTimeCountingCheckBox = new QCheckBox(tr("Enable &time counting"), this);
-    QCheckBox saveBestResultCheckBox = new QCheckBox(tr("&Save best result"), this);
+    public QCheckBox enableTimeCountingCheckBox = new QCheckBox(tr("Enable &time counting"), this);
+    public QCheckBox saveBestResultCheckBox = new QCheckBox(tr("&Save best result"), this);
 
     // Action buttons
     QPushButton okPushButton = new QPushButton(tr("&Ok"), this);
@@ -81,6 +81,9 @@ public class PreferencesDialog extends QDialog
     QLabel startupPreferencesPageContentLabel = new QLabel(tr("Application startup settings"), this);
     QLabel languagePreferencesPageContentLabel = new QLabel(tr("Language settings"), this);
     QLabel otherPreferencesPageContentLabel = new QLabel(tr("Other settings"), this);
+
+    // Settings manager
+    SettingsManager settingsManager = new SettingsManager(this);
 
     // - - - Constructor - - -
     public PreferencesDialog(QWidget parent)
@@ -94,7 +97,8 @@ public class PreferencesDialog extends QDialog
         createOtherPreferencesPageWidget();
 
         packOnLayouts();
-        loadSettings();
+        //loadSettings();
+        settingsManager.loadSettingsForPreferencesDialog();
     }
 
     // - - - Translation methods - - -
@@ -270,10 +274,10 @@ public class PreferencesDialog extends QDialog
 
         // Controls
         fieldSizeGroupBox.setLayout(new QHBoxLayout(this));
-        fieldSizeSlider.setMinimum(MiscGameParams.MINIMUM_FIELD_SIZE);
-        fieldSizeSlider.setMaximum(MiscGameParams.MAXIMUM_FIELD_SIZE);
-        fieldSizeSpinBox.setMinimum(MiscGameParams.MINIMUM_FIELD_SIZE);
-        fieldSizeSpinBox.setMaximum(MiscGameParams.MAXIMUM_FIELD_SIZE);
+        fieldSizeSlider.setMinimum(FieldSizes.MINIMUM_FIELD_SIZE);
+        fieldSizeSlider.setMaximum(FieldSizes.MAXIMUM_FIELD_SIZE);
+        fieldSizeSpinBox.setMinimum(FieldSizes.MINIMUM_FIELD_SIZE);
+        fieldSizeSpinBox.setMaximum(FieldSizes.MAXIMUM_FIELD_SIZE);
         fieldSizeGroupBox.layout().addWidget(fieldSizeSlider);
         fieldSizeGroupBox.layout().addWidget(fieldSizeSpinBox);
         fieldSizeSlider.valueChanged.connect(this, "fieldSizeSliderValueChanged()");
@@ -299,138 +303,6 @@ public class PreferencesDialog extends QDialog
 
         otherWidget.layout().addWidget(otherPreferencesPageContentLabel);
         otherWidget.layout().addWidget(contentWidget);
-    }
-
-    // Collects data from dialog widgets and saves using QSettings class
-    private void saveSettings()
-    {
-        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
-
-        settings.beginGroup(SettingsKeys.GAME_PARAMETERS_GROUP);
-
-        // Game mode
-        if ( basicModeRadioButton.isChecked() )
-        {
-            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.BASIC_MODE);
-        }
-        if ( mediumModeRadioButton.isChecked() )
-        {
-            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.MEDIUM_MODE);
-        }
-        if ( advancedModeRadioButton.isChecked() )
-        {
-            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.ADVANCED_MODE);
-        }
-        if ( expertModeRadioButton.isChecked() )
-        {
-            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.EXPERT_MODE);
-        }
-        if ( customModeRadioButton.isChecked() )
-        {
-            settings.setValue(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.CUSTOM_MODE);
-            settings.setValue(SettingsKeys.CUSTOM_ROW_COUNT, customRowsSpinBox.value());
-            settings.setValue(SettingsKeys.CUSTOM_COLUMN_COUNT, customColumnsSpinBox.value());
-            settings.setValue(SettingsKeys.CUSTOM_MINES_COUNT, customMinesSpinBox.value());
-        }
-
-        // Language
-        if ( englishLanguageRadioButton.isChecked() )
-        {
-            settings.setValue(SettingsKeys.LANGUAGE, MiscGameParams.Languages.ENGLISH);
-        }
-        if ( polishLanguageRadioButton.isChecked() )
-        {
-            settings.setValue(SettingsKeys.LANGUAGE, MiscGameParams.Languages.POLISH);
-        }
-        if ( germanLanguageRadioButton.isChecked() )
-        {
-            settings.setValue(SettingsKeys.LANGUAGE, MiscGameParams.Languages.GERMAN);
-        }
-
-        // Field size
-        settings.setValue(SettingsKeys.FIELD_SIZE, fieldSizeSpinBox.value());
-
-        // Time counting and save best result
-        if ( enableTimeCountingCheckBox.isChecked() )
-        {
-            settings.setValue(SettingsKeys.ENABLE_TIME_COUNTING, true);
-            settings.setValue(SettingsKeys.SAVE_BEST_RESULT, saveBestResultCheckBox.isChecked());
-        }
-        else
-        {
-            settings.setValue(SettingsKeys.ENABLE_TIME_COUNTING, false);
-            settings.setValue(SettingsKeys.SAVE_BEST_RESULT, false);
-        }
-
-        settings.endGroup();
-    }
-
-    // Reads data from QSettings class and set them on dialog widgets
-    private void loadSettings()
-    {
-        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
-
-        settings.beginGroup(SettingsKeys.GAME_PARAMETERS_GROUP);
-
-        // Game mode (default: BASIC_MODE)
-        MiscGameParams.GameModes gameMode = (MiscGameParams.GameModes) settings.value(SettingsKeys.GAME_MODE, MiscGameParams.GameModes.BASIC_MODE);
-
-        switch ( gameMode )
-        {
-            case BASIC_MODE:
-                basicModeRadioButton.setChecked(true);
-                break;
-            case MEDIUM_MODE:
-                mediumModeRadioButton.setChecked(true);
-                break;
-            case ADVANCED_MODE:
-                advancedModeRadioButton.setChecked(true);
-                break;
-            case EXPERT_MODE:
-                expertModeRadioButton.setChecked(true);
-                break;
-            case CUSTOM_MODE:
-                customModeRadioButton.setChecked(true);
-                break;
-            default:
-                basicModeRadioButton.setChecked(true);
-                break;
-        }
-        customRowsSpinBox.setValue( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_ROW_COUNT, "10").toString() ) );
-        customColumnsSpinBox.setValue( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_COLUMN_COUNT, "10").toString() ) );
-        customMinesSpinBox.setValue( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_MINES_COUNT, "25").toString() ) );
-
-        // Language (default: ENGLISH)
-        MiscGameParams.Languages language = (MiscGameParams.Languages) settings.value(SettingsKeys.LANGUAGE, MiscGameParams.Languages.ENGLISH);
-
-        switch ( language )
-        {
-            case ENGLISH:
-                englishLanguageRadioButton.setChecked(true);
-                break;
-            case POLISH:
-                polishLanguageRadioButton.setChecked(true);
-                break;
-            case GERMAN:
-                germanLanguageRadioButton.setChecked(true);
-                break;
-            default:
-                englishLanguageRadioButton.setChecked(true);
-                break;
-        }
-
-        // Field size (default: DEFAULT_FIELD_SIZE)
-        String fieldSize = settings.value(SettingsKeys.FIELD_SIZE, MiscGameParams.DEFAULT_FIELD_SIZE).toString();
-        fieldSizeSpinBox.setValue( Integer.parseInt(fieldSize) );
-
-        // Time counting and save best result (default: true)
-        String enableTimeCounting = settings.value(SettingsKeys.ENABLE_TIME_COUNTING, true).toString();
-        String saveBestResult = settings.value(SettingsKeys.SAVE_BEST_RESULT, true).toString();
-
-        enableTimeCountingCheckBox.setChecked( Boolean.parseBoolean(enableTimeCounting) );
-        saveBestResultCheckBox.setChecked( Boolean.parseBoolean(saveBestResult) );
-
-        settings.endGroup();
     }
 
     private void packOnLayouts()
@@ -519,18 +391,18 @@ public class PreferencesDialog extends QDialog
 
     private void okPushButtonClicked()
     {
-        saveSettings();
+        settingsManager.saveSettingsForPreferencesDialog();
 
-        parentWidget.loadSettings();
+        parentWidget.settingsManager.loadSettingsForMainWidget();
         parentWidget.newGameActionTriggered();
         this.close();
     }
 
     private void applyPushButtonClicked()
     {
-        saveSettings();
+        settingsManager.saveSettingsForPreferencesDialog();
 
-        parentWidget.loadSettings();
+        parentWidget.settingsManager.loadSettingsForMainWidget();
         parentWidget.newGameActionTriggered();
     }
 
