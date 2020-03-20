@@ -40,7 +40,7 @@ public class Main extends QMainWindow
 
     QToolBar toolBar = new QToolBar(this);
 
-    QStatusBar statusBar = new QStatusBar();
+    public QStatusBar statusBar = new QStatusBar();
 
     QLabel timeCounterLabel = new QLabel("00:00:00");
 
@@ -204,10 +204,6 @@ public class Main extends QMainWindow
 
     public static void main(String[] args)
     {
-        //ClassLoader cl = ClassLoader.getPlatformClassLoader();
-
-
-
         QApplication.initialize(args);
 
         Main mainWindow = new Main();

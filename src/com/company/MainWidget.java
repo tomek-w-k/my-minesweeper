@@ -10,7 +10,9 @@ import com.company.elements.MButton;
 import com.company.enums.AdjacentFieldRelativePos;
 import com.company.enums.GameModes;
 import com.company.managers.SettingsManager;
+import com.company.tools.GameAreaActionsResolver;
 import com.company.tools.GameAreaBuilder;
+import com.company.tools.TimeCounter;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
@@ -25,45 +27,45 @@ public class MainWidget extends QWidget
 
     // - - - CLIENT AREA ELEMENTS - - -
     public Signal1<QObject> clicked = new Signal1<QObject>();
-    private QSignalMapper signalMapper;
+    public QSignalMapper signalMapper;
     public QGridLayout gridLayout;
-    MButton fieldButton;
-    QLabel fieldLabel;
-    private MButton[][] fieldButtons;
-    private QLabel[][] fieldLabels;
+    public MButton fieldButton;
+    public QLabel fieldLabel;
+    public MButton[][] fieldButtons;
+    public QLabel[][] fieldLabels;
 
     // Clicked field coordinates on a gridlayout:
-    int clickedFieldButtonRow;
-    int clickedFieldButtonColumn;
+    public Integer clickedFieldButtonRow = 0;
+    public Integer clickedFieldButtonColumn = 0;
 
     // Label under clicked field button:
-    QLabel clickedFieldLabel;
+    public QLabel clickedFieldLabel;
 
     // A temporary container with empty fields ( used to uncover empty areas ):
-    private ArrayList<QLabel> tempFieldLabelList = new ArrayList<QLabel>();
+    public ArrayList<QLabel> tempFieldLabelList = new ArrayList<QLabel>();
 
     // Clicked field button:
-    MButton button;
+    public MButton button;
 
     // Number of rows, columns and mines for entire area:
     public Integer rowCount, columnCount, minesCount;
 
     // Size of fields:
-    Integer fieldSize = 0;
+    public Integer fieldSize = 0;
 
     // Marked mines counter:
-    Integer markedMinesCounter = 0;
+    public Integer markedMinesCounter = 0;
 
     // Properly marked mines counter:
-    Integer properlyMarkedMinesCounter = 0;
+    public Integer properlyMarkedMinesCounter = 0;
 
-    static int i = 0;
+    public static int i = 0;
 
     // A QTimer object for time counting - measures elapsed game time:
-    QTimer timer = null;
+    public QTimer timer = null;
 
     // A Time object for time counter - elapsed game time measured by the counter:
-    QTime time = null;
+    public QTime time = null;
 
     // Settings - enable time counter and save best result
     public Boolean enableTimeCounting = true;
@@ -73,12 +75,13 @@ public class MainWidget extends QWidget
     //Integer initialGameMode = 0;
     public GameModes initialGameMode;
 
-    QObject parent;
+    public QObject parent;
     public Main mw;
 
     public SettingsManager settingsManager = new SettingsManager(this);
     public GameAreaBuilder gameAreaBuilder;
-
+    public GameAreaActionsResolver gameAreaActionsResolver;
+    public TimeCounter timeCounter;
 
     public MainWidget(QObject lParent)
     {
@@ -86,6 +89,10 @@ public class MainWidget extends QWidget
         mw = (Main) this.parent;
 
         settingsManager.loadSettingsForMainWidget();
+        gameAreaBuilder = new GameAreaBuilder(this);
+        gameAreaActionsResolver = new GameAreaActionsResolver(this);
+        timeCounter = new TimeCounter(this);
+
         newGameActionTriggered();
     }
 
@@ -119,210 +126,218 @@ public class MainWidget extends QWidget
         mw.difficultyLevelActionGroup.addAction(mw.customAction);
     }
 
-    private boolean isInteger( String lStr )
-    {
-        try
-        {
-            Integer.parseInt( lStr );
-            return true;
-        }
-        catch ( NumberFormatException e )
-        {
-            return false;
-        }
-    }
+//    private boolean isInteger( String lStr )
+//    {
+//        try
+//        {
+//            Integer.parseInt( lStr );
+//            return true;
+//        }
+//        catch ( NumberFormatException e )
+//        {
+//            return false;
+//        }
+//    }
 
-    private void timeCounter()
-    {
-        if ( timer != null )
-        {
-            timer.dispose();
-        }
-        if ( time != null )
-        {
-            time.dispose();
-        }
-
-        if ( enableTimeCounting )
-        {
-            timer  = new QTimer(this);
-            timer.timeout.connect(this, "updateTimeCounter()");
-            timer.start(1000);
-            time = new QTime(0, 0, 0);
-        }
-        else
-        {
-            mw.updateTime("DISABLED");
-        }
-    }
-
-    private void updateTimeCounter()
-    {
-        time = time.addSecs(1);
-        String currentTime = time.toString("hh:mm:ss");
-        mw.updateTime(currentTime);
-    }
+//    private void timeCounter()
+//    {
+//        if ( timer != null )
+//        {
+//            timer.dispose();
+//        }
+//        if ( time != null )
+//        {
+//            time.dispose();
+//        }
+//
+//        if ( enableTimeCounting )
+//        {
+//            timer  = new QTimer(this);
+//            timer.timeout.connect(this, "updateTimeCounter()");
+//            timer.start(1000);
+//            time = new QTime(0, 0, 0);
+//        }
+//        else
+//        {
+//            mw.updateTime("DISABLED");
+//        }
+//    }
+//
+//    private void updateTimeCounter()
+//    {
+//        time = time.addSecs(1);
+//        String currentTime = time.toString("hh:mm:ss");
+//        mw.updateTime(currentTime);
+//    }
 
     /*
         A slot called when a field button has been clicked.
      */
     public void clicked()
     {
-        i = 0;
-
-        // Clicked field button:
-        button = (MButton) signalSender();
-
-        // Clicked field button coordinates on a gridlayout:
-        clickedFieldButtonRow = gridLayout.getItemPosition( gridLayout.indexOf( button ) ).row;
-        clickedFieldButtonColumn = gridLayout.getItemPosition( gridLayout.indexOf( button ) ).column;
-
-        // Label under clicked button:
-        clickedFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow, clickedFieldButtonColumn).widget();
-
-        // If clicked field is marked then do nothing:
-        if ( button.text().equals(FieldMarkers.FLAG) )
-        {
-            return;
-        }
-
-        // If clicked field label is an empty field:
-        if ( clickedFieldLabel.text().contentEquals(""))
-        {
-            button.hide();
-            uncoverAdjacentFields();
-            tempFieldLabelList.clear();
-            //System.out.println("Iterations: " + i);
-        }
-
-        // If clicked field label is marked by a number:
-        if ( isInteger( clickedFieldLabel.text() ) )
-        {
-            button.hide();
-        }
-
-        // If clicked field label contains a mine ( GAME OVER ):
-        if ( clickedFieldLabel.text().contentEquals( FieldMarkers.MINE ) )
-        {
-            // Uncover a clicked mine
-            button.hide();
-            // Mark a clicked field with mine as red
-            clickedFieldLabel.setStyleSheet(Stylesheets.EXPLODED_MINE_FIELD);
-
-            // Stop the time counter
-            if ( enableTimeCounting )
-            {
-                timer.stop();
-            }
-
-            // Uncover all mines and make rest of field buttons disabled
-            for ( int row = 0; row < rowCount; row++ )
-            {
-                for ( int column = 0; column < columnCount; column++ )
-                {
-                    // If under a given field button mine is located...
-                    if ( fieldLabels[row][column].text().contentEquals(FieldMarkers.MINE) )
-                    {
-                        // ...then uncover this field,
-                        fieldButtons[row][column].hide();
-                    }
-                    else // if there's something else
-                    {
-                        // ...then make button inactive to avoid clicking it
-                        fieldButtons[row][column].setDisabled(true);
-                    }
-
-                    // Fields which has been marked incorrectly as mined fields - sign them with "E" letter
-                    if ( fieldButtons[row][column].text().equals(FieldMarkers.FLAG) && !fieldLabels[row][column].text().equals(FieldMarkers.MINE) )
-                    {
-                        fieldButtons[row][column].setText(FieldMarkers.ERROR);
-                        fieldButtons[row][column].setObjectName(Stylesheets.M_BUTTON);
-                        fieldButtons[row][column].setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
-                    }
-                }
-            }
-            Main mw = (Main) this.parent;
-            mw.statusBar.showMessage(tr("GAME OVER"));
-        }
+        gameAreaActionsResolver.handleMouseClicked();
+//        i = 0;
+//
+//        // Clicked field button:
+//        button = (MButton) signalSender();
+//
+//        // Clicked field button coordinates on a gridlayout:
+//        clickedFieldButtonRow = gridLayout.getItemPosition( gridLayout.indexOf( button ) ).row;
+//        clickedFieldButtonColumn = gridLayout.getItemPosition( gridLayout.indexOf( button ) ).column;
+//
+//        //gameAreaActionsResolver = new GameAreaActionsResolver(this);
+//        gameAreaActionsResolver.setClickedFieldButtonRow(clickedFieldButtonRow);
+//        gameAreaActionsResolver.setClickedFieldButtonColumn(clickedFieldButtonColumn);
+//
+//        // Label under clicked button:
+//        clickedFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow, clickedFieldButtonColumn).widget();
+//
+//        // If clicked field is marked then do nothing:
+//        if ( button.text().equals(FieldMarkers.FLAG) )
+//        {
+//            return;
+//        }
+//
+//        // If clicked field label is an empty field:
+//        if ( clickedFieldLabel.text().contentEquals(""))
+//        {
+//            button.hide();
+//            gameAreaActionsResolver.uncoverAdjacentFields();
+//
+//            tempFieldLabelList.clear();
+//            System.out.println("Iterations: " + i);
+//        }
+//
+//        // If clicked field label is marked by a number:
+//        if ( isInteger( clickedFieldLabel.text() ) )
+//        {
+//            button.hide();
+//        }
+//
+//        // If clicked field label contains a mine ( GAME OVER ):
+//        if ( clickedFieldLabel.text().contentEquals( FieldMarkers.MINE ) )
+//        {
+//            // Uncover a clicked mine
+//            button.hide();
+//            // Mark a clicked field with mine as red
+//            clickedFieldLabel.setStyleSheet(Stylesheets.EXPLODED_MINE_FIELD);
+//
+//            // Stop the time counter
+//            if ( enableTimeCounting )
+//            {
+//                timer.stop();
+//            }
+//
+//            // Uncover all mines and make rest of field buttons disabled
+//            for ( int row = 0; row < rowCount; row++ )
+//            {
+//                for ( int column = 0; column < columnCount; column++ )
+//                {
+//                    // If under a given field button mine is located...
+//                    if ( fieldLabels[row][column].text().contentEquals(FieldMarkers.MINE) )
+//                    {
+//                        // ...then uncover this field,
+//                        fieldButtons[row][column].hide();
+//                    }
+//                    else // if there's something else
+//                    {
+//                        // ...then make button inactive to avoid clicking it
+//                        fieldButtons[row][column].setDisabled(true);
+//                    }
+//
+//                    // Fields which has been marked incorrectly as mined fields - sign them with "E" letter
+//                    if ( fieldButtons[row][column].text().equals(FieldMarkers.FLAG) && !fieldLabels[row][column].text().equals(FieldMarkers.MINE) )
+//                    {
+//                        fieldButtons[row][column].setText(FieldMarkers.ERROR);
+//                        fieldButtons[row][column].setObjectName(Stylesheets.M_BUTTON);
+//                        fieldButtons[row][column].setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
+//                    }
+//                }
+//            }
+//            Main mw = (Main) this.parent;
+//            mw.statusBar.showMessage(tr("GAME OVER"));
+//        }
     }
 
     public void rightClicked()
     {
-        button = (MButton) signalSender();
+        gameAreaActionsResolver.handleMouseRightClicked();
 
-        clickedFieldButtonRow = gridLayout.getItemPosition( gridLayout.indexOf( button ) ).row;
-        clickedFieldButtonColumn = gridLayout.getItemPosition( gridLayout.indexOf( button ) ).column;
-
-        QLabel clickedFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow, clickedFieldButtonColumn).widget();
-
-        if ( button.text().equals("") )
-        {
-            button.setObjectName(Stylesheets.M_BUTTON);
-            button.setStyleSheet(Stylesheets.FLAGGED_FIELD);
-            button.setText(FieldMarkers.FLAG);
-            markedMinesCounter++;
-
-            if ( clickedFieldLabel.text().equals(FieldMarkers.MINE) )
-            {
-                properlyMarkedMinesCounter++;
-            }
-        }
-        else
-        {
-            button.setText("");
-            markedMinesCounter--;
-
-            if ( clickedFieldLabel.text().equals(FieldMarkers.MINE) )
-            {
-                properlyMarkedMinesCounter--;
-            }
-        }
-
-        // If number of marked mines is equal to actual number of mines - GAME COMPLETED SUCCESSFULLY
-        if ( properlyMarkedMinesCounter == minesCount )
-        {
-            // Stop the time counter
-            if ( enableTimeCounting )
-            {
-                timer.stop();
-            }
-
-            for ( int row = 0; row < rowCount; row++ )
-            {
-                for ( int column = 0; column < columnCount; column++ )
-                {
-                    // Make all field buttons disabled
-                    fieldButtons[row][column].setDisabled(true);
-
-                    // Fields which has been marked incorrectly as mined fields - sign them with "E" letter
-                    if ( fieldButtons[row][column].text().equals(FieldMarkers.FLAG) && !fieldLabels[row][column].text().equals(FieldMarkers.MINE) )
-                    {
-                        fieldButtons[row][column].setText(FieldMarkers.ERROR);
-                        //clickedFieldLabel.setStyleSheet("#myObject { border: 1px solid black; background-color: red; }");
-                        fieldButtons[row][column].setObjectName(Stylesheets.M_BUTTON);
-                        fieldButtons[row][column].setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
-                    }
-
-                    // Hide buttons located over empty fields
-                    if ( fieldButtons[row][column].text().equals("") )
-                    {
-                        fieldButtons[row][column].hide();
-                    }
-                }
-            }
-
-            Main mw = (Main) this.parent;
-            mw.statusBar.showMessage(tr("GAME COMPLETED SUCCESSFULLY"));
-
-            if ( saveBestResult )
-            {
-                saveBestResult();
-            }
-        }
-        //System.out.println(properlyMarkedMinesCounter);
+//        button = (MButton) signalSender();
+//
+//        clickedFieldButtonRow = gridLayout.getItemPosition( gridLayout.indexOf( button ) ).row;
+//        clickedFieldButtonColumn = gridLayout.getItemPosition( gridLayout.indexOf( button ) ).column;
+//
+//        QLabel clickedFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow, clickedFieldButtonColumn).widget();
+//
+//        if ( button.text().equals("") )
+//        {
+//            button.setObjectName(Stylesheets.M_BUTTON);
+//            button.setStyleSheet(Stylesheets.FLAGGED_FIELD);
+//            button.setText(FieldMarkers.FLAG);
+//            markedMinesCounter++;
+//
+//            if ( clickedFieldLabel.text().equals(FieldMarkers.MINE) )
+//            {
+//                properlyMarkedMinesCounter++;
+//            }
+//        }
+//        else
+//        {
+//            button.setText("");
+//            markedMinesCounter--;
+//
+//            if ( clickedFieldLabel.text().equals(FieldMarkers.MINE) )
+//            {
+//                properlyMarkedMinesCounter--;
+//            }
+//        }
+//
+//        // If number of marked mines is equal to actual number of mines - GAME COMPLETED SUCCESSFULLY
+//        if ( properlyMarkedMinesCounter == minesCount )
+//        {
+//            // Stop the time counter
+//            if ( enableTimeCounting )
+//            {
+//                timer.stop();
+//            }
+//
+//            for ( int row = 0; row < rowCount; row++ )
+//            {
+//                for ( int column = 0; column < columnCount; column++ )
+//                {
+//                    // Make all field buttons disabled
+//                    fieldButtons[row][column].setDisabled(true);
+//
+//                    // Fields which has been marked incorrectly as mined fields - sign them with "E" letter
+//                    if ( fieldButtons[row][column].text().equals(FieldMarkers.FLAG) && !fieldLabels[row][column].text().equals(FieldMarkers.MINE) )
+//                    {
+//                        fieldButtons[row][column].setText(FieldMarkers.ERROR);
+//                        //clickedFieldLabel.setStyleSheet("#myObject { border: 1px solid black; background-color: red; }");
+//                        fieldButtons[row][column].setObjectName(Stylesheets.M_BUTTON);
+//                        fieldButtons[row][column].setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
+//                    }
+//
+//                    // Hide buttons located over empty fields
+//                    if ( fieldButtons[row][column].text().equals("") )
+//                    {
+//                        fieldButtons[row][column].hide();
+//                    }
+//                }
+//            }
+//
+//            Main mw = (Main) this.parent;
+//            mw.statusBar.showMessage(tr("GAME COMPLETED SUCCESSFULLY"));
+//
+//            if ( saveBestResult )
+//            {
+//                saveBestResult();
+//            }
+//        }
+//        //System.out.println(properlyMarkedMinesCounter);
     }
 
-    private void saveBestResult()
+    public void saveBestResult()
     {
         // At first, it's necessary to check if obtained time is the smallest time from all results saved for this game mode
         QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
@@ -433,145 +448,145 @@ public class MainWidget extends QWidget
         bestResultsActionTriggered();
     }
 
-    /*
-        Returns a specified adjacent field to the given base field described by its coordinates (base row, base column)
-     */
-    private Field adjacentField(AdjacentFieldRelativePos adjacentFieldRelativePos, int baseFieldRow, int baseFieldColumn)
-    {
-        Field field = new Field();
-        QLabel adjacentFieldLabel = null;
-        QPushButton adjacentFieldButton = null;
-
-        switch (adjacentFieldRelativePos)
-        {
-            case UP:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow - 1, baseFieldColumn).widget();
-                adjacentFieldButton = fieldButtons[baseFieldRow - 1][baseFieldColumn];
-                break;
-            case DOWN:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow + 1, baseFieldColumn).widget();
-                adjacentFieldButton = fieldButtons[baseFieldRow + 1][baseFieldColumn];
-                break;
-            case LEFT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow, baseFieldColumn - 1).widget();
-                adjacentFieldButton = fieldButtons[baseFieldRow][baseFieldColumn - 1];
-                break;
-            case RIGHT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow, baseFieldColumn + 1).widget();
-                adjacentFieldButton = fieldButtons[baseFieldRow][baseFieldColumn + 1];
-                break;
-            case UP_LEFT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow - 1, baseFieldColumn - 1).widget();
-                adjacentFieldButton = fieldButtons[baseFieldRow - 1][baseFieldColumn - 1];
-                break;
-            case UP_RIGHT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow - 1, baseFieldColumn + 1).widget();
-                adjacentFieldButton = fieldButtons[baseFieldRow - 1][baseFieldColumn + 1];
-                break;
-            case DOWN_LEFT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow + 1, baseFieldColumn - 1).widget();
-                adjacentFieldButton = fieldButtons[baseFieldRow + 1][baseFieldColumn - 1];
-                break;
-            case DOWN_RIGHT:
-                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow + 1, baseFieldColumn + 1).widget();
-                adjacentFieldButton = fieldButtons[baseFieldRow + 1][baseFieldColumn + 1];
-                break;
-        }
-        field.setLabel( adjacentFieldLabel );
-        field.setPushButton( adjacentFieldButton );
-
-        return field;
-    }
-
-    /*
-        This function checks if the given adjacent field is empty or has a digit marker. If so - uncovers the field.
-     */
-    private void uncover(AdjacentFieldRelativePos adjacentFieldRelativePos)
-    {
-        Field adjacentField = adjacentField(adjacentFieldRelativePos, clickedFieldButtonRow, clickedFieldButtonColumn);
-        QLabel adjacentFieldLabel = adjacentField.getLabel();
-        QPushButton adjacentFieldButton = adjacentField.getPushButton();
-
-        if ( adjacentFieldLabel.text().contentEquals("") || isInteger( adjacentFieldLabel.text() ) )
-        {
-            if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
-            {
-                adjacentFieldButton.hide();
-            }
-        }
-        if ( adjacentFieldLabel.text().contentEquals("") && !tempFieldLabelList.contains( adjacentFieldLabel ))
-        {
-            tempFieldLabelList.add( adjacentFieldLabel );
-        }
-    }
-
-    /*
-        This function is called when an empty field has been clicked.
-        Uncovers all empty and number-marked fields adjacent to clicked empty field.
-     */
-    private void uncoverAdjacentFields()
-    {
-        // Statements below check all fields adjacent to a clicked one in search of an empty field or a number-marked field to hide a button covering it
-        // Left-adjacent field:
-        if ( clickedFieldButtonColumn > 0 ) // left-side boundary condition
-        {
-            uncover(AdjacentFieldRelativePos.LEFT);
-        }
-
-        // Right-adjacent field:
-        if ( clickedFieldButtonColumn < columnCount-1 ) // right-side boundary condition
-        {
-            uncover(AdjacentFieldRelativePos.RIGHT);
-        }
-
-        // Up-adjacent three fields:
-        if ( clickedFieldButtonRow > 0) // up-side boundary condition
-        {
-            // check up-left-adjacent field label:
-            if ( clickedFieldButtonColumn > 0 ) // up-left-side boundary conditon
-            {
-                uncover(AdjacentFieldRelativePos.UP_LEFT);
-            }
-
-            // check up-adjacent field label:
-            uncover(AdjacentFieldRelativePos.UP);
-
-            // check up-right-adjacent field label:
-            if ( clickedFieldButtonColumn < columnCount-1 ) // up-right-side boundary condition
-            {
-                uncover(AdjacentFieldRelativePos.UP_RIGHT);
-            }
-        }
-
-        // down-adjacent three fields:
-        if ( clickedFieldButtonRow < rowCount-1 ) // down-side boundary condition
-        {
-            // check down-left-adjacent field label:
-            if ( clickedFieldButtonColumn > 0 ) // down-left-side boundary condition
-            {
-                uncover(AdjacentFieldRelativePos.DOWN_LEFT);
-            }
-
-            // check down-adjacent field label:
-            uncover(AdjacentFieldRelativePos.DOWN);
-
-            // check down-right-adjacent field label:
-            if ( clickedFieldButtonColumn < columnCount-1 ) // down-right-side boundary condition
-            {
-                uncover(AdjacentFieldRelativePos.DOWN_RIGHT);
-            }
-        }
-
-        if ( i < tempFieldLabelList.size() )
-        {
-            QLabel label = tempFieldLabelList.get(i);
-            clickedFieldButtonRow = gridLayout.getItemPosition( gridLayout.indexOf( label ) ).row;
-            clickedFieldButtonColumn = gridLayout.getItemPosition( gridLayout.indexOf( label ) ).column;
-            i++;
-
-            uncoverAdjacentFields();
-        }
-    }
+//    /*
+//        Returns a specified adjacent field to the given base field described by its coordinates (base row, base column)
+//     */
+//    private Field adjacentField(AdjacentFieldRelativePos adjacentFieldRelativePos, int baseFieldRow, int baseFieldColumn)
+//    {
+//        Field field = new Field();
+//        QLabel adjacentFieldLabel = null;
+//        QPushButton adjacentFieldButton = null;
+//
+//        switch (adjacentFieldRelativePos)
+//        {
+//            case UP:
+//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow - 1, baseFieldColumn).widget();
+//                adjacentFieldButton = fieldButtons[baseFieldRow - 1][baseFieldColumn];
+//                break;
+//            case DOWN:
+//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow + 1, baseFieldColumn).widget();
+//                adjacentFieldButton = fieldButtons[baseFieldRow + 1][baseFieldColumn];
+//                break;
+//            case LEFT:
+//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow, baseFieldColumn - 1).widget();
+//                adjacentFieldButton = fieldButtons[baseFieldRow][baseFieldColumn - 1];
+//                break;
+//            case RIGHT:
+//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow, baseFieldColumn + 1).widget();
+//                adjacentFieldButton = fieldButtons[baseFieldRow][baseFieldColumn + 1];
+//                break;
+//            case UP_LEFT:
+//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow - 1, baseFieldColumn - 1).widget();
+//                adjacentFieldButton = fieldButtons[baseFieldRow - 1][baseFieldColumn - 1];
+//                break;
+//            case UP_RIGHT:
+//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow - 1, baseFieldColumn + 1).widget();
+//                adjacentFieldButton = fieldButtons[baseFieldRow - 1][baseFieldColumn + 1];
+//                break;
+//            case DOWN_LEFT:
+//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow + 1, baseFieldColumn - 1).widget();
+//                adjacentFieldButton = fieldButtons[baseFieldRow + 1][baseFieldColumn - 1];
+//                break;
+//            case DOWN_RIGHT:
+//                adjacentFieldLabel = (QLabel) gridLayout.itemAtPosition(baseFieldRow + 1, baseFieldColumn + 1).widget();
+//                adjacentFieldButton = fieldButtons[baseFieldRow + 1][baseFieldColumn + 1];
+//                break;
+//        }
+//        field.setLabel( adjacentFieldLabel );
+//        field.setPushButton( adjacentFieldButton );
+//
+//        return field;
+//    }
+//
+//    /*
+//        This function checks if the given adjacent field is empty or has a digit marker. If so - uncovers the field.
+//     */
+//    private void uncover(AdjacentFieldRelativePos adjacentFieldRelativePos)
+//    {
+//        Field adjacentField = adjacentField(adjacentFieldRelativePos, clickedFieldButtonRow, clickedFieldButtonColumn);
+//        QLabel adjacentFieldLabel = adjacentField.getLabel();
+//        QPushButton adjacentFieldButton = adjacentField.getPushButton();
+//
+//        if ( adjacentFieldLabel.text().contentEquals("") || isInteger( adjacentFieldLabel.text() ) )
+//        {
+//            if ( !adjacentFieldButton.text().equals(FieldMarkers.FLAG) )
+//            {
+//                adjacentFieldButton.hide();
+//            }
+//        }
+//        if ( adjacentFieldLabel.text().contentEquals("") && !tempFieldLabelList.contains( adjacentFieldLabel ))
+//        {
+//            tempFieldLabelList.add( adjacentFieldLabel );
+//        }
+//    }
+//
+//    /*
+//        This function is called when an empty field has been clicked.
+//        Uncovers all empty and number-marked fields adjacent to clicked empty field.
+//     */
+//    private void uncoverAdjacentFields()
+//    {
+//        // Statements below check all fields adjacent to a clicked one in search of an empty field or a number-marked field to hide a button covering it
+//        // Left-adjacent field:
+//        if ( clickedFieldButtonColumn > 0 ) // left-side boundary condition
+//        {
+//            uncover(AdjacentFieldRelativePos.LEFT);
+//        }
+//
+//        // Right-adjacent field:
+//        if ( clickedFieldButtonColumn < columnCount-1 ) // right-side boundary condition
+//        {
+//            uncover(AdjacentFieldRelativePos.RIGHT);
+//        }
+//
+//        // Up-adjacent three fields:
+//        if ( clickedFieldButtonRow > 0) // up-side boundary condition
+//        {
+//            // check up-left-adjacent field label:
+//            if ( clickedFieldButtonColumn > 0 ) // up-left-side boundary conditon
+//            {
+//                uncover(AdjacentFieldRelativePos.UP_LEFT);
+//            }
+//
+//            // check up-adjacent field label:
+//            uncover(AdjacentFieldRelativePos.UP);
+//
+//            // check up-right-adjacent field label:
+//            if ( clickedFieldButtonColumn < columnCount-1 ) // up-right-side boundary condition
+//            {
+//                uncover(AdjacentFieldRelativePos.UP_RIGHT);
+//            }
+//        }
+//
+//        // down-adjacent three fields:
+//        if ( clickedFieldButtonRow < rowCount-1 ) // down-side boundary condition
+//        {
+//            // check down-left-adjacent field label:
+//            if ( clickedFieldButtonColumn > 0 ) // down-left-side boundary condition
+//            {
+//                uncover(AdjacentFieldRelativePos.DOWN_LEFT);
+//            }
+//
+//            // check down-adjacent field label:
+//            uncover(AdjacentFieldRelativePos.DOWN);
+//
+//            // check down-right-adjacent field label:
+//            if ( clickedFieldButtonColumn < columnCount-1 ) // down-right-side boundary condition
+//            {
+//                uncover(AdjacentFieldRelativePos.DOWN_RIGHT);
+//            }
+//        }
+//
+//        if ( i < tempFieldLabelList.size() )
+//        {
+//            QLabel label = tempFieldLabelList.get(i);
+//            clickedFieldButtonRow = gridLayout.getItemPosition( gridLayout.indexOf( label ) ).row;
+//            clickedFieldButtonColumn = gridLayout.getItemPosition( gridLayout.indexOf( label ) ).column;
+//            i++;
+//
+//            uncoverAdjacentFields();
+//        }
+//    }
 
 //    private void placeMinesRandomly()
 //    {
@@ -658,100 +673,100 @@ public class MainWidget extends QWidget
 //        }
 //    }
 
-    private void surround(AdjacentFieldRelativePos adjacentFieldRelativePos, int baseFieldRow, int baseFieldColumn)
-    {
-        Field adjacentField = adjacentField(adjacentFieldRelativePos, baseFieldRow, baseFieldColumn);
-        QLabel adjacentFieldLabel = adjacentField.getLabel();
-
-        if ( !adjacentFieldLabel.text().contentEquals(FieldMarkers.MINE) )
-        {
-            String text = adjacentFieldLabel.text();
-            if ( text.contentEquals(FieldMarkers.EMPTY_FIELD) )
-            {
-                adjacentFieldLabel.setText(FieldMarkers.DIGIT_ONE);
-            }
-            else
-            {
-                try
-                {
-                    Integer markerContent = Integer.parseInt(text);
-                    markerContent++;
-                    adjacentFieldLabel.setText( markerContent.toString() );
-                }
-                catch(NumberFormatException e)
-                {
-                    System.out.println(ErrorMessages.NUMBERING_SURROUNDING_FIELDS_ERROR + baseFieldRow + ErrorMessages.SPACE + baseFieldColumn);
-                }
-            }
-        }
-    }
-
-    private void surroundMinesWithMarkers()
-    {
-        QLabel fieldLabel;
-
-        for ( int row = 0; row < rowCount; row++ )
-        {
-            for ( int column = 0; column < columnCount; column++ )
-            {
-                fieldLabel = (QLabel) gridLayout.itemAtPosition(row, column).widget();
-                // If given field contains a mine...
-                if ( fieldLabel.text().contentEquals(FieldMarkers.MINE) )
-                {
-                    // ...then surround it with markers as follows:
-                    // Left-adjacent field:
-                    if ( column > 0 )
-                    {
-                        surround(AdjacentFieldRelativePos.LEFT, row, column);
-                    }
-
-                    // Right-adjacent field:
-                    if ( column < columnCount-1 )
-                    {
-                        surround(AdjacentFieldRelativePos.RIGHT, row, column);
-                    }
-
-                    // Up-adjacent three fields:
-                    if ( row > 0)
-                    {
-                        // Up-left adjacent field:
-                        if ( column > 0 )
-                        {
-                            surround(AdjacentFieldRelativePos.UP_LEFT, row, column);
-                        }
-
-                        // Up-adjacent field:
-                        surround(AdjacentFieldRelativePos.UP, row, column);
-
-                        // Up-right adjacent field:
-                        if ( column < columnCount-1 )
-                        {
-                            surround(AdjacentFieldRelativePos.UP_RIGHT, row, column);
-                        }
-                    }
-
-                    // Down-adjacent three fields:
-                    if ( row < rowCount-1 )
-                    {
-                        // Down-left adjacent field:
-                        if ( column > 0 )
-                        {
-                            surround(AdjacentFieldRelativePos.DOWN_LEFT, row, column);
-                        }
-
-                        // Down-adjacent field:
-                        surround(AdjacentFieldRelativePos.DOWN, row, column);
-
-                        // Down-right adjacent field:
-                        if ( column < columnCount-1 )
-                        {
-                            surround(AdjacentFieldRelativePos.DOWN_RIGHT, row, column);
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    private void surround(AdjacentFieldRelativePos adjacentFieldRelativePos, int baseFieldRow, int baseFieldColumn)
+//    {
+//        Field adjacentField = gameAreaActionsResolver.adjacentField(adjacentFieldRelativePos, baseFieldRow, baseFieldColumn);
+//        QLabel adjacentFieldLabel = adjacentField.getLabel();
+//
+//        if ( !adjacentFieldLabel.text().contentEquals(FieldMarkers.MINE) )
+//        {
+//            String text = adjacentFieldLabel.text();
+//            if ( text.contentEquals(FieldMarkers.EMPTY_FIELD) )
+//            {
+//                adjacentFieldLabel.setText(FieldMarkers.DIGIT_ONE);
+//            }
+//            else
+//            {
+//                try
+//                {
+//                    Integer markerContent = Integer.parseInt(text);
+//                    markerContent++;
+//                    adjacentFieldLabel.setText( markerContent.toString() );
+//                }
+//                catch(NumberFormatException e)
+//                {
+//                    System.out.println(ErrorMessages.NUMBERING_SURROUNDING_FIELDS_ERROR + baseFieldRow + ErrorMessages.SPACE + baseFieldColumn);
+//                }
+//            }
+//        }
+//    }
+//
+//    private void surroundMinesWithMarkers()
+//    {
+//        QLabel fieldLabel;
+//
+//        for ( int row = 0; row < rowCount; row++ )
+//        {
+//            for ( int column = 0; column < columnCount; column++ )
+//            {
+//                fieldLabel = (QLabel) gridLayout.itemAtPosition(row, column).widget();
+//                // If given field contains a mine...
+//                if ( fieldLabel.text().contentEquals(FieldMarkers.MINE) )
+//                {
+//                    // ...then surround it with markers as follows:
+//                    // Left-adjacent field:
+//                    if ( column > 0 )
+//                    {
+//                        surround(AdjacentFieldRelativePos.LEFT, row, column);
+//                    }
+//
+//                    // Right-adjacent field:
+//                    if ( column < columnCount-1 )
+//                    {
+//                        surround(AdjacentFieldRelativePos.RIGHT, row, column);
+//                    }
+//
+//                    // Up-adjacent three fields:
+//                    if ( row > 0)
+//                    {
+//                        // Up-left adjacent field:
+//                        if ( column > 0 )
+//                        {
+//                            surround(AdjacentFieldRelativePos.UP_LEFT, row, column);
+//                        }
+//
+//                        // Up-adjacent field:
+//                        surround(AdjacentFieldRelativePos.UP, row, column);
+//
+//                        // Up-right adjacent field:
+//                        if ( column < columnCount-1 )
+//                        {
+//                            surround(AdjacentFieldRelativePos.UP_RIGHT, row, column);
+//                        }
+//                    }
+//
+//                    // Down-adjacent three fields:
+//                    if ( row < rowCount-1 )
+//                    {
+//                        // Down-left adjacent field:
+//                        if ( column > 0 )
+//                        {
+//                            surround(AdjacentFieldRelativePos.DOWN_LEFT, row, column);
+//                        }
+//
+//                        // Down-adjacent field:
+//                        surround(AdjacentFieldRelativePos.DOWN, row, column);
+//
+//                        // Down-right adjacent field:
+//                        if ( column < columnCount-1 )
+//                        {
+//                            surround(AdjacentFieldRelativePos.DOWN_RIGHT, row, column);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     public void createNewGame()
     {
@@ -832,10 +847,6 @@ public class MainWidget extends QWidget
             }
         }
 
-        gameAreaBuilder = new GameAreaBuilder(this);
-        gameAreaBuilder.placeMinesRandomly();
-        surroundMinesWithMarkers();
-
         // Fill board with buttons
         for ( int row = 0; row < rowCount; row++ )
         {
@@ -850,6 +861,16 @@ public class MainWidget extends QWidget
                 fieldButtons[row][column] = fieldButton;
             }
         }
+
+        // Create a time counter (if enabled - look inside to this function)
+        //timeCounter();
+
+        timeCounter.timeCounter();
+
+        gameAreaBuilder = new GameAreaBuilder(this);
+        gameAreaActionsResolver = new GameAreaActionsResolver(this);
+        gameAreaBuilder.placeMinesRandomly();
+        gameAreaBuilder.surroundMinesWithMarkers();
 
         this.setLayout( gridLayout );
 
@@ -878,9 +899,6 @@ public class MainWidget extends QWidget
 
         mainWindow.setFixedSize( mainWindowSize );
         mainWindow.statusBar.showMessage("");
-
-        // Create a time counter (if enabled - look inside to this function)
-        timeCounter();
     }
 
     public void setRowCount(int lRowCount)
