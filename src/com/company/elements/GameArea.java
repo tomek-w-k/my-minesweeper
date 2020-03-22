@@ -7,7 +7,7 @@ import com.company.dialogs.CustomLevelDialog;
 import com.company.dialogs.PreferencesDialog;
 import com.company.enums.GameModes;
 import com.company.managers.SettingsManager;
-import com.company.tools.GameAreaBuilderEx;
+import com.company.tools.GameAreaBuilder;
 import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.core.QPoint;
 import com.trolltech.qt.core.QTime;
@@ -17,7 +17,7 @@ import com.trolltech.qt.gui.QWidget;
 
 public class GameArea extends QWidget
 {
-    private GameAreaBuilderEx gameAreaBuilder;
+    private GameAreaBuilder gameAreaBuilder;
     private SettingsManager settingsManager;
     private Main mw;
     private GameModes gameMode;
@@ -34,7 +34,7 @@ public class GameArea extends QWidget
     public GameArea(QObject parent)
     {
         mw = (Main)parent;
-        gameAreaBuilder = new GameAreaBuilderEx(this);
+        gameAreaBuilder = new GameAreaBuilder(this);
         settingsManager = new SettingsManager(this);
 
         settingsManager.loadSettingsForGameArea();
@@ -45,7 +45,7 @@ public class GameArea extends QWidget
         newGameActionTriggered();
     }
 
-    public GameAreaBuilderEx getGameAreaBuilder() { return gameAreaBuilder; }
+    public GameAreaBuilder getGameAreaBuilder() { return gameAreaBuilder; }
 
     public SettingsManager getSettingsManager() { return settingsManager; }
 

@@ -9,7 +9,6 @@ import com.company.elements.Field;
 import com.company.elements.FieldButton;
 import com.company.elements.GameArea;
 import com.company.enums.AdjacentFieldRelativePos;
-import com.trolltech.qt.core.QSignalMapper;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QFrame;
@@ -21,7 +20,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class GameAreaBuilderEx
+public class GameAreaBuilder
 {
     // GAME AREA ELEMENTS
 
@@ -49,9 +48,9 @@ public class GameAreaBuilderEx
     private AdjacentFieldResolver adjacentFieldResolver;
 
     // Handles mouse clicking actions on field buttons
-    private GameAreaActionsResolverEx gameAreaActionsResolver;
+    private GameAreaActionsResolver gameAreaActionsResolver;
 
-    private TimeCounterEx timeCounter;
+    private TimeCounter timeCounter;
 
 
     public QGridLayout getGridLayout() { return gridLayout; }
@@ -69,7 +68,7 @@ public class GameAreaBuilderEx
     public Integer getFieldSize() { return fieldSize; }
     public void setFieldSize(Integer lFieldSize) { this.fieldSize = lFieldSize; }
 
-    public GameAreaBuilderEx(GameArea gameArea)
+    public GameAreaBuilder(GameArea gameArea)
     {
         this.gameArea = gameArea;
     }
@@ -123,7 +122,7 @@ public class GameAreaBuilderEx
         gridLayout.setHorizontalSpacing(0);
         gridLayout.setVerticalSpacing(0);
 
-        gameAreaActionsResolver = new GameAreaActionsResolverEx(gameArea, gridLayout, fieldButtons, fieldLabels);
+        gameAreaActionsResolver = new GameAreaActionsResolver(gameArea, gridLayout, fieldButtons, fieldLabels);
 
         // Fill a game area with labels
         for ( int row = 0; row < rowCount; row++ )
@@ -160,7 +159,7 @@ public class GameAreaBuilderEx
 
         if ( gameArea.getTimer() != null ) gameArea.getTimer().disconnect();
 
-        timeCounter = new TimeCounterEx(gameArea);
+        timeCounter = new TimeCounter(gameArea);
         timeCounter.countTime();
 
         placeMinesRandomly();

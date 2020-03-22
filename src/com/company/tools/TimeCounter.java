@@ -6,7 +6,7 @@ import com.trolltech.qt.core.QTime;
 import com.trolltech.qt.core.QTimer;
 
 
-public class TimeCounterEx extends QObject
+public class TimeCounter extends QObject
 {
     private GameArea gameArea;
 
@@ -15,7 +15,7 @@ public class TimeCounterEx extends QObject
     private Boolean enableTimeCounting;
 
 
-    public TimeCounterEx(GameArea gameArea)
+    public TimeCounter(GameArea gameArea)
     {
         this.gameArea = gameArea;
         this.enableTimeCounting = gameArea.getEnableTimeCounting();

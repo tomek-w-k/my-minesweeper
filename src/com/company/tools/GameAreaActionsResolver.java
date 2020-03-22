@@ -18,7 +18,7 @@ import java.util.List;
 import static com.company.converters.NumberParser.isInteger;
 
 
-public class GameAreaActionsResolverEx extends QObject
+public class GameAreaActionsResolver extends QObject
 {
     private Integer clickedFieldButtonRow;
     private Integer clickedFieldButtonColumn;
@@ -44,7 +44,7 @@ public class GameAreaActionsResolverEx extends QObject
     private BestResultSaver bestResultSaver;
 
 
-    public GameAreaActionsResolverEx(GameArea gameArea, QGridLayout gridLayout, FieldButton[][] fieldButtons, QLabel[][] fieldLabels)
+    public GameAreaActionsResolver(GameArea gameArea, QGridLayout gridLayout, FieldButton[][] fieldButtons, QLabel[][] fieldLabels)
     {
         this.gameArea = gameArea;
         this.gridLayout = gridLayout;
