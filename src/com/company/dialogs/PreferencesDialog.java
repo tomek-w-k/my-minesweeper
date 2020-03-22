@@ -3,6 +3,7 @@ package com.company.dialogs;
 import com.company.MainWidget;
 import com.company.constants.FieldSizes;
 import com.company.constants.Stylesheets;
+import com.company.elements.GameArea;
 import com.company.managers.SettingsManager;
 import com.trolltech.qt.core.QEvent;
 import com.trolltech.qt.core.Qt;
@@ -24,7 +25,7 @@ public class PreferencesDialog extends QDialog
     public static final int MINES_SPIN_BOX_LAYOUT_COLUMN = 1;
 
     // Layouts and widgets
-    MainWidget parentWidget;
+    GameArea gameArea;
 
     QStackedLayout preferencesStackedLayout;
 
@@ -84,12 +85,14 @@ public class PreferencesDialog extends QDialog
     QLabel otherPreferencesPageContentLabel = new QLabel(tr("Other settings"), this);
 
     // Settings manager
-    SettingsManager settingsManager = new SettingsManager(this);
+    SettingsManager settingsManager;
 
     // - - - Constructor - - -
-    public PreferencesDialog(QWidget parent)
+    public PreferencesDialog(QWidget gameArea)
     {
         this.setWindowTitle(tr("Preferences - MyMinesweeper"));
+
+        this.gameArea = (GameArea) gameArea;
 
         createPreferencesButtonGroupWidget();
 
@@ -98,7 +101,8 @@ public class PreferencesDialog extends QDialog
         createOtherPreferencesPageWidget();
 
         packOnLayouts();
-        //loadSettings();
+
+        settingsManager = new SettingsManager(this);
         settingsManager.loadSettingsForPreferencesDialog();
     }
 
@@ -364,10 +368,10 @@ public class PreferencesDialog extends QDialog
         this.setLayout(mainLayout);
     }
 
-    public void setParentWidget(MainWidget lMw)
-    {
-        this.parentWidget = lMw;
-    }
+//    public void setParentWidget(GameArea gameArea)
+//    {
+//        this.parentWidget = gameArea;
+//    }
 
     // - - - Slots - - -
     private void customModeRadioButtonToggled(boolean toggled)
@@ -393,18 +397,16 @@ public class PreferencesDialog extends QDialog
     private void okPushButtonClicked()
     {
         settingsManager.saveSettingsForPreferencesDialog();
-
-        parentWidget.settingsManager.loadSettingsForMainWidget();
-        parentWidget.newGameActionTriggered();
+        gameArea.getSettingsManager().loadSettingsForGameArea();
+        gameArea.newGameActionTriggered();
         this.close();
     }
 
     private void applyPushButtonClicked()
     {
         settingsManager.saveSettingsForPreferencesDialog();
-
-        parentWidget.settingsManager.loadSettingsForMainWidget();
-        parentWidget.newGameActionTriggered();
+        gameArea.getSettingsManager().loadSettingsForGameArea();
+        gameArea.newGameActionTriggered();
     }
 
     private void cancelPushButtonClicked()

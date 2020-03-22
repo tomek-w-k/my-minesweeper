@@ -4,6 +4,7 @@ import com.company.MainWidget;
 import com.company.dialogs.PreferencesDialog;
 import com.company.constants.FieldSizes;
 import com.company.constants.SettingsKeys;
+import com.company.elements.GameArea;
 import com.company.enums.GameModes;
 import com.company.enums.Languages;
 import com.trolltech.qt.core.QSettings;
@@ -196,6 +197,55 @@ public class SettingsManager
         // TEST - language settings
         String language = settings.value(SettingsKeys.LANGUAGE, Languages.ENGLISH).toString();
         mainWidget.mw.changeTranslator(language);
+
+        settings.endGroup();
+    }
+
+    public void loadSettingsForGameArea()
+    {
+        GameArea gameArea = (GameArea)targetWidget;
+
+        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
+        settings.beginGroup(SettingsKeys.GAME_PARAMETERS_GROUP);
+
+        // Set field size
+        String fieldSize = settings.value(SettingsKeys.FIELD_SIZE, FieldSizes.DEFAULT_FIELD_SIZE).toString();
+        gameArea.getGameAreaBuilder().setFieldSize( Integer.parseInt(fieldSize) );
+
+        // Time counting and save best result
+        String enableTimeCounting = settings.value(SettingsKeys.ENABLE_TIME_COUNTING, true).toString();
+        String saveBestResult = settings.value(SettingsKeys.SAVE_BEST_RESULT, true).toString();
+        gameArea.setEnableTimeCounting( Boolean.parseBoolean( enableTimeCounting ) );
+        gameArea.setSaveBestResult( Boolean.parseBoolean( saveBestResult ) );
+
+        // Game mode (default: BASIC_MODE)
+        GameModes gameMode = (GameModes) settings.value(SettingsKeys.GAME_MODE, GameModes.BASIC_MODE);
+
+        switch ( gameMode )
+        {
+            case BASIC_MODE:
+                gameArea.setGameMode(GameModes.BASIC_MODE);
+                break;
+            case MEDIUM_MODE:
+                gameArea.setGameMode(GameModes.MEDIUM_MODE);
+                break;
+            case ADVANCED_MODE:
+                gameArea.setGameMode(GameModes.ADVANCED_MODE);
+                break;
+            case EXPERT_MODE:
+                gameArea.setGameMode(GameModes.EXPERT_MODE);
+                break;
+            case CUSTOM_MODE:
+                gameArea.setGameMode(GameModes.CUSTOM_MODE);
+                break;
+        }
+        gameArea.getGameAreaBuilder().setRowCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_ROW_COUNT, "10").toString() ) );
+        gameArea.getGameAreaBuilder().setColumnCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_COLUMN_COUNT, "10").toString() ) );
+        gameArea.getGameAreaBuilder().setMinesCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_MINES_COUNT, "25").toString() ) );
+
+        // TEST - language settings
+        String language = settings.value(SettingsKeys.LANGUAGE, Languages.ENGLISH).toString();
+        gameArea.getMainWindow().changeTranslator(language);
 
         settings.endGroup();
     }

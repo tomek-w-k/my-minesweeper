@@ -1,20 +1,15 @@
 package com.company.tools;
 
-import com.company.Main;
 import com.company.MainWidget;
 import com.company.constants.ErrorMessages;
 import com.company.constants.FieldMarkers;
-import com.company.constants.MiscParams;
 import com.company.constants.Stylesheets;
 import com.company.elements.Field;
-import com.company.elements.MButton;
+import com.company.elements.FieldButton;
 import com.company.enums.AdjacentFieldRelativePos;
 import com.trolltech.qt.core.QSignalMapper;
-import com.trolltech.qt.core.QSize;
-import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.*;
 
-import java.sql.Time;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
@@ -27,14 +22,14 @@ public class GameAreaBuilder
 
     private Integer rowCount, columnCount, minesCount;
     private QGridLayout gridLayout;
-    private MButton[][] fieldButtons;
+    private FieldButton[][] fieldButtons;
     private QLabel[][] fieldLabels;
     private QSignalMapper signalMapper;
     private Integer markedMinesCounter;
     private Integer properlyMarkedMinesCounter;
     private QLabel fieldLabel;
     private Integer fieldSize;
-    private MButton fieldButton;
+    private FieldButton fieldButton;
 
     public GameAreaBuilder(QWidget targetWidget)
     {

@@ -1,13 +1,14 @@
 package com.company;
 
-import com.company.constants.*;
+import com.company.constants.GameModeAreaParams;
+import com.company.constants.MiscParams;
+import com.company.constants.SettingsKeys;
+import com.company.constants.Stylesheets;
 import com.company.dialogs.BestResultsDialog;
 import com.company.dialogs.CustomLevelDialog;
 import com.company.dialogs.PreferencesDialog;
 import com.company.dialogs.SaveBestResultDialog;
-import com.company.elements.Field;
-import com.company.elements.MButton;
-import com.company.enums.AdjacentFieldRelativePos;
+import com.company.elements.FieldButton;
 import com.company.enums.GameModes;
 import com.company.managers.SettingsManager;
 import com.company.tools.GameAreaActionsResolver;
@@ -16,7 +17,8 @@ import com.company.tools.TimeCounter;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainWidget extends QWidget
 {
@@ -29,9 +31,9 @@ public class MainWidget extends QWidget
     public Signal1<QObject> clicked = new Signal1<QObject>();
     public QSignalMapper signalMapper;
     public QGridLayout gridLayout;
-    public MButton fieldButton;
+    public FieldButton fieldButton;
     public QLabel fieldLabel;
-    public MButton[][] fieldButtons;
+    public FieldButton[][] fieldButtons;
     public QLabel[][] fieldLabels;
 
     // Clicked field coordinates on a gridlayout:
@@ -45,7 +47,7 @@ public class MainWidget extends QWidget
     public ArrayList<QLabel> tempFieldLabelList = new ArrayList<QLabel>();
 
     // Clicked field button:
-    public MButton button;
+    public FieldButton button;
 
     // Number of rows, columns and mines for entire area:
     public Integer rowCount, columnCount, minesCount;
@@ -818,7 +820,7 @@ public class MainWidget extends QWidget
         properlyMarkedMinesCounter = 0;
 
         // Create new arrays for field buttons and labels:
-        fieldButtons = new MButton[rowCount][columnCount];
+        fieldButtons = new FieldButton[rowCount][columnCount];
         fieldLabels = new QLabel[rowCount][columnCount];
 
         // Create a new grid layout:
@@ -852,7 +854,7 @@ public class MainWidget extends QWidget
         {
             for ( int column = 0; column < columnCount; column++ )
             {
-                fieldButton = new MButton( "", this );
+                fieldButton = new FieldButton( "", this );
                 fieldButton.setMinimumSize(new QSize(fieldSize, fieldSize));
                 fieldButton.setMaximumSize(new QSize(fieldSize, fieldSize));
                 fieldButton.clicked.connect( this, "clicked()" );
@@ -1013,7 +1015,7 @@ public class MainWidget extends QWidget
     {
         Main mw = (Main) this.parent;
         PreferencesDialog preferencesDialog = new PreferencesDialog(this);
-        preferencesDialog.setParentWidget(this);
+        //preferencesDialog.setParentWidget(this);
 
         // Calculate window position coordinates in order to place it center-aligned with reference to main window
         QPoint mainWindowCenterPoint = new QPoint( mw.width()/2 + mw.x(), mw.height()/2 + mw.y() );

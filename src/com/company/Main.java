@@ -3,6 +3,7 @@ package com.company;
 import com.company.constants.PathStrings;
 import com.company.constants.Shortcuts;
 import com.company.constants.Stylesheets;
+import com.company.elements.GameArea;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
 
@@ -44,7 +45,30 @@ public class Main extends QMainWindow
 
     QLabel timeCounterLabel = new QLabel("00:00:00");
 
-    MainWidget mainWidget = new MainWidget(this);
+    //MainWidget mainWidget = new MainWidget(this);
+    GameArea mainWidget = new GameArea(this);
+
+
+    public QAction getNewGameAction() { return newGameAction; }
+    public void setNewGameAction(QAction newGameAction) { this.newGameAction = newGameAction; }
+
+    public QAction getBasicAction() { return basicAction; }
+    public void setBasicAction(QAction basicAction) { this.basicAction = basicAction; }
+
+    public QAction getMediumAction() { return mediumAction; }
+    public void setMediumAction(QAction mediumAction) { this.mediumAction = mediumAction; }
+
+    public QAction getAdvancedAction() { return advancedAction; }
+    public void setAdvancedAction(QAction advancedAction) { this.advancedAction = advancedAction; }
+
+    public QAction getExpertAction() { return expertAction; }
+    public void setExpertAction(QAction expertAction) { this.expertAction = expertAction; }
+
+    public QAction getCustomAction() { return customAction; }
+    public void setCustomAction(QAction customAction) { this.customAction = customAction; }
+
+    public QAction getExitAction() { return exitAction; }
+    public void setExitAction(QAction exitAction) { this.exitAction = exitAction; }
 
 
     private void connectActionsToSlots()
