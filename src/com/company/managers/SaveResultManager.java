@@ -1,4 +1,4 @@
-package com.company.tools;
+package com.company.managers;
 
 import com.company.constants.SettingsKeys;
 import com.company.dialogs.SaveBestResultDialog;
@@ -11,13 +11,13 @@ import com.trolltech.qt.core.QTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BestResultSaver
+public class SaveResultManager
 {
     private static final int ELAPSED_TIME_COLUMN = 1;
     private GameArea gameArea;
 
 
-    public BestResultSaver(GameArea gameArea)
+    public SaveResultManager(GameArea gameArea)
     {
         this.gameArea = gameArea;
     }

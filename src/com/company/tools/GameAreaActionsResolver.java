@@ -1,12 +1,12 @@
 package com.company.tools;
 
-import com.company.Main;
 import com.company.constants.FieldMarkers;
 import com.company.constants.Stylesheets;
 import com.company.elements.Field;
 import com.company.elements.FieldButton;
 import com.company.elements.GameArea;
 import com.company.enums.AdjacentFieldRelativePos;
+import com.company.managers.SaveResultManager;
 import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QLabel;
@@ -41,7 +41,7 @@ public class GameAreaActionsResolver extends QObject
     // Reference to the game area
     private GameArea gameArea;
 
-    private BestResultSaver bestResultSaver;
+    private SaveResultManager saveResultManager;
 
 
     public GameAreaActionsResolver(GameArea gameArea, QGridLayout gridLayout, FieldButton[][] fieldButtons, QLabel[][] fieldLabels)
@@ -265,7 +265,6 @@ public class GameAreaActionsResolver extends QObject
         if ( properlyMarkedMinesCounter == gameArea.getGameAreaBuilder().getMinesCount() )
         {
             // Stop the time counter
-            System.out.println(gameArea.getEnableTimeCounting());
             if ( gameArea.getEnableTimeCounting() )
             {
                 gameArea.getTimer().stop();
@@ -300,9 +299,8 @@ public class GameAreaActionsResolver extends QObject
 
             if ( gameArea.getSaveBestResult() )
             {
-                bestResultSaver = new BestResultSaver(gameArea);
-                System.out.println(gameArea.getTime());
-                bestResultSaver.saveBestResult();
+                saveResultManager = new SaveResultManager(gameArea);
+                saveResultManager.saveBestResult();
             }
         }
     }
