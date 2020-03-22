@@ -45,7 +45,6 @@ public class Main extends QMainWindow
 
     QLabel timeCounterLabel = new QLabel("00:00:00");
 
-    //MainWidget mainWidget = new MainWidget(this);
     GameArea mainWidget = new GameArea(this);
 
 

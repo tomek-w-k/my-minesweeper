@@ -12,9 +12,8 @@ import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.core.QPoint;
 import com.trolltech.qt.core.QTime;
 import com.trolltech.qt.core.QTimer;
-import com.trolltech.qt.gui.QGridLayout;
-import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QWidget;
+
 
 public class GameArea extends QWidget
 {

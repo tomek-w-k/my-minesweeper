@@ -1,6 +1,5 @@
 package com.company.managers;
 
-import com.company.MainWidget;
 import com.company.dialogs.PreferencesDialog;
 import com.company.constants.FieldSizes;
 import com.company.constants.SettingsKeys;
@@ -145,58 +144,6 @@ public class SettingsManager
             settings.setValue(SettingsKeys.ENABLE_TIME_COUNTING, false);
             settings.setValue(SettingsKeys.SAVE_BEST_RESULT, false);
         }
-
-        settings.endGroup();
-    }
-
-    public void loadSettingsForMainWidget()
-    {
-        MainWidget mainWidget = (MainWidget)targetWidget;
-
-        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
-        settings.beginGroup(SettingsKeys.GAME_PARAMETERS_GROUP);
-
-        // Set field size
-        String fieldSize = settings.value(SettingsKeys.FIELD_SIZE, FieldSizes.DEFAULT_FIELD_SIZE).toString();
-        mainWidget.setFieldSize( Integer.parseInt(fieldSize) );
-
-        // Time counting and save best result
-        String enableTimeCounting = settings.value(SettingsKeys.ENABLE_TIME_COUNTING, true).toString();
-        String saveBestResult = settings.value(SettingsKeys.SAVE_BEST_RESULT, true).toString();
-        mainWidget.enableTimeCounting = Boolean.parseBoolean( enableTimeCounting );
-        mainWidget.saveBestResult = Boolean.parseBoolean( saveBestResult );
-
-        // Game mode (default: BASIC_MODE)
-        GameModes gameMode = (GameModes) settings.value(SettingsKeys.GAME_MODE, GameModes.BASIC_MODE);
-
-        // The reason this function is called here is explained in it's description below
-        mainWidget.createActionGroups();
-
-        switch ( gameMode )
-        {
-            case BASIC_MODE:
-                mainWidget.initialGameMode = GameModes.BASIC_MODE;
-                break;
-            case MEDIUM_MODE:
-                mainWidget.initialGameMode = GameModes.MEDIUM_MODE;
-                break;
-            case ADVANCED_MODE:
-                mainWidget.initialGameMode = GameModes.ADVANCED_MODE;
-                break;
-            case EXPERT_MODE:
-                mainWidget.initialGameMode = GameModes.EXPERT_MODE;
-                break;
-            case CUSTOM_MODE:
-                mainWidget.initialGameMode = GameModes.CUSTOM_MODE;
-                break;
-        }
-        mainWidget.setRowCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_ROW_COUNT, "10").toString() ) );
-        mainWidget.setColumnCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_COLUMN_COUNT, "10").toString() ) );
-        mainWidget.setMinesCount( Integer.parseInt( settings.value(SettingsKeys.CUSTOM_MINES_COUNT, "25").toString() ) );
-
-        // TEST - language settings
-        String language = settings.value(SettingsKeys.LANGUAGE, Languages.ENGLISH).toString();
-        mainWidget.mw.changeTranslator(language);
 
         settings.endGroup();
     }
