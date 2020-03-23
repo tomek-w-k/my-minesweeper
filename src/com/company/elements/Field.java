@@ -2,18 +2,29 @@ package com.company.elements;
 
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPushButton;
+import com.trolltech.qt.gui.QWidget;
 
 public class Field
 {
+    private QWidget parent;
+
     private QLabel label;
-    private QPushButton pushButton;
+    private FieldButton fieldButton;
 
     public Field() {}
 
-    public Field(QLabel label, QPushButton pushButton)
+    public Field(QWidget parent)
+    {
+        this.parent = parent;
+
+        this.label = new QLabel("");
+        this.fieldButton = new FieldButton("", parent);
+    }
+
+    public Field(QLabel label, FieldButton fieldButton)
     {
         this.label = label;
-        this.pushButton = pushButton;
+        this.fieldButton = fieldButton;
     }
 
     public QLabel getLabel()
@@ -26,13 +37,10 @@ public class Field
         this.label = label;
     }
 
-    public QPushButton getPushButton()
+    public FieldButton getFieldButton()
     {
-        return pushButton;
+        return fieldButton;
     }
 
-    public void setPushButton(QPushButton pushButton)
-    {
-        this.pushButton = pushButton;
-    }
+    public void setFieldButton(FieldButton fieldButton) { this.fieldButton = fieldButton; }
 }

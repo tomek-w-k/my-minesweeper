@@ -22,12 +22,10 @@ public class GameAreaActionsResolver extends QObject
 {
     private Integer clickedFieldButtonRow;
     private Integer clickedFieldButtonColumn;
-
     private QLabel clickedFieldLabel;
 
     private QGridLayout gridLayout;
-    private FieldButton[][] fieldButtons;
-    private QLabel[][] fieldLabels;
+    private Field[][] fields;
 
     private Integer markedMinesCounter = 0;
     private Integer properlyMarkedMinesCounter = 0;
@@ -38,25 +36,21 @@ public class GameAreaActionsResolver extends QObject
 
     private List<QLabel> tempFieldLabelList;
 
-    // Reference to the game area
     private GameArea gameArea;
 
     private SaveResultManager saveResultManager;
 
 
-    public GameAreaActionsResolver(GameArea gameArea, QGridLayout gridLayout, FieldButton[][] fieldButtons, QLabel[][] fieldLabels)
+    public GameAreaActionsResolver(GameArea gameArea, QGridLayout gridLayout, Field[][] fields)
     {
         this.gameArea = gameArea;
         this.gridLayout = gridLayout;
 
-        this.fieldButtons = fieldButtons;
-        this.fieldLabels = fieldLabels;
+        this.fields = fields;
 
-        adjacentFieldResolver = new AdjacentFieldResolver(fieldButtons, fieldLabels);
-
+        adjacentFieldResolver = new AdjacentFieldResolver(fields);
         tempFieldLabelList = new ArrayList<QLabel>();
     }
-
 
     /*
         This function checks if the given adjacent field is empty or has a digit marker. If so - uncovers the field.
@@ -65,7 +59,7 @@ public class GameAreaActionsResolver extends QObject
     {
         Field adjacentField = adjacentFieldResolver.adjacentField(adjacentFieldRelativePos, clickedFieldButtonRow, clickedFieldButtonColumn);
         QLabel adjacentFieldLabel = adjacentField.getLabel();
-        QPushButton adjacentFieldButton = adjacentField.getPushButton();
+        FieldButton adjacentFieldButton = adjacentField.getFieldButton();
 
         if ( adjacentFieldLabel.text().contentEquals("") || isInteger( adjacentFieldLabel.text() ) )
         {
@@ -163,10 +157,7 @@ public class GameAreaActionsResolver extends QObject
         clickedFieldLabel = (QLabel) gridLayout.itemAtPosition(clickedFieldButtonRow, clickedFieldButtonColumn).widget();
 
         // If clicked field is marked then do nothing:
-        if ( clickedFieldButton.text().equals(FieldMarkers.FLAG) )
-        {
-            return;
-        }
+        if ( clickedFieldButton.text().equals(FieldMarkers.FLAG) ) return;
 
         // If clicked field label is an empty field:
         if ( clickedFieldLabel.text().contentEquals(""))
@@ -175,14 +166,10 @@ public class GameAreaActionsResolver extends QObject
             uncoverAdjacentFields();
 
             tempFieldLabelList.clear();
-            //System.out.println("Iterations: " + i);
         }
 
         // If clicked field label is marked by a number:
-        if ( isInteger( clickedFieldLabel.text() ) )
-        {
-            clickedFieldButton.hide();
-        }
+        if ( isInteger( clickedFieldLabel.text() ) ) clickedFieldButton.hide();
 
         // If clicked field label contains a mine ( GAME OVER ):
         if ( clickedFieldLabel.text().contentEquals( FieldMarkers.MINE ) )
@@ -204,24 +191,27 @@ public class GameAreaActionsResolver extends QObject
             {
                 for ( int column = 0; column < gridLayout.columnCount(); column++ )
                 {
+                    var fieldLabel = fields[row][column].getLabel();
+                    var fieldButton = fields[row][column].getFieldButton();
+
                     // If under a given field button mine is located...
-                    if ( fieldLabels[row][column].text().contentEquals(FieldMarkers.MINE) )
+                    if ( fieldLabel.text().contentEquals(FieldMarkers.MINE) )
                     {
                         // ...then uncover this field,
-                        fieldButtons[row][column].hide();
+                        fieldButton.hide();
                     }
                     else // if there's something else
                     {
                         // ...then make button inactive to avoid clicking it
-                        fieldButtons[row][column].setDisabled(true);
+                        fieldButton.setDisabled(true);
                     }
 
                     // Fields which has been marked incorrectly as mined fields - sign them with "E" letter
-                    if ( fieldButtons[row][column].text().equals(FieldMarkers.FLAG) && !fieldLabels[row][column].text().equals(FieldMarkers.MINE) )
+                    if ( fieldButton.text().equals(FieldMarkers.FLAG) && !fieldLabel.text().equals(FieldMarkers.MINE) )
                     {
-                        fieldButtons[row][column].setText(FieldMarkers.ERROR);
-                        fieldButtons[row][column].setObjectName(Stylesheets.M_BUTTON);
-                        fieldButtons[row][column].setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
+                        fieldButton.setText(FieldMarkers.ERROR);
+                        fieldButton.setObjectName(Stylesheets.M_BUTTON);
+                        fieldButton.setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
                     }
                 }
             }
@@ -275,23 +265,22 @@ public class GameAreaActionsResolver extends QObject
             {
                 for ( int column = 0; column < gridLayout.columnCount(); column++ )
                 {
+                    var fieldLabel = fields[row][column].getLabel();
+                    var fieldButton = fields[row][column].getFieldButton();
+
                     // Make all field buttons disabled
-                    fieldButtons[row][column].setDisabled(true);
+                    fieldButton.setDisabled(true);
 
                     // Fields which has been marked incorrectly as mined fields - sign them with "E" letter
-                    if ( fieldButtons[row][column].text().equals(FieldMarkers.FLAG) && !fieldLabels[row][column].text().equals(FieldMarkers.MINE) )
+                    if ( fieldButton.text().equals(FieldMarkers.FLAG) && !fieldLabel.text().equals(FieldMarkers.MINE) )
                     {
-                        fieldButtons[row][column].setText(FieldMarkers.ERROR);
-                        //clickedFieldLabel.setStyleSheet("#myObject { border: 1px solid black; background-color: red; }");
-                        fieldButtons[row][column].setObjectName(Stylesheets.M_BUTTON);
-                        fieldButtons[row][column].setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
+                        fieldButton.setText(FieldMarkers.ERROR);
+                        fieldButton.setObjectName(Stylesheets.M_BUTTON);
+                        fieldButton.setStyleSheet(Stylesheets.INCORRECT_MARKED_FIELD);
                     }
 
                     // Hide buttons located over empty fields
-                    if ( fieldButtons[row][column].text().equals("") )
-                    {
-                        fieldButtons[row][column].hide();
-                    }
+                    if ( fieldButton.text().equals("") ) fieldButton.hide();
                 }
             }
 

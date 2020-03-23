@@ -10,15 +10,15 @@ public class GameModeAreaParams
     // MEDIUM MODE
     public static final int MEDIUM_MODE_ROW_COUNT = 20;
     public static final int MEDIUM_MODE_COLUMN_COUNT = 20;
-    public static final int MEDIUM_MODE_MINES_COUNT = 80; //80
+    public static final int MEDIUM_MODE_MINES_COUNT = 60; //80
 
     // ADVANCED MODE
     public static final int ADVANCED_MODE_ROW_COUNT = 30;
     public static final int ADVANCED_MODE_COLUMN_COUNT = 30;
-    public static final int ADVANCED_MODE_MINES_COUNT = 150; //150
+    public static final int ADVANCED_MODE_MINES_COUNT = 130; //150
 
     // EXPERT MODE
     public static final int EXPERT_MODE_ROW_COUNT = 30;
     public static final int EXPERT_MODE_COLUMN_COUNT = 40;
-    public static final int EXPERT_MODE_MINES_COUNT = 250; //250
+    public static final int EXPERT_MODE_MINES_COUNT = 200; //250
 }

@@ -8,13 +8,11 @@ import com.trolltech.qt.gui.QPushButton;
 
 public class AdjacentFieldResolver
 {
-    private FieldButton[][] fieldButtons;
-    private QLabel[][] fieldLabels;
+    private Field[][] fields;
 
-    public AdjacentFieldResolver(FieldButton[][] fieldButtons, QLabel[][] fieldLabels)
+    public AdjacentFieldResolver(Field[][] fields)
     {
-        this.fieldButtons = fieldButtons;
-        this.fieldLabels = fieldLabels;
+        this.fields = fields;
     }
 
     /*
@@ -27,36 +25,36 @@ public class AdjacentFieldResolver
         switch (adjacentFieldRelativePos)
         {
             case UP:
-                field.setLabel( fieldLabels[baseFieldRow - 1][baseFieldColumn] );
-                field.setPushButton( fieldButtons[baseFieldRow - 1][baseFieldColumn] );
+                field.setLabel( fields[baseFieldRow - 1][baseFieldColumn].getLabel() );
+                field.setFieldButton( fields[baseFieldRow - 1][baseFieldColumn].getFieldButton() );
                 break;
             case DOWN:
-                field.setLabel( fieldLabels[baseFieldRow + 1][baseFieldColumn] );
-                field.setPushButton( fieldButtons[baseFieldRow + 1][baseFieldColumn] );
+                field.setLabel( fields[baseFieldRow + 1][baseFieldColumn].getLabel() );
+                field.setFieldButton( fields[baseFieldRow + 1][baseFieldColumn].getFieldButton() );
                 break;
             case LEFT:
-                field.setLabel( fieldLabels[baseFieldRow][baseFieldColumn - 1] );
-                field.setPushButton( fieldButtons[baseFieldRow][baseFieldColumn - 1] );
+                field.setLabel( fields[baseFieldRow][baseFieldColumn - 1].getLabel() );
+                field.setFieldButton( fields[baseFieldRow][baseFieldColumn - 1].getFieldButton() );
                 break;
             case RIGHT:
-                field.setLabel( fieldLabels[baseFieldRow][baseFieldColumn + 1] );
-                field.setPushButton( fieldButtons[baseFieldRow][baseFieldColumn + 1] );
+                field.setLabel( fields[baseFieldRow][baseFieldColumn + 1].getLabel() );
+                field.setFieldButton( fields[baseFieldRow][baseFieldColumn + 1].getFieldButton() );
                 break;
             case UP_LEFT:
-                field.setLabel( fieldLabels[baseFieldRow - 1][baseFieldColumn - 1] );
-                field.setPushButton( fieldButtons[baseFieldRow - 1][baseFieldColumn - 1] );
+                field.setLabel( fields[baseFieldRow - 1][baseFieldColumn - 1].getLabel() );
+                field.setFieldButton( fields[baseFieldRow - 1][baseFieldColumn - 1].getFieldButton() );
                 break;
             case UP_RIGHT:
-                field.setLabel( fieldLabels[baseFieldRow - 1][baseFieldColumn + 1] );
-                field.setPushButton( fieldButtons[baseFieldRow - 1][baseFieldColumn + 1] );
+                field.setLabel( fields[baseFieldRow - 1][baseFieldColumn + 1].getLabel() );
+                field.setFieldButton( fields[baseFieldRow - 1][baseFieldColumn + 1].getFieldButton() );
                 break;
             case DOWN_LEFT:
-                field.setLabel( fieldLabels[baseFieldRow + 1][baseFieldColumn - 1] );
-                field.setPushButton( fieldButtons[baseFieldRow + 1][baseFieldColumn - 1] );
+                field.setLabel( fields[baseFieldRow + 1][baseFieldColumn - 1].getLabel() );
+                field.setFieldButton( fields[baseFieldRow + 1][baseFieldColumn - 1].getFieldButton() );
                 break;
             case DOWN_RIGHT:
-                field.setLabel( fieldLabels[baseFieldRow + 1][baseFieldColumn + 1] );
-                field.setPushButton( fieldButtons[baseFieldRow + 1][baseFieldColumn + 1] );
+                field.setLabel( fields[baseFieldRow + 1][baseFieldColumn + 1].getLabel() );
+                field.setFieldButton( fields[baseFieldRow + 1][baseFieldColumn + 1].getFieldButton() );
                 break;
         }
         return field;

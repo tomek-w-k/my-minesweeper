@@ -6,7 +6,6 @@ import com.company.constants.FieldMarkers;
 import com.company.constants.MiscParams;
 import com.company.constants.Stylesheets;
 import com.company.elements.Field;
-import com.company.elements.FieldButton;
 import com.company.elements.GameArea;
 import com.company.enums.AdjacentFieldRelativePos;
 import com.trolltech.qt.core.QSize;
@@ -14,7 +13,6 @@ import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QFrame;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QPushButton;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -27,13 +25,8 @@ public class GameAreaBuilder
     // Grid layout - holds all Fields
     public QGridLayout gridLayout;
 
-    // TEMPORARY (to replace with Field class): field button and field label
-    public FieldButton fieldButton;
-    public QLabel fieldLabel;
-
-    // TEMPORARY (to replace with Field[][] container): containers for field buttons and labels
-    public FieldButton[][] fieldButtons;
-    public QLabel[][] fieldLabels;
+    // Fields
+    private Field[][] fields;
 
     // Number of rows, columns and mines for entire area:
     public Integer rowCount, columnCount, minesCount;
@@ -75,46 +68,28 @@ public class GameAreaBuilder
 
     public void createNewGame()
     {
-        // First it's necessary to remove some elements of an old client area
-        // Delete old buttons:
-        if ( fieldButtons != null )
+        // First it's necessary to remove an old game area and its elements
+        // Delete old fields:
+        if ( fields != null )
         {
-            for ( QPushButton buttons[] : fieldButtons )
+            for ( Field fieldRow[] : fields )
             {
-                for ( QPushButton button : buttons )
+                for ( Field field : fieldRow )
                 {
-                    if ( button != null )
+                    if ( field != null )
                     {
-                        button.dispose();
-                    }
-                }
-            }
-        }
-
-        // Delete old labels:
-        if ( fieldLabels != null )
-        {
-            for ( QLabel labels[] : fieldLabels )
-            {
-                for ( QLabel label : labels )
-                {
-                    if ( label != null )
-                    {
-                        label.dispose();
+                        field.getLabel().dispose();
+                        field.getFieldButton().dispose();
                     }
                 }
             }
         }
 
         // Delete an old grid layout:
-        if ( gridLayout != null )
-        {
-            gridLayout.dispose();
-        }
+        if ( gridLayout != null ) gridLayout.dispose();
 
-        // Create new arrays for field buttons and labels:
-        fieldButtons = new FieldButton[rowCount][columnCount];
-        fieldLabels = new QLabel[rowCount][columnCount];
+        // Create an array for fields:
+        fields = new Field[rowCount][columnCount];
 
         // Create a new grid layout:
         gridLayout = new QGridLayout();
@@ -122,38 +97,30 @@ public class GameAreaBuilder
         gridLayout.setHorizontalSpacing(0);
         gridLayout.setVerticalSpacing(0);
 
-        gameAreaActionsResolver = new GameAreaActionsResolver(gameArea, gridLayout, fieldButtons, fieldLabels);
+        gameAreaActionsResolver = new GameAreaActionsResolver(gameArea, gridLayout, fields);
 
-        // Fill a game area with labels
+        // Fill a game area with fields
         for ( int row = 0; row < rowCount; row++ )
         {
             for ( int column = 0; column < columnCount; column++ )
             {
-                fieldLabel = new QLabel("");
-                fieldLabel.setMinimumSize( new QSize(fieldSize, fieldSize ) );
-                fieldLabel.setMaximumSize( new QSize(fieldSize, fieldSize) );
-                fieldLabel.setAlignment(Qt.AlignmentFlag.AlignCenter);
-                fieldLabel.setFrameShape(QFrame.Shape.Box);
-                fieldLabel.setObjectName(Stylesheets.M_OBJECT);
-                fieldLabel.setStyleSheet(Stylesheets.EMPTY_UNCOVERED_FIELD);
-                gridLayout.addWidget( fieldLabel, row, column );
-                fieldLabels[row][column] = fieldLabel;
-            }
-        }
+                var field = new Field(gameArea);
 
-        // Fill a game area with buttons
-        for ( int row = 0; row < rowCount; row++ )
-        {
-            for ( int column = 0; column < columnCount; column++ )
-            {
-                fieldButton = new FieldButton( "", gameArea );
-                fieldButton.setMinimumSize(new QSize(fieldSize, fieldSize));
-                fieldButton.setMaximumSize(new QSize(fieldSize, fieldSize));
-                fieldButton.clicked.connect( gameAreaActionsResolver, "handleMouseClicked()" );
-                fieldButton.rightClicked.connect( gameAreaActionsResolver, "handleMouseRightClicked()" );
-                //fieldButton.hide();
-                gridLayout.addWidget( fieldButton, row, column );
-                fieldButtons[row][column] = fieldButton;
+                field.getLabel().setMinimumSize( new QSize(fieldSize, fieldSize ) );
+                field.getLabel().setMaximumSize( new QSize(fieldSize, fieldSize) );
+                field.getLabel().setAlignment(Qt.AlignmentFlag.AlignCenter);
+                field.getLabel().setFrameShape(QFrame.Shape.Box);
+                field.getLabel().setObjectName(Stylesheets.M_OBJECT);
+                field.getLabel().setStyleSheet(Stylesheets.EMPTY_UNCOVERED_FIELD);
+                gridLayout.addWidget( field.getLabel(), row, column );
+
+                field.getFieldButton().setMinimumSize(new QSize(fieldSize, fieldSize));
+                field.getFieldButton().setMaximumSize(new QSize(fieldSize, fieldSize));
+                field.getFieldButton().clicked.connect( gameAreaActionsResolver, "handleMouseClicked()" );
+                field.getFieldButton().rightClicked.connect( gameAreaActionsResolver, "handleMouseRightClicked()" );
+                gridLayout.addWidget( field.getFieldButton(), row, column );
+
+                fields[row][column] = field;
             }
         }
 
@@ -164,7 +131,7 @@ public class GameAreaBuilder
 
         placeMinesRandomly();
 
-        adjacentFieldResolver = new AdjacentFieldResolver(fieldButtons, fieldLabels);
+        adjacentFieldResolver = new AdjacentFieldResolver(fields);
         surroundMinesWithMarkers();
 
         gameArea.setLayout( gridLayout );
