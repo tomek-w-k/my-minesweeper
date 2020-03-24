@@ -23,9 +23,10 @@ public class CustomLevelDialog extends QDialog
     private static Integer customModeColumnCount = GameModeAreaParams.BASIC_MODE_COLUMN_COUNT;
     private static Integer customModeMinesCount = GameModeAreaParams.BASIC_MODE_MINES_COUNT;
 
+    // By passing this QDialog as a parent for this layout, the layout is automatically set as a main layout for this dialog window ( don't need to call setLayout() )
     QVBoxLayout contentLayout = new QVBoxLayout(this);
-    QGridLayout parametersGridLayout = new QGridLayout(this);
-    QHBoxLayout okCancelButtonsLayout = new QHBoxLayout(this);
+    QGridLayout parametersGridLayout = new QGridLayout();
+    QHBoxLayout okCancelButtonsLayout = new QHBoxLayout();
 
     QLabel customModeSettingsLabel = new QLabel(tr("Custom mode settings"));
     QLabel rowsLabel = new QLabel(tr("Rows"), this);
@@ -78,8 +79,6 @@ public class CustomLevelDialog extends QDialog
         okCancelButtonsLayout.addWidget(okButton);
         okCancelButtonsLayout.addWidget(cancelButton);
         contentLayout.addLayout(okCancelButtonsLayout);
-
-        this.setLayout(contentLayout);
     }
 
     private void connectToSlots()
