@@ -140,7 +140,7 @@ public class CustomLevelDialog extends QDialog
                 customModeRowCount = Integer.parseInt( rowsLineEdit.text() );
                 customModeColumnCount = Integer.parseInt( columnsLineEdit.text() );
                 customModeMinesCount = Integer.parseInt( minesLineEdit.text() );
-                this.close();
+                this.accept();
             }
             else
             {
@@ -158,6 +158,6 @@ public class CustomLevelDialog extends QDialog
         customModeRowCount = GameModeAreaParams.BASIC_MODE_ROW_COUNT;
         customModeColumnCount = GameModeAreaParams.BASIC_MODE_COLUMN_COUNT;
         customModeMinesCount = GameModeAreaParams.BASIC_MODE_MINES_COUNT;
-        close();
+        this.reject();
     }
 }

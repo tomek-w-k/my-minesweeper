@@ -12,11 +12,15 @@ import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.core.QPoint;
 import com.trolltech.qt.core.QTime;
 import com.trolltech.qt.core.QTimer;
+import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QWidget;
 
 
 public class GameArea extends QWidget
 {
+    // CustomLevelDialog exec() result code
+    private static final int ACCEPTED = 1;
+
     private GameAreaBuilder gameAreaBuilder;
     private SettingsManager settingsManager;
     private Main mw;
@@ -143,12 +147,14 @@ public class GameArea extends QWidget
         customLevelDialog.adjustSize();
         customLevelDialog.setGeometry( gameAreaCenterPoint.x()-customLevelDialog.width()/2, gameAreaCenterPoint.y()-customLevelDialog.height()/2,
                 400, customLevelDialog.geometry().height());
-        customLevelDialog.exec();
 
-        gameAreaBuilder.setRowCount( customLevelDialog.getCustomModeRowCount() );
-        gameAreaBuilder.setColumnCount( customLevelDialog.getCustomModeColumnCount() );
-        gameAreaBuilder.setMinesCount( customLevelDialog.getCustomModeMinesCount() );
-        gameAreaBuilder.createNewGame();
+        if (  customLevelDialog.exec() == ACCEPTED )
+        {
+            gameAreaBuilder.setRowCount( customLevelDialog.getCustomModeRowCount() );
+            gameAreaBuilder.setColumnCount( customLevelDialog.getCustomModeColumnCount() );
+            gameAreaBuilder.setMinesCount( customLevelDialog.getCustomModeMinesCount() );
+            gameAreaBuilder.createNewGame();
+        } else return;
     }
 
     public void preferencesActionTriggered()
