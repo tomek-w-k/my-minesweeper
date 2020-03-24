@@ -136,6 +136,7 @@ public class GameArea extends QWidget
 
     public void customActionTriggered()
     {
+        var previousGameMode = gameMode;
         gameMode = GameModes.CUSTOM_MODE;
         CustomLevelDialog customLevelDialog = new CustomLevelDialog(mw);
 
@@ -148,13 +149,41 @@ public class GameArea extends QWidget
         customLevelDialog.setGeometry( gameAreaCenterPoint.x()-customLevelDialog.width()/2, gameAreaCenterPoint.y()-customLevelDialog.height()/2,
                 400, customLevelDialog.geometry().height());
 
+        // If user clicks Ok, then close the dialog and run a new game...
         if (  customLevelDialog.exec() == ACCEPTED )
         {
             gameAreaBuilder.setRowCount( customLevelDialog.getCustomModeRowCount() );
             gameAreaBuilder.setColumnCount( customLevelDialog.getCustomModeColumnCount() );
             gameAreaBuilder.setMinesCount( customLevelDialog.getCustomModeMinesCount() );
             gameAreaBuilder.createNewGame();
-        } else return;
+        }
+        else
+        {
+            // ... if clicks Cancel, then close the dialog, and set previously chosen game mode on a toolbar, but without running a new game (triggering previous action) !!!
+            switch ( previousGameMode )
+            {
+                case BASIC_MODE:
+                    getMainWindow().getBasicAction().setChecked(true);
+                    gameMode = previousGameMode;
+                    break;
+                case MEDIUM_MODE:
+                    getMainWindow().getMediumAction().setChecked(true);
+                    gameMode = previousGameMode;
+                    break;
+                case ADVANCED_MODE:
+                    getMainWindow().getAdvancedAction().setChecked(true);
+                    gameMode = previousGameMode;
+                    break;
+                case EXPERT_MODE:
+                    getMainWindow().getExpertAction().setChecked(true);
+                    gameMode = previousGameMode;
+                    break;
+                case CUSTOM_MODE:
+                    getMainWindow().getCustomAction().setChecked(true);
+                    gameMode = previousGameMode;
+                    break;
+            }
+        }
     }
 
     public void preferencesActionTriggered()
