@@ -5,13 +5,16 @@ import com.trolltech.qt.gui.*;
 
 public class SaveBestResultDialog extends QDialog
 {
+    private static final int ACCEPTED = 1;
+
+    // By passing this QDialog as a parent for this layout, the layout is automatically set as a main layout for this dialog window ( don't need to call setLayout() )
     QVBoxLayout contentLayout = new QVBoxLayout(this);
 
-    QHBoxLayout playerNameLayout = new QHBoxLayout(this);
-    QHBoxLayout saveButtonLayout = new QHBoxLayout(this);
+    QHBoxLayout playerNameLayout = new QHBoxLayout();
+    QHBoxLayout saveButtonLayout = new QHBoxLayout();
 
     QLabel saveBestResultLabel = new QLabel(tr("Save best result"));
-    String informationText = tr("You have achieved the best time in this game mode. Your result will be saved. Please enter your name below.");
+    String informationText = tr("You have achieved the best time in this game mode. Your result will be saved.\nPlease enter your name below.\n\nIf you don't want to save your result, just leave field below blank and hit Enter or close this window. ");
     QLabel informationLabel = new QLabel(informationText, this);
     QLabel playerNameLabel = new QLabel(tr("Name:"), this);
     QLineEdit playerNameLineEdit = new QLineEdit(this);
@@ -64,8 +67,6 @@ public class SaveBestResultDialog extends QDialog
         saveButtonLayout.addStretch();
         saveButtonLayout.addWidget(savePushButton);
         contentLayout.addLayout(saveButtonLayout);
-
-        this.setLayout(contentLayout);
     }
 
     private void connectToSlots()
@@ -81,8 +82,20 @@ public class SaveBestResultDialog extends QDialog
     // slots
     private void savePushButtonClicked()
     {
-        playerName = playerNameLineEdit.text();
-        this.close();
+        if ( !playerNameLineEdit.text().isBlank() )
+        {
+            playerName = playerNameLineEdit.text();
+            this.accept();
+        }
+        else
+        {
+            QMessageBox question = new QMessageBox(this);
+            question.setWindowTitle(tr("Best result"));
+            question.setText(tr("Do you really want to skip saving your result?"));
+            question.setStandardButtons(QMessageBox.StandardButton.Yes, QMessageBox.StandardButton.No);
+
+            if ( question.exec() == QMessageBox.StandardButton.valueOf("Yes").value() ) this.reject();
+        }
     }
 
 }

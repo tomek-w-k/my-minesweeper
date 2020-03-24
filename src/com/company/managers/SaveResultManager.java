@@ -14,6 +14,7 @@ import java.util.List;
 public class SaveResultManager
 {
     private static final int ELAPSED_TIME_COLUMN = 1;
+    private static final int SKIPPED = 0;
     private GameArea gameArea;
 
 
@@ -42,7 +43,8 @@ public class SaveResultManager
         saveBestResultDialog.setModal(true);
         saveBestResultDialog.setVisible(true);
         saveBestResultDialog.adjustSize();
-        saveBestResultDialog.exec();
+
+        if ( saveBestResultDialog.exec() == SKIPPED ) return;
 
         // Prepare the result details - wrap them with an array
         ArrayList<String> resultDetails = new ArrayList<String>();
