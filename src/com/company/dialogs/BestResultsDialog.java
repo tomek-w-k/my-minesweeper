@@ -14,10 +14,11 @@ public class BestResultsDialog extends QDialog
 {
     private static final int ELAPSED_TIME_COLUMN = 1;
 
+    // By passing this QDialog as a parent for this layout, the layout is automatically set as a main layout for this dialog window ( don't need to call setLayout() )
     QVBoxLayout contentLayout = new QVBoxLayout(this);
 
-    QHBoxLayout horizontalLayout1 = new QHBoxLayout(this);
-    QHBoxLayout horizontalLayout2 = new QHBoxLayout(this);
+    QHBoxLayout horizontalLayout1 = new QHBoxLayout();
+    QHBoxLayout horizontalLayout2 = new QHBoxLayout();
 
     QLabel bestResultsLabel = new QLabel(tr("Best results for individual game modes"), this);
     String informationText = tr("Up to seven best results for each game mode are saved here. Click \"Clear table\" button to remove them from the table.");
@@ -89,8 +90,6 @@ public class BestResultsDialog extends QDialog
         horizontalLayout2.addStretch();
         horizontalLayout2.addWidget(closePushButton);
         contentLayout.addLayout(horizontalLayout2);
-
-        this.setLayout(contentLayout);
     }
 
     private void loadBestResults()
