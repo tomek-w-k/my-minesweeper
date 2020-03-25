@@ -72,7 +72,12 @@ public class SaveResultManager extends QObject
          */
         Integer flagsCounter = gameArea.getGameAreaBuilder().getGameAreaActionsResolver().getFlagsCounter();
 
-        // Sort an array of keys above from smaller time to bigger - bubble sort
+        /*
+            Sort an array of keys above from the shortest time to the longest - bubble sort
+            Sorting algorithm is being used here because we need to find the shortest and the longest result time for further purposes.
+            We could create two methods determining min and max time instead, but here we consider results only for one game mode (that means - up to 7 results).
+            Therefore, for that amount of data a cost of sorting algorithm should not be much bigger than two methods determining min and max time.
+         */
         if ( keys.size() > 1 )
         {
             boolean swapped = true;
@@ -116,7 +121,7 @@ public class SaveResultManager extends QObject
         */
         if ( keys.size() > 0 )
         {
-            // then get the smallest time from keys array
+            // then get the shortest time from keys array
             ArrayList<String> resultArray = (ArrayList<String>) settings.value(keys.get(0));
             QTime smallestSavedTime = QTime.fromString(resultArray.get(ELAPSED_TIME_COLUMN));
 

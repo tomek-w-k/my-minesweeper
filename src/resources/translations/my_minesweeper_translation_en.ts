@@ -5,89 +5,89 @@
     <name>com.company.Main</name>
     <message>
         <location filename="../../com/company/Main.java" line="24"/>
-        <location filename="../../com/company/Main.java" line="166"/>
+        <location filename="../../com/company/Main.java" line="173"/>
         <source>&amp;Game</source>
         <translation>&amp;Game</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="25"/>
-        <location filename="../../com/company/Main.java" line="167"/>
+        <location filename="../../com/company/Main.java" line="174"/>
         <source>&amp;New game</source>
         <translation>&amp;New game</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="26"/>
-        <location filename="../../com/company/Main.java" line="168"/>
+        <location filename="../../com/company/Main.java" line="175"/>
         <source>&amp;Basic</source>
         <translation>&amp;Basic</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="27"/>
-        <location filename="../../com/company/Main.java" line="169"/>
+        <location filename="../../com/company/Main.java" line="176"/>
         <source>&amp;Medium</source>
         <translation>&amp;Medium</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="28"/>
-        <location filename="../../com/company/Main.java" line="170"/>
+        <location filename="../../com/company/Main.java" line="177"/>
         <source>&amp;Advanced</source>
         <translation>&amp;Advanced</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="29"/>
-        <location filename="../../com/company/Main.java" line="171"/>
+        <location filename="../../com/company/Main.java" line="178"/>
         <source>&amp;Expert</source>
         <translation>&amp;Expert</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="30"/>
-        <location filename="../../com/company/Main.java" line="172"/>
+        <location filename="../../com/company/Main.java" line="179"/>
         <source>&amp;Custom...</source>
         <translation>&amp;Custom...</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="31"/>
-        <location filename="../../com/company/Main.java" line="173"/>
+        <location filename="../../com/company/Main.java" line="180"/>
         <source>E&amp;xit</source>
         <translation>E&amp;xit</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="33"/>
-        <location filename="../../com/company/Main.java" line="175"/>
+        <location filename="../../com/company/Main.java" line="182"/>
         <source>&amp;Options</source>
         <translation>&amp;Options</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="34"/>
-        <location filename="../../com/company/Main.java" line="176"/>
+        <location filename="../../com/company/Main.java" line="183"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Preferences...</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="36"/>
-        <location filename="../../com/company/Main.java" line="178"/>
+        <location filename="../../com/company/Main.java" line="185"/>
         <source>&amp;Help</source>
         <translation>&amp;Help</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="37"/>
-        <location filename="../../com/company/Main.java" line="179"/>
+        <location filename="../../com/company/Main.java" line="186"/>
         <source>&amp;Best results...</source>
         <translation>&amp;Best results...</translation>
     </message>
     <message>
         <location filename="../../com/company/Main.java" line="38"/>
-        <location filename="../../com/company/Main.java" line="180"/>
+        <location filename="../../com/company/Main.java" line="187"/>
         <source>&amp;About...</source>
         <translation>&amp;About...</translation>
     </message>
     <message>
-        <location filename="../../com/company/Main.java" line="219"/>
+        <location filename="../../com/company/Main.java" line="226"/>
         <source>MyMinesweeper</source>
         <translation>MyMinesweeper</translation>
     </message>
     <message>
-        <location filename="../../com/company/Main.java" line="247"/>
+        <location filename="../../com/company/Main.java" line="254"/>
         <source>About - MyMinesweeper</source>
         <translation>About - MyMinesweeper</translation>
     </message>
@@ -439,27 +439,58 @@ If you don&apos;t want to save your result just leave field below blank and hit 
         <translation>Best result - MyMinesweeper</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="93"/>
+        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="92"/>
         <source>Best result</source>
         <translation>Best result</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="94"/>
+        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="93"/>
         <source>Do you really want to skip saving your result?</source>
         <translation>Do you really want to skip saving your result?</translation>
     </message>
 </context>
 <context>
+    <name>com.company.managers.SaveResultManager</name>
+    <message>
+        <location filename="../../com/company/managers/SaveResultManager.java" line="160"/>
+        <source>Best result</source>
+        <translation>Best result</translation>
+    </message>
+    <message>
+        <location filename="../../com/company/managers/SaveResultManager.java" line="161"/>
+        <source>You have achieved the best time for this game mode, but there are incorrectly flagged mines in your game area.
+
+Your result will not be saved.</source>
+        <translation>You have achieved the best time for this game mode, but there are incorrectly flagged mines in your game area.
+
+Your result will not be saved.</translation>
+    </message>
+</context>
+<context>
     <name>com.company.tools.GameAreaActionsResolver</name>
     <message>
-        <location filename="../../com/company/tools/GameAreaActionsResolver.java" line="218"/>
+        <location filename="../../com/company/tools/GameAreaActionsResolver.java" line="221"/>
         <source>GAME OVER</source>
         <translation>GAME OVER</translation>
     </message>
     <message>
-        <location filename="../../com/company/tools/GameAreaActionsResolver.java" line="287"/>
+        <location filename="../../com/company/tools/GameAreaActionsResolver.java" line="240"/>
+        <location filename="../../com/company/tools/GameAreaActionsResolver.java" line="251"/>
+        <source>Mines: </source>
+        <translation>Mines: </translation>
+    </message>
+    <message>
+        <location filename="../../com/company/tools/GameAreaActionsResolver.java" line="292"/>
         <source>GAME COMPLETED SUCCESSFULLY</source>
         <translation>GAME COMPLETED SUCCESSFULLY</translation>
+    </message>
+</context>
+<context>
+    <name>com.company.tools.GameAreaBuilder</name>
+    <message>
+        <location filename="../../com/company/tools/GameAreaBuilder.java" line="142"/>
+        <source>Mines: </source>
+        <translation>Mines: </translation>
     </message>
 </context>
 </TS>
