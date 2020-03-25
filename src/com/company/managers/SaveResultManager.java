@@ -59,7 +59,7 @@ public class SaveResultManager
         gameArea.bestResultsActionTriggered();
     }
 
-    public void saveBestResult()
+    public void saveBestResultIfShould()
     {
         // At first, it's necessary to check if obtained time is the smallest time from all results saved for this game mode
         QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);

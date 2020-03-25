@@ -10,7 +10,6 @@ import com.company.managers.SaveResultManager;
 import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QPushButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +26,8 @@ public class GameAreaActionsResolver extends QObject
     private QGridLayout gridLayout;
     private Field[][] fields;
 
-    private Integer markedMinesCounter = 0;
-    private Integer properlyMarkedMinesCounter = 0;
+    private Integer flagsCounter = 0;
+    private Integer properlyFlaggedMinesCounter = 0;
 
     private AdjacentFieldResolver adjacentFieldResolver;
 
@@ -48,13 +47,17 @@ public class GameAreaActionsResolver extends QObject
 
         this.fields = fields;
 
+        flagsCounter = gameArea.getGameAreaBuilder().getMinesCount();
+
         adjacentFieldResolver = new AdjacentFieldResolver(fields);
         tempFieldLabelList = new ArrayList<QLabel>();
     }
 
+    public Integer getFlagsCounter() { return flagsCounter; }
+
     /*
         This function checks if the given adjacent field is empty or has a digit marker. If so - uncovers the field.
-     */
+    */
     private void uncover(AdjacentFieldRelativePos adjacentFieldRelativePos)
     {
         Field adjacentField = adjacentFieldResolver.adjacentField(adjacentFieldRelativePos, clickedFieldButtonRow, clickedFieldButtonColumn);
@@ -215,7 +218,7 @@ public class GameAreaActionsResolver extends QObject
                     }
                 }
             }
-            gameArea.getMainWindow().statusBar.showMessage(tr("GAME OVER"));
+            gameArea.getMainWindow().updateStatusBarMessage(tr("GAME OVER"));
         }
     }
 
@@ -233,26 +236,28 @@ public class GameAreaActionsResolver extends QObject
             button.setObjectName(Stylesheets.M_BUTTON);
             button.setStyleSheet(Stylesheets.FLAGGED_FIELD);
             button.setText(FieldMarkers.FLAG);
-            markedMinesCounter++;
+            flagsCounter--;
+            gameArea.getMainWindow().updateStatusBarMessage(tr("Mines: ") + flagsCounter);
 
             if ( clickedFieldLabel.text().equals(FieldMarkers.MINE) )
             {
-                properlyMarkedMinesCounter++;
+                properlyFlaggedMinesCounter++;
             }
         }
         else
         {
             button.setText("");
-            markedMinesCounter--;
+            flagsCounter++;
+            gameArea.getMainWindow().updateStatusBarMessage(tr("Mines: ") + flagsCounter);
 
             if ( clickedFieldLabel.text().equals(FieldMarkers.MINE) )
             {
-                properlyMarkedMinesCounter--;
+                properlyFlaggedMinesCounter--;
             }
         }
 
         // If number of marked mines is equal to actual number of mines - GAME COMPLETED SUCCESSFULLY
-        if ( properlyMarkedMinesCounter == gameArea.getGameAreaBuilder().getMinesCount() )
+        if ( properlyFlaggedMinesCounter == gameArea.getGameAreaBuilder().getMinesCount() )
         {
             // Stop the time counter
             if ( gameArea.getEnableTimeCounting() )
@@ -284,12 +289,12 @@ public class GameAreaActionsResolver extends QObject
                 }
             }
 
-            gameArea.getMainWindow().statusBar.showMessage(tr("GAME COMPLETED SUCCESSFULLY"));
+            gameArea.getMainWindow().updateStatusBarMessage(tr("GAME COMPLETED SUCCESSFULLY"));
 
             if ( gameArea.getSaveBestResult() )
             {
                 saveResultManager = new SaveResultManager(gameArea);
-                saveResultManager.saveBestResult();
+                saveResultManager.saveBestResultIfShould();
             }
         }
     }

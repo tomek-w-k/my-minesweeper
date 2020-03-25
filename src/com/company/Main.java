@@ -44,6 +44,7 @@ public class Main extends QMainWindow
     public QStatusBar statusBar = new QStatusBar();
 
     QLabel timeCounterLabel = new QLabel("00:00:00");
+    QLabel messageLabel = new QLabel();
 
     GameArea mainWidget = new GameArea(this);
 
@@ -143,6 +144,7 @@ public class Main extends QMainWindow
         statusBar.setStyleSheet(Stylesheets.STATUS_BAR);
         statusBar.setContentsMargins(9, 0, 11, 0);
 
+        statusBar.addWidget(messageLabel);
         statusBar.addPermanentWidget( timeCounterLabel );
         this.setStatusBar(statusBar);
     }
@@ -150,6 +152,11 @@ public class Main extends QMainWindow
     public void updateTime(String currentTime)
     {
         timeCounterLabel.setText(currentTime);
+    }
+
+    public void updateStatusBarMessage(String message)
+    {
+        messageLabel.setText(message);
     }
 
     @Override

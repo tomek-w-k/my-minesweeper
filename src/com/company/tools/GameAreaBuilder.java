@@ -8,6 +8,7 @@ import com.company.constants.Stylesheets;
 import com.company.elements.Field;
 import com.company.elements.GameArea;
 import com.company.enums.AdjacentFieldRelativePos;
+import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QFrame;
@@ -18,7 +19,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class GameAreaBuilder
+public class GameAreaBuilder extends QObject
 {
     // GAME AREA ELEMENTS
 
@@ -135,6 +136,8 @@ public class GameAreaBuilder
         surroundMinesWithMarkers();
 
         gameArea.setLayout( gridLayout );
+
+        gameArea.getMainWindow().updateStatusBarMessage(tr("Mines: ") + minesCount);
 
         // - - - Setting a size of main window and make it fixed - - -
         Main mainWindow = gameArea.getMainWindow();
