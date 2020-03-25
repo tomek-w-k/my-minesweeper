@@ -89,12 +89,11 @@ public class SaveBestResultDialog extends QDialog
         }
         else
         {
-            QMessageBox question = new QMessageBox(this);
-            question.setWindowTitle(tr("Best result"));
-            question.setText(tr("Do you really want to skip saving your result?"));
-            question.setStandardButtons(QMessageBox.StandardButton.Yes, QMessageBox.StandardButton.No);
+            int ret = QMessageBox.question(this, tr("Best result"),
+                    tr("Do you really want to skip saving your result?"),
+                    QMessageBox.StandardButton.Yes, QMessageBox.StandardButton.No);
 
-            if ( question.exec() == QMessageBox.StandardButton.valueOf("Yes").value() ) this.reject();
+            if ( ret == QMessageBox.StandardButton.valueOf("Yes").value() ) this.reject();
         }
     }
 

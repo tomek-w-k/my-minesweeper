@@ -47,6 +47,8 @@ public class GameAreaBuilder extends QObject
     private TimeCounter timeCounter;
 
 
+    public GameAreaActionsResolver getGameAreaActionsResolver() { return gameAreaActionsResolver; }
+
     public QGridLayout getGridLayout() { return gridLayout; }
     public void setGridLayout(QGridLayout gridLayout) { this.gridLayout = gridLayout; }
 

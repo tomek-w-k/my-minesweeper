@@ -3,15 +3,13 @@ package com.company.managers;
 import com.company.constants.SettingsKeys;
 import com.company.dialogs.SaveBestResultDialog;
 import com.company.elements.GameArea;
-import com.trolltech.qt.core.QDateTime;
-import com.trolltech.qt.core.QPoint;
-import com.trolltech.qt.core.QSettings;
-import com.trolltech.qt.core.QTime;
+import com.trolltech.qt.core.*;
+import com.trolltech.qt.gui.QMessageBox;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SaveResultManager
+public class SaveResultManager extends QObject
 {
     private static final int ELAPSED_TIME_COLUMN = 1;
     private static final int SKIPPED = 0;
@@ -68,6 +66,12 @@ public class SaveResultManager
         settings.beginGroup(SettingsKeys.BEST_RESULTS_GROUP + "/" + gameArea.getMainWindow().difficultyLevelActionGroup.checkedAction().objectName());
         List<String> keys = settings.childKeys();
 
+        /*
+            Get the number of flagged fields. If this number is negative, it means that there are incorrectly flagged mines. Thus, even if obtained time is
+            the best for a given game mode, it should not be saved. This condition is checked later.
+         */
+        Integer flagsCounter = gameArea.getGameAreaBuilder().getGameAreaActionsResolver().getFlagsCounter();
+
         // Sort an array of keys above from smaller time to bigger - bubble sort
         if ( keys.size() > 1 )
         {
@@ -98,8 +102,18 @@ public class SaveResultManager
             }
         }
 
-        // check if obtained time is smaller than the smallest already saved time (first element of sorted keys array)
-        // but first check if keys array has at least one key - if it has,
+        // check if there are incorrectly flagged mines, if so - result cannot be saved
+        if ( flagsCounter < 0 )
+        {
+            resultCannotBeSavedMessage();
+            settings.endGroup();
+            return;
+        }
+
+        /*
+            check if obtained time is smaller than the smallest already saved time (first element of sorted keys array)
+            but first check if keys array has at least one key - if it has,
+        */
         if ( keys.size() > 0 )
         {
             // then get the smallest time from keys array
@@ -134,5 +148,12 @@ public class SaveResultManager
             pSaveBestResult();
         }
         settings.endGroup();
+    }
+
+    private void resultCannotBeSavedMessage()
+    {
+        QMessageBox.information(null, tr("Best result"),
+                tr("You have achieved the best time for this game mode, but there are incorrectly flagged mines in your game area.\n\nYour result will not be saved."),
+                QMessageBox.StandardButton.Ok  );
     }
 }
