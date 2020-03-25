@@ -190,7 +190,7 @@ public class GameAreaActionsResolver extends QObject
             }
 
             // Uncover all mines and make rest of field buttons disabled
-            for ( int row = 0; row < gridLayout.columnCount(); row++ )
+            for ( int row = 0; row < gridLayout.rowCount(); row++ )
             {
                 for ( int column = 0; column < gridLayout.columnCount(); column++ )
                 {
