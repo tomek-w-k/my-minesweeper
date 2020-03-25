@@ -110,48 +110,54 @@
 <context>
     <name>com.company.dialogs.BestResultsDialog</name>
     <message>
+        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="154"/>
         <source>Best results</source>
-        <translation type="obsolete">Najlepsze wyniki</translation>
+        <translation>Najlepsze wyniki</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="22"/>
+        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="23"/>
         <source>Best results for individual game modes</source>
         <translation>Najlepsze wyniki dla poszczególnych trybów gry</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="23"/>
+        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="24"/>
         <source>Up to seven best results for each game mode are saved here. Click &quot;Clear table&quot; button to remove them from the table.</source>
         <translation>Zapisywanych jest maksymalnie siedem najlepszych wyników dla każdego z trybów gry. Kliknij przycisk &quot;Kasuj wyniki&quot; aby wykasować wyniki z tabeli.</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="26"/>
+        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="27"/>
         <source>Clear table</source>
         <translation>Kasuj wyniki</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="27"/>
+        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="28"/>
         <source>Close</source>
         <translation>Zamknij</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="44"/>
+        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="45"/>
         <source>Best results - MyMinesweeper</source>
         <translation>Najlepsze wyniki - MyMinesweeper</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="102"/>
+        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="101"/>
         <source>Name</source>
         <translation>Imię</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="103"/>
+        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="102"/>
         <source>Elapsed time</source>
         <translation>Uzyskany czas</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="104"/>
+        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="103"/>
         <source>Date \ time</source>
         <translation>Data \ godzina</translation>
+    </message>
+    <message>
+        <location filename="../../com/company/dialogs/BestResultsDialog.java" line="155"/>
+        <source>Do you really want to clear the table?</source>
+        <translation>Czy na pewno chcesz wyczyścić tabelę?</translation>
     </message>
 </context>
 <context>
@@ -161,68 +167,68 @@
         <translation type="obsolete">Tryb niestandardowy</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="30"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="31"/>
         <source>Custom mode settings</source>
         <translation>Ustawienia trybu niestandardowego</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="31"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="32"/>
         <source>Rows</source>
         <translation>Wiersze</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="33"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="34"/>
         <source>Columns</source>
         <translation>Kolumny</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="35"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="36"/>
         <source>Mines</source>
         <translation>Miny</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="37"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="38"/>
         <source>&amp;Ok</source>
         <translation>&amp;Ok</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="38"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="39"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Anuluj</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="42"/>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="147"/>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="152"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="43"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="146"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="151"/>
         <source>Custom mode - MyMinesweeper</source>
         <translation>Tryb niestandardowy - MyMinesweeper</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="123"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="122"/>
         <source>Entered values have to be an integer numbers. 
 </source>
         <translation>Wprowadzone wartości muszą być liczbami całkowitymi.</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="124"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="123"/>
         <source>
 A game area cannot be smaller than 10 x 10 and greather 
 </source>
         <translation>Plansza gry nie może być mniejsza niż 10 x 10 oraz większa niż</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="125"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="124"/>
         <source>than 30 x 50.</source>
         <translation>niż 30 x 30.</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="126"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="125"/>
         <source>Number of mines cannot be smaller than 1 and bigger than a number of rows and columns product.
 </source>
         <translation>Liczba min nie może być mniejsza od 1 oraz większa niż iloczyn liczby wierszy i kolumn.</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="127"/>
+        <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="126"/>
         <source>
 Please correct entered values.</source>
         <translation>Proszę wprowadzić poprawne wartości.</translation>
@@ -408,29 +414,49 @@ Please correct entered values.</source>
 <context>
     <name>com.company.dialogs.SaveBestResultDialog</name>
     <message>
-        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="13"/>
+        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="16"/>
         <source>Save best result</source>
         <translation>Zapisz najlepszy wynik</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="14"/>
         <source>You have achieved the best time in this game mode. Your result will be saved. Please enter your name below.</source>
-        <translation>Uzyskałeś najlepszy czas w tym trybie gry. Twój wynik będzie zapisany. Wpisz poniżej swoje imię.</translation>
+        <translation type="obsolete">Uzyskałeś najlepszy czas w tym trybie gry. Twój wynik będzie zapisany. Wpisz poniżej swoje imię.</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="16"/>
+        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="17"/>
+        <source>You have achieved the best time in this game mode. Your result will be saved.
+Please enter your name below.
+
+If you don&apos;t want to save your result just leave field below blank and hit Enter or close this window. </source>
+        <translation>Uzyskałeś najlepszy czas dla tego trybu gry. Twój wynik zostanie zapisany.
+Wpisz poniżej swoje imię.
+
+Jeśli nie chcesz zapisywać swojego wyniku po prostu pozostaw poniższe pole puste i naciśnij Enter lub zamknij to okno.</translation>
+    </message>
+    <message>
+        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="19"/>
         <source>Name:</source>
         <translation>Imię:</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="19"/>
+        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="22"/>
         <source>Save</source>
         <translation>Zapisz</translation>
     </message>
     <message>
-        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="26"/>
+        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="29"/>
         <source>Best result - MyMinesweeper</source>
         <translation>Najlepszy wynik - MyMinesweeper</translation>
+    </message>
+    <message>
+        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="93"/>
+        <source>Best result</source>
+        <translation>Najlepszy wynik</translation>
+    </message>
+    <message>
+        <location filename="../../com/company/dialogs/SaveBestResultDialog.java" line="94"/>
+        <source>Do you really want to skip saving your result?</source>
+        <translation>Czy na pewno chcesz pominąć zapisanie swojego wyniku?</translation>
     </message>
 </context>
 <context>
