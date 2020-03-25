@@ -150,9 +150,17 @@ public class BestResultsDialog extends QDialog
     // slots
     private void clearTablePushButtonClicked()
     {
-        QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
-        settings.remove(SettingsKeys.BEST_RESULTS_GROUP);
-        loadBestResults();
+        QMessageBox question = new QMessageBox(this);
+        question.setWindowTitle(tr("Best results"));
+        question.setText(tr("Do you really want to clear the table?"));
+        question.setStandardButtons(QMessageBox.StandardButton.Yes, QMessageBox.StandardButton.No);
+
+        if ( question.exec() == QMessageBox.StandardButton.valueOf("Yes").value() )
+        {
+            QSettings settings = new QSettings(SettingsKeys.COMPANY, SettingsKeys.APPLICATION);
+            settings.remove(SettingsKeys.BEST_RESULTS_GROUP);
+            loadBestResults();
+        }
     }
 
     private void closePushButtonClicked()

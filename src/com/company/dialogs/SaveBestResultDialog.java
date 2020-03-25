@@ -14,7 +14,7 @@ public class SaveBestResultDialog extends QDialog
     QHBoxLayout saveButtonLayout = new QHBoxLayout();
 
     QLabel saveBestResultLabel = new QLabel(tr("Save best result"));
-    String informationText = tr("You have achieved the best time in this game mode. Your result will be saved.\nPlease enter your name below.\n\nIf you don't want to save your result, just leave field below blank and hit Enter or close this window. ");
+    String informationText = tr("You have achieved the best time in this game mode. Your result will be saved.\nPlease enter your name below.\n\nIf you don't want to save your result just leave field below blank and hit Enter or close this window. ");
     QLabel informationLabel = new QLabel(informationText, this);
     QLabel playerNameLabel = new QLabel(tr("Name:"), this);
     QLineEdit playerNameLineEdit = new QLineEdit(this);
