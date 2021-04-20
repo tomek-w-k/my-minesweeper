@@ -6,16 +6,17 @@ import com.company.constants.Stylesheets;
 import com.company.elements.GameArea;
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
-
-import java.beans.Introspector;
 import java.io.*;
-import java.lang.instrument.Instrumentation;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.File;
 import java.nio.file.Paths;
-import java.util.ResourceBundle;
+import java.util.List;
+
 
 public class Main extends QMainWindow
 {
@@ -70,6 +71,11 @@ public class Main extends QMainWindow
     public QAction getExitAction() { return exitAction; }
     public void setExitAction(QAction exitAction) { this.exitAction = exitAction; }
 
+
+    private String getResourcePath(String fileName)
+    {
+        return Main.class.getClassLoader().getResource(fileName).getPath();
+    }
 
     private void connectActionsToSlots()
     {
@@ -190,13 +196,13 @@ public class Main extends QMainWindow
     public void changeTranslator(String lLanguage)
     {
         QTranslator polishTranslator = new QTranslator();
-        polishTranslator.load(PathStrings.Translations.POLISH_TRANSLATION_FILE);
+        polishTranslator.load( PathStrings.Translations.POLISH_TRANSLATION_FILE );
 
         QTranslator englishTranslator = new QTranslator();
-        englishTranslator.load(PathStrings.Translations.ENGLISH_TRANSLATION_FILE);
+        englishTranslator.load( PathStrings.Translations.ENGLISH_TRANSLATION_FILE );
 
         QTranslator germanTranslator = new QTranslator();
-        germanTranslator.load(PathStrings.Translations.GERMAN_TRANSLATION_FILE);
+        germanTranslator.load( PathStrings.Translations.GERMAN_TRANSLATION_FILE );
 
         switch ( lLanguage )
         {
@@ -224,7 +230,7 @@ public class Main extends QMainWindow
     public Main()
     {
         setWindowTitle(tr("MyMinesweeper"));
-        setWindowIcon( new QIcon(PathStrings.Icons.MINE) );
+        setWindowIcon( new QIcon( PathStrings.Icons.MINE ) );
         connectActionsToSlots();
         createMenuBar();
         createToolBar();
@@ -252,26 +258,12 @@ public class Main extends QMainWindow
         QMessageBox about = new QMessageBox();
         about.setDefaultButton(QMessageBox.StandardButton.Ok);
         about.setWindowTitle(tr("About - MyMinesweeper"));
-        about.setIconPixmap(new QPixmap(PathStrings.Icons.MINE).scaled(88, 88));
+        about.setIconPixmap(new QPixmap( PathStrings.Icons.MINE ).scaled(88, 88));
 
-        String messageText = "";
-        try
-        {
-            URL res = getClass().getClassLoader().getResource(PathStrings.Misc.ABOUT);
-            File file = Paths.get(res.toURI()).toFile();
-            String absolutePath = file.getAbsolutePath();
-            messageText = new String(Files.readAllBytes(Paths.get( absolutePath ) ));
-        }
-        catch(IOException e)
-        {
-            System.out.println("Cannot load a message file.");
-        }
-        catch(URISyntaxException e)
-        {
-            System.out.println("Cannot load a message file.");
-        }
-
-        about.setText(messageText);
+        QFile file = new QFile(PathStrings.Misc.ABOUT);
+        if ( !file.open(new QIODevice.OpenMode(QIODevice.OpenModeFlag.ReadOnly, QIODevice.OpenModeFlag.Text)))
+            return;
+        about.setText( file.readAll().toString() );
         about.exec();
     }
 }
