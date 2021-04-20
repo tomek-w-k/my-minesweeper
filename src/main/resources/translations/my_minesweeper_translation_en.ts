@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en">
+<TS version="2.1" language="en">
 <context>
     <name>com.company.Main</name>
     <message>
@@ -190,7 +190,7 @@
     <message>
         <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="39"/>
         <source>&amp;Cancel</source>
-        <translation>&amp;Ok</translation>
+        <translation type="unfinished">&amp;Cancel</translation>
     </message>
     <message>
         <location filename="../../com/company/dialogs/CustomLevelDialog.java" line="43"/>
